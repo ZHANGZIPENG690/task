@@ -1,0 +1,17 @@
+下载    	：	git clone 地址
+查看信息 	：	git config --list
+
+工作区域  ：
+			git add 
+暂存区	：
+			git commit -m '注释'
+本地仓库	：
+			git push
+在线仓库
+
+查看在线仓库 git branch -r
+
+添加到制定分支 git checkout -b
+
+
+git clone -b zhangzi git@gitee.com:imolaza/molaza_device_pro.git

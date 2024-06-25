@@ -1,0 +1,14 @@
+编译	idf.py build
+idf.py monitor
+
+idf.py menuconfig 
+
+烧录	idf.py encrypted-app-flash monitor 
+		idf.py encrypted-partition-table-flash monitor 
+
+复制	xcopy /e /i E:\esp\Espressif\frameworks\esp-idf-v5.2.1\hello_world hello_world
+
+E:\esp\esp\hello_world\hello_world KEY
+C:\Users\Administrator\Desktop\1\molaza_device_pro
+
+xcopy /e /i C:\Users\Administrator\Desktop\1\molaza_device_pro molaza_device_pro
