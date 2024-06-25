@@ -4,6 +4,8 @@
 
 struct limitButtonOperation
 {
+    /** 是否在更改时间 */
+    bool adjusttime;
     /** 是否状态更新 */
     bool stateUpdate;
     /** 设备类型 最大通道数*/
@@ -33,6 +35,7 @@ stat_m (*m_callable_key_handle)(enum key_event key_id, uint8_t pre_key_index, ui
 int global_press_count_int = 0;
 stat_m m_callable_drive_button_init(uint8_t device_type)
 {
+    lmo.adjusttime = false;
     lmo.max_channel = device_type;
     lmo.currentTempVue = 1;
     m_callable_device_attribute_get_hearward_version(&device_hearware_type);
@@ -139,18 +142,32 @@ stat_m m_callable_drive_button_function_monitor(uint64_t current_time_ms)
     //         global_press_count_int= 0;
     //     // lmo.pre_count = 0;
     // DEBUG_TEST( DB_I,"%dUp: %d   %lld -> Level %d", lmo.event, lmo.stateUpdate , lmo.tranf_key_pressdown_time_ms , m_ext_drive_gpio_get_level(tran_port(lmo.event)));
-    if (lmo.stateUpdate && lmo.tranf_key_pressdown_time_ms > 0 && m_ext_drive_gpio_get_level(tran_port(lmo.event)) == 0)
+    // if (lmo.stateUpdate && lmo.tranf_key_pressdown_time_ms > 0 && m_ext_drive_gpio_get_level(tran_port(lmo.event)) == 0)
+    // {
+    //     global_press_count_int = 99;
+    //     // DEBUG_TEST( DB_I,"Interrupt Count: %d   %d -> Level %d", global_press_count_int , tran_port(lmo.event) , m_ext_drive_gpio_get_level(tran_port(lmo.event)));
+    // }
+    // if (global_press_count_int == 99 && m_ext_drive_gpio_get_level(tran_port(lmo.event)) == 1)
+    // {
+    //     global_press_count_int = 0;
+    //     lmo.stateUpdate = false;
+    //     if (lmo.currentTempVue == lmo.preTempVue || lmo.pre_count <= 1)
+    //         lmo.pre_count++;
+    // }
+    if (lmo.stateUpdate && (current_time_ms > lmo.tranf_key_pressdown_time_ms + M_KEY_LIMIT_TIME && lmo.tranf_key_pressdown_time_ms > 0))
     {
-        global_press_count_int = 99;
-        // DEBUG_TEST( DB_I,"Interrupt Count: %d   %d -> Level %d", global_press_count_int , tran_port(lmo.event) , m_ext_drive_gpio_get_level(tran_port(lmo.event)));
-    }
-    if (global_press_count_int == 99 && m_ext_drive_gpio_get_level(tran_port(lmo.event)) == 1)
-    {
-        global_press_count_int = 0;
-        lmo.stateUpdate = false;
-        if (lmo.currentTempVue == lmo.preTempVue || lmo.pre_count <= 1)
-            lmo.pre_count++;
-    }
+        if(m_ext_drive_gpio_get_level(tran_port(lmo.event)) == 1)
+        {
+            mDelay_ms(10);
+            if(m_ext_drive_gpio_get_level(tran_port(lmo.event)) == 1)
+            {
+                if(current_time_ms  > lmo.tranf_key_pressdown_time_ms + 480)
+                    lmo.pre_count = 2;
+                else
+                    lmo.pre_count = 1;
+            }
+        }
+    }  
     {
         // lmo.tranf_key_pressdown_time_ms = current_time_ms;
         // 按下计数
@@ -204,43 +221,116 @@ stat_m m_static_drive_button_tranfmoss(uint64_t current_time_ms)
         m_ext_drive_button_event_handle(M_KEY_EVENT_RESET, M_KEY_EVENT_LONG_PRESS, M_KEY_EVENT_RESET, lmo.currentTempVue, current_time_ms);
     }
 
-    if (lmo.pre_count && current_time_ms > lmo.tranf_key_pressdown_time_ms + M_KEY_LIMIT_TIME_HANDLE_MAX)
+    if (lmo.pre_count!=0 && current_time_ms > lmo.tranf_key_pressdown_time_ms + M_KEY_LIMIT_TIME_HANDLE_MAX)
     {
-        // if (lmo.pre_count <= 1)
+        if(lmo.pre_count == 2)
         {
+            if(lmo.event == M_KEY_EVENT_START)
+            {
+                if(m_callable_display_status_get() == M_DISPLAY_ZONE_SELECT_MODE)//区域是否被选中
+                {
+                    //区域被选中，进去修改时长
+                    lmo.adjusttime = true;
+                    if(lmo.currentTempVue < 1)
+                        lmo.currentTempVue = 1;
+                }else
+                {
+                    //区域未选中
+                    lmo.event = M_KEY_EVENT_WATERED_ALL;
+                    m_ext_drive_button_event_handle(lmo.event, M_KEY_EVENT_SIGN_CLICK, lmo.preTempVue, lmo.currentTempVue, current_time_ms);
+                }
+                //m_ext_drive_button_event_handle(M_KEY_EVENT_RESET, M_KEY_EVENT_LONG_PRESS, M_KEY_EVENT_RESET, lmo.currentTempVue, current_time_ms);
+            }
+        }else
+        {
+            // if((m_callable_display_status_get() == M_DISPLAY_IDLE_STATUS_MODE || m_callable_display_status_get() == M_DISPLAY_ZONE_SELECT_MODE) && lmo.adjusttime == true)
+            // {
+            //     lmo.adjusttime = false;
+            // }
+            if((m_callable_manual_get_sol_even() == M_OPERATE_EVENT_RUNNING_SWITCH_ALL) && lmo.event != M_KEY_EVENT_STOP)
+            {
+                lmo.stateUpdate = false;
+                lmo.preTempVue = lmo.currentTempVue;
+                lmo.tranf_key_pressdown_time_ms = 0;
+                lmo.pre_count = 0;
+                return 0;
+            }
             gl_zone_select_add_add = gl_zone_select = 0;
-            lmo.stateUpdate = false;
 
-
-            // DEBUG_TEST( DB_I,"单击！");
+            /** 普通设备和Pro设备相反，这里取反下*/
+            if (device_hearware_type != DEVICE_HEARWARE_A003)
+            {
+                if (lmo.event == M_KEY_EVENT_LEFT)
+                    lmo.event = M_KEY_EVENT_RIGHT;
+                else if (lmo.event == M_KEY_EVENT_RIGHT)
+                    lmo.event = M_KEY_EVENT_LEFT;
+            }
+            // DEBUG_TEST("单击！");
             if (lmo.event == M_KEY_EVENT_LEFT)
             {
-                lmo.preTempVue = lmo.currentTempVue;
-                /** 这里写的目的是 在不是空喜爱年模式和找网络模式的话 才操作 */
-                if (m_callable_display_status_get() != M_DISPLAY_IDLE_STATUS_MODE && m_callable_display_status_get() != M_DISPLAY_START_UP_OR_FIND_NETWORK_MODE && m_callable_display_status_get() != M_DISPLAY_WIFI_CONFIG_STATUS1_MODE)
-                    lmo.currentTempVue++;
-                if (lmo.currentTempVue > lmo.max_channel)
-                    lmo.currentTempVue = 1;
-            }   
+                if(lmo.adjusttime == true)
+                {
+                    m_callable_manual_adjust_time(lmo.event,lmo.currentTempVue);
+                }else
+                {
+                     lmo.preTempVue = lmo.currentTempVue;
+                    if (m_callable_display_status_get() != M_DISPLAY_IDLE_STATUS_MODE && m_callable_display_status_get() != M_DISPLAY_START_UP_OR_FIND_NETWORK_MODE)
+                        lmo.currentTempVue++;
+                    if (lmo.currentTempVue > lmo.max_channel)
+                        lmo.currentTempVue = 1;
+                }
+            }
             else if (lmo.event == M_KEY_EVENT_RIGHT)
             {
-                lmo.preTempVue = lmo.currentTempVue;
-                /** 这里写的目的是 在不是空喜爱年模式和找网络模式的话 才操作 */
-                if (m_callable_display_status_get() != M_DISPLAY_IDLE_STATUS_MODE && m_callable_display_status_get() != M_DISPLAY_START_UP_OR_FIND_NETWORK_MODE && m_callable_display_status_get() != M_DISPLAY_WIFI_CONFIG_STATUS1_MODE)
-                    lmo.currentTempVue--;
-                if (lmo.currentTempVue < 1)
-                    lmo.currentTempVue = lmo.max_channel;
-                // printf("lmo.currentTempVue %d   max_channel %d  \n", lmo.currentTempVue, lmo.max_channel);
+                if(lmo.adjusttime == true)
+                {
+                    m_callable_manual_adjust_time(lmo.event,lmo.currentTempVue);
+                }else
+                {
+                    // lmo.preTempVue = lmo.currentTempVue;
+                    // if (lmo.currentTempVue <= 1)
+                    //     lmo.currentTempVue = lmo.max_channel + 1;
+                    // if (m_callable_display_status_get() != M_DISPLAY_IDLE_STATUS_MODE && m_callable_display_status_get() != M_DISPLAY_START_UP_OR_FIND_NETWORK_MODE)
+                    //     lmo.currentTempVue--;
+
+                    lmo.preTempVue = lmo.currentTempVue;
+                    if (m_callable_display_status_get() != M_DISPLAY_IDLE_STATUS_MODE && m_callable_display_status_get() != M_DISPLAY_START_UP_OR_FIND_NETWORK_MODE)
+                        lmo.currentTempVue--;
+                    if (lmo.currentTempVue < 1)
+                        lmo.currentTempVue = lmo.max_channel;
+                }
+ 
+            }else if(lmo.event == M_KEY_EVENT_START)
+            {
+                if(m_callable_display_status_get() != M_DISPLAY_ZONE_SELECT_MODE && m_callable_display_status_get() != M_DISPLAY_ZONE_RUNNING_MODE)
+                {
+                    lmo.stateUpdate = false;
+                    lmo.preTempVue = lmo.currentTempVue;
+                    lmo.tranf_key_pressdown_time_ms = 0;
+                    lmo.pre_count = 0;
+                    return 0;
+                }
+                if(lmo.adjusttime == true)
+                    lmo.adjusttime = false;
             }
             m_ext_drive_button_event_handle(lmo.event, M_KEY_EVENT_SIGN_CLICK, lmo.preTempVue, lmo.currentTempVue, current_time_ms);
         }
-
-        lmo.preTempVue = lmo.currentTempVue;
-        lmo.tranf_key_pressdown_time_ms = 0;
-        lmo.pre_count = 0;
+            lmo.stateUpdate = false;
+            lmo.preTempVue = lmo.currentTempVue;
+            lmo.tranf_key_pressdown_time_ms = 0;
+            lmo.pre_count = 0;
     }
-
     return 0;
+}
+/**
+ * @brief 获取最大个通道数发给manual_run.c中存放时间的数组
+ *
+ * @param current_time_ms
+ * @return stat_m
+ */
+int m_static_drive_get_max_channel(void)
+{
+    return lmo.max_channel;
 }
 
 // [50,813 0 3&2 1649635200 2147483647 116S0 1#15;2#15;3#20;4#15;5#15;6#15;7#12;8#13 null 0 109 7320]

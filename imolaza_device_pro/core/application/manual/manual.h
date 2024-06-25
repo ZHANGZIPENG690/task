@@ -81,6 +81,22 @@ stat_m m_callable_manual_event_export_input(int event_id,int evt, uint64_t curre
  */
 stat_m m_callable_manual_running_zone_get(int *in_zone);
 
+/**
+ * @brief 修改时长
+ * 
+ * @param kid 
+ * @param currentTempVue 
+ * @return stat_m 
+ */
+stat_m m_callable_manual_adjust_time(enum key_id kid,uint8_t currentTempVue);
 
+/**
+ * @brief 获取记录操作
+ * 
+ * @param 
+ * @param  
+ * @return stat_m 
+ */
+int m_callable_manual_get_sol_even(void);
 
 #endif  /* __MUANUAL__H__ */

@@ -149,4 +149,12 @@ stat_m m_callable_drive_button_direct_stop(void);
  */
 stat_m m_ext_drive_button_evtnt_handle(enum key_event key_id, uint8_t pre_key_index, uint8_t current_key_index, uint64_t current_time_ms);
 
+
+/**
+ * @brief 获取最大个通道数发给manual_run.c中存放时间的数组
+ *
+ * @param current_time_ms
+ * @return stat_m
+ */
+int m_static_drive_get_max_channel(void);
 #endif /** __BUTTON_H__ */
