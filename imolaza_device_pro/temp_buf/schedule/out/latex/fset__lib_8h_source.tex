@@ -1,0 +1,270 @@
+\hypertarget{fset__lib_8h_source}{}\doxysection{fset\+\_\+lib.\+h}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ \_\_FSET\_LIB\_\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ \_\_FSET\_LIB\_\_H}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}core.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ "{}stdlib.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#include\ <string.h>}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#include\ "{}core/utils/util.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{comment}{//\ \#include\ "{}core/timer/mtime.h"{}}}
+\DoxyCodeLine{00011\ \textcolor{comment}{//\ \#include\ "{}core/fastrun/fastrun.h"{}}}
+\DoxyCodeLine{00020\ \textcolor{comment}{}\textcolor{comment}{//\ typedef\ struct\ \_\_DEVICE\_INFO\ device\_info;}}
+\DoxyCodeLine{00021\ \textcolor{comment}{//\ typedef\ struct\ fastRunManager\ fastManager;}}
+\DoxyCodeLine{00022\ \textcolor{comment}{//\ typedef\ struct\ \_io\_contr\ m\_io\_contr;}}
+\DoxyCodeLine{00023\ \textcolor{comment}{//\ typedef\ struct\ \_\_DEVICE\_TIME\ device\_time;}}
+\DoxyCodeLine{00024\ }
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ device\_info\ \_device\ ;}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{comment}{//\ m\_io\_contr\ \_io\_contr\ ;}}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \textcolor{comment}{//\ fastManager\ \_fastRunMan;}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{comment}{//\ device\_time\ \_time;}}
+\DoxyCodeLine{00034\ \textcolor{comment}{}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ STATIC\_IP\_IN\_FLAG\ "{}STIP"{}}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ STATIC\_IP\_IN\_IPADDR\ "{}IPip"{}}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ STATIC\_IP\_IN\_IPMASK\ "{}IPmk"{}}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ STATIC\_IP\_IN\_IPGW\ "{}IPgw"{}}}
+\DoxyCodeLine{00039\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00040\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00041\ \textcolor{comment}{/******************\ Flash\ ******************************/}}
+\DoxyCodeLine{00042\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00043\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00048\ stat\_m\ m\_ext\_flash\_ft\_init(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00055\ stat\_m\ m\_ext\_flash\_remove(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *in\_key);}
+\DoxyCodeLine{00065\ stat\_m\ m\_ext\_flash\_write(\textcolor{keywordtype}{int}\ in\_type,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *in\_key,\ \textcolor{keywordtype}{char}\ *in\_data,\ uint64\_t\ *in\_resp\_u64);}
+\DoxyCodeLine{00075\ stat\_m\ m\_ext\_flash\_read(\textcolor{keywordtype}{int}\ in\_type,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *in\_key,\ \textcolor{keywordtype}{char}\ *out\_resp,\ \textcolor{keywordtype}{void}\ *out\_resp\_u64);}
+\DoxyCodeLine{00083\ stat\_m\ m\_callable\_flash\_flag\_rescue\_message(\textcolor{keywordtype}{char}\ *in\_flag,\ \textcolor{keywordtype}{int}\ in\_status);}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00089\ \textcolor{keywordtype}{void}\ m\_callable\_flash\_stroage\_load\_memory(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00098\ stat\_m\ m\_callable\_flash\_flag\_special\_value\_str(\textcolor{keywordtype}{char}\ *in\_flag,\ \textcolor{keywordtype}{char}\ *\ inout\_vue\ ,\ \textcolor{keywordtype}{int}\ in\_status);}
+\DoxyCodeLine{00107\ stat\_m\ m\_callable\_flash\_flag\_special\_value\_u32(\textcolor{keywordtype}{char}\ *in\_flag,\ uint32\_t\ *\ inout\_vue\ ,\ \textcolor{keywordtype}{int}\ in\_status);}
+\DoxyCodeLine{00108\ }
+\DoxyCodeLine{00109\ }
+\DoxyCodeLine{00110\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00111\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00112\ \textcolor{comment}{/********************Net\ connect************************/}}
+\DoxyCodeLine{00113\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00114\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00115\ }
+\DoxyCodeLine{00123\ stat\_m\ m\_ext\_net\_target\_addr(\textcolor{keywordtype}{char}\ *in\_addr,\ \textcolor{keywordtype}{int}\ *in\_port);}
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00132\ stat\_m\ m\_ext\_net\_link\_connection(\textcolor{keywordtype}{char}\ *in\_addr,\ \textcolor{keywordtype}{int}\ in\_port);}
+\DoxyCodeLine{00133\ }
+\DoxyCodeLine{00141\ stat\_m\ \ m\_ext\_net\_link\_connection\_tx(\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *\ in\_tx\ ,\ \textcolor{keywordtype}{int}\ in\_len);}
+\DoxyCodeLine{00149\ stat\_m\ m\_ext\_net\_link\_receive\_data(\textcolor{keywordtype}{char}\ *out\_data\ ,\ \textcolor{keywordtype}{int}\ len);}
+\DoxyCodeLine{00150\ }
+\DoxyCodeLine{00155\ \textcolor{keywordtype}{void}\ m\_callable\_net\_connect\_server\_enable(\textcolor{keywordtype}{void}\ );}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00169\ stat\_m\ m\_callable\_spec\_scene\_net\_connext\_tx(\textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *in\_tx\_data,\ \textcolor{keywordtype}{int}\ in\_tx\_len,\ uint64\_t\ in\_spec\_cmd,\ uint64\_t\ in\_spec\_cmd\_flag,\ uint64\_t\ in\_timeout,\ \textcolor{keywordtype}{bool}\ in\_tx\_queue);}
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00173\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00174\ \textcolor{comment}{/**********************WIfi******************************/}}
+\DoxyCodeLine{00175\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00176\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00183\ stat\_m\ m\_callable\_wifi\_auto\_connect(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00186\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00187\ \textcolor{comment}{/**********************Event\ Loop***********************/}}
+\DoxyCodeLine{00188\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00189\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00195\ \textcolor{keywordtype}{void}\ m\_callable\_event\_group\_loop\_enable(\textcolor{keywordtype}{void}\ (*func)(\textcolor{keywordtype}{int},\ \textcolor{keywordtype}{void}\ *));}
+\DoxyCodeLine{00203\ stat\_m\ m\_callable\_event\_post(\textcolor{keywordtype}{int}\ event\_id,\ \textcolor{keywordtype}{void}\ *in\_data);}
+\DoxyCodeLine{00204\ }
+\DoxyCodeLine{00205\ }
+\DoxyCodeLine{00206\ }
+\DoxyCodeLine{00207\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00208\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00209\ \textcolor{comment}{/********************Global\ State***********************/}}
+\DoxyCodeLine{00210\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00211\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00218\ \textcolor{keywordtype}{void}\ put\_in(uint16\_t\ defin,\ stat\_m\ stat);}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00227\ stat\_m\ info\_check(uint8\_t\ left,\ uint8\_t\ right);}
+\DoxyCodeLine{00228\ }
+\DoxyCodeLine{00235\ stat\_m\ out\_check(uint8\_t\ vue);}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00238\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00239\ \textcolor{comment}{/**********************OTA******************************/}}
+\DoxyCodeLine{00240\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00241\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00249\ stat\_m\ \ m\_ext\_ota\_set\_url(\textcolor{keywordtype}{char}\ *\ in\_url);}
+\DoxyCodeLine{00250\ }
+\DoxyCodeLine{00256\ stat\_m\ m\_callable\_ota\_start(\textcolor{keywordtype}{char}\ *\ in\_url);}
+\DoxyCodeLine{00257\ }
+\DoxyCodeLine{00263\ stat\_m\ m\_ext\_ota\_prepare(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00264\ }
+\DoxyCodeLine{00270\ stat\_m\ m\_ext\_ota\_start(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00271\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00272\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00273\ \textcolor{comment}{/**********************Http*****************************/}}
+\DoxyCodeLine{00274\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00275\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00276\ }
+\DoxyCodeLine{00282\ \textcolor{keywordtype}{int}\ \ m\_ext\_http\_read\_data(\ \ \textcolor{keywordtype}{char}\ *\ out\_data\ ,\textcolor{keywordtype}{int}\ \ in\_len);}
+\DoxyCodeLine{00283\ }
+\DoxyCodeLine{00289\ stat\_m\ m\_ext\_http\_openlink(\textcolor{keywordtype}{char}\ *\ in\_url\ ,\ \ \textcolor{keywordtype}{char}\ *\ in\_head\ ,\textcolor{keywordtype}{char}\ *\ in\_vue\ ,\ uint64\_t\ \ *online\_ota\_range\_sum,uint64\_t\ in\_timeout\_ms);}
+\DoxyCodeLine{00290\ }
+\DoxyCodeLine{00291\ }
+\DoxyCodeLine{00293\ }
+\DoxyCodeLine{00300\ stat\_m\ m\_splan\_add\_item(m\_schedule\_info\ *in\_info);}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00303\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00304\ \textcolor{comment}{/*******************Config\ Net**************************/}}
+\DoxyCodeLine{00305\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00306\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00307\ }
+\DoxyCodeLine{00309\ }
+\DoxyCodeLine{00314\ stat\_m\ m\_callable\_config\_net\_to\_udp\_connect\_enable(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00315\ }
+\DoxyCodeLine{00321\ stat\_m\ m\_callable\_config\_net\_to\_udp\_connect\_receive\_handle(\textcolor{keywordtype}{char}\ *in\_data,\ \textcolor{keywordtype}{int}\ in\_len);}
+\DoxyCodeLine{00322\ }
+\DoxyCodeLine{00323\ }
+\DoxyCodeLine{00324\ stat\_m\ m\_ext\_config\_net\_connect\_resp(\textcolor{keywordtype}{char}\ *in\_resp)\ ;}
+\DoxyCodeLine{00330\ stat\_m\ m\_ext\_config\_net\_to\_udp\_connect\_create(\textcolor{keywordtype}{int}\ in\_port);}
+\DoxyCodeLine{00331\ }
+\DoxyCodeLine{00332\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00333\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00334\ \textcolor{comment}{/*******************System******************************/}}
+\DoxyCodeLine{00335\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00336\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00342\ \textcolor{keywordtype}{void}\ mDelay\_ms(uint32\_t\ in\_ms);}
+\DoxyCodeLine{00343\ }
+\DoxyCodeLine{00354\ \textcolor{keywordtype}{void}\ mTaskCreate(\textcolor{keywordtype}{void}\ (*fun)(\textcolor{keywordtype}{void}\ *)\ ,\ \textcolor{keyword}{const}\ \textcolor{keywordtype}{char}\ *pcName\ ,\textcolor{keyword}{const}\ uint32\_t\ stack\_depth\ ,\ \textcolor{keywordtype}{void}\ *\textcolor{keyword}{const}\ pvParameters\ ,\textcolor{keywordtype}{int}\ uxPriority\ ,\ \textcolor{keywordtype}{void}\ *pvCreatedTask);}
+\DoxyCodeLine{00360\ \textcolor{keywordtype}{void}\ mReboot(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00367\ \textcolor{keywordtype}{void}\ mEventGroupSetBits(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ thisBit);}
+\DoxyCodeLine{00368\ }
+\DoxyCodeLine{00374\ \textcolor{keywordtype}{int}\ mEventGroupWaitBits(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ thisBit\ ,\textcolor{keywordtype}{bool}\ waitForAllBits\ );}
+\DoxyCodeLine{00375\ }
+\DoxyCodeLine{00381\ \textcolor{keywordtype}{void}\ mEventGroupReSetBits(\textcolor{keyword}{const}\ \textcolor{keywordtype}{int}\ thisBit);}
+\DoxyCodeLine{00382\ }
+\DoxyCodeLine{00383\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00384\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00385\ \textcolor{comment}{/******************State\ machine************************/}}
+\DoxyCodeLine{00386\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00387\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00388\ }
+\DoxyCodeLine{00396\ stat\_m\ m\_callable\_schedule\_fsm\_init(m\_fsm\_event\_handle\_fun\ in\_trig\_acti\_fun\_handle);}
+\DoxyCodeLine{00404\ stat\_m\ m\_callable\_schedule\_fsm\_post\_event(m\_fsm\_events\ evt,\ \textcolor{keywordtype}{void}\ *pdata\ ,uint64\_t);}
+\DoxyCodeLine{00405\ }
+\DoxyCodeLine{00406\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00407\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00408\ \textcolor{comment}{/******************\ Schedule\ ***************************/}}
+\DoxyCodeLine{00409\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00410\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00411\ }
+\DoxyCodeLine{00419\ stat\_m\ \ m\_ext\_eigenfunction\_prepare(m\_watering\_schedule*in\_obj,\ \textcolor{keywordtype}{int}\ in\_trigger\_timing);}
+\DoxyCodeLine{00420\ }
+\DoxyCodeLine{00428\ stat\_m\ m\_ext\_eigenfunction\_should\_run(m\_watering\_schedule*in\_obj,\ \textcolor{keywordtype}{int}\ in\_trigger\_timing);}
+\DoxyCodeLine{00429\ }
+\DoxyCodeLine{00437\ stat\_m\ m\_ext\_eigenfunction\_should\_skip(m\_watering\_schedule\ *in\_wobj,\ \textcolor{keywordtype}{int}\ in\_trigger\_timing);}
+\DoxyCodeLine{00438\ }
+\DoxyCodeLine{00446\ stat\_m\ m\_ext\_eigenfunction\_program\_conflict\_processing(m\_watering\_schedule\ *in\_wobj,\ \textcolor{keywordtype}{int}\ in\_trigger\_timing);}
+\DoxyCodeLine{00447\ }
+\DoxyCodeLine{00454\ stat\_m\ m\_callable\_schedule\_virtual\_init(m\_watering\_schedule\ *in\_info);}
+\DoxyCodeLine{00461\ stat\_m\ m\_callable\_schedule\_list\_add(m\_watering\_schedule\ *mwc\_d);}
+\DoxyCodeLine{00462\ \textcolor{comment}{//\ /**}}
+\DoxyCodeLine{00463\ \textcolor{comment}{//\ \ *\ @brief\ 计划从列表移除全部}}
+\DoxyCodeLine{00464\ \textcolor{comment}{//\ \ *\ }}
+\DoxyCodeLine{00465\ \textcolor{comment}{//\ \ *\ @param\ in\_uid\ 计划id}}
+\DoxyCodeLine{00466\ \textcolor{comment}{//\ \ *\ @return\ stat\_m\ }}
+\DoxyCodeLine{00467\ \textcolor{comment}{//\ \ */}}
+\DoxyCodeLine{00468\ \textcolor{comment}{//\ stat\_m\ \ m\_callable\_schedule\_list\_remove\_all(void);}}
+\DoxyCodeLine{00475\ \textcolor{comment}{}stat\_m\ \ m\_callable\_schedule\_list\_remove(uint64\_t\ in\_uid);}
+\DoxyCodeLine{00482\ stat\_m\ m\_callable\_schedule\_running\_buf\_clear(m\_watering\_schedule\ *wobj);}
+\DoxyCodeLine{00483\ }
+\DoxyCodeLine{00491\ stat\_m\ m\_ext\_schedule\_add(m\_watering\_schedule\ *in\_info,\ \textcolor{keywordtype}{bool}\ in\_enable);}
+\DoxyCodeLine{00498\ stat\_m\ m\_ext\_schedule\_remove(uint64\_t\ in\_id);}
+\DoxyCodeLine{00499\ }
+\DoxyCodeLine{00505\ stat\_m\ m\_ext\_device\_time\_cb(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00506\ }
+\DoxyCodeLine{00513\ stat\_m\ m\_callable\_schedule\_disable(uint64\_t\ in\_obj\_id);}
+\DoxyCodeLine{00520\ stat\_m\ m\_callable\_schedule\_enable(uint64\_t\ in\_obj\_id);}
+\DoxyCodeLine{00521\ }
+\DoxyCodeLine{00522\ }
+\DoxyCodeLine{00523\ stat\_m\ m\_callable\_schedule\_flag\_disable(uint64\_t\ in\_obj\_id);}
+\DoxyCodeLine{00524\ }
+\DoxyCodeLine{00525\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00526\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00527\ \textcolor{comment}{/******************\ Key\ ********************************/}}
+\DoxyCodeLine{00528\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00529\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00535\ \textcolor{keywordtype}{void}\ m\_btn\_action(\textcolor{keywordtype}{int}\ in\_btn\_id);}
+\DoxyCodeLine{00536\ }
+\DoxyCodeLine{00537\ \textcolor{keywordtype}{void}\ m\_callable\_light\_auto\_idle(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00538\ }
+\DoxyCodeLine{00540\ \textcolor{keywordtype}{void}\ m\_callable\_contr\_watering(uint8\_t\ zone,\ \textcolor{keywordtype}{bool}\ opf);}
+\DoxyCodeLine{00541\ }
+\DoxyCodeLine{00542\ \textcolor{keywordtype}{void}\ m\_schedule\_fsm\_enable(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00543\ }
+\DoxyCodeLine{00544\ }
+\DoxyCodeLine{00553\ stat\_m\ m\_ext\_btn\_handle\_start\_key(\textcolor{keywordtype}{int}\ pzone,\ uint64\_t\ ptime,\ \textcolor{keywordtype}{bool}\ preState);}
+\DoxyCodeLine{00561\ stat\_m\ m\_ext\_btn\_handle\_stop\_key(\textcolor{keywordtype}{int}\ pzone,\ uint64\_t\ ptime);}
+\DoxyCodeLine{00562\ }
+\DoxyCodeLine{00563\ }
+\DoxyCodeLine{00564\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00565\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00566\ \textcolor{comment}{/******************\ Fsat\ Run\ ***************************/}}
+\DoxyCodeLine{00567\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00568\ \textcolor{comment}{/*******************************************************/}}
+\DoxyCodeLine{00582\ stat\_m\ m\_ext\_fast\_run\_event\_noticy(\textcolor{keywordtype}{int}\ cmd,\ uint64\_t\ in\_id,\ uint8\_t\ in\_chid,\ uint32\_t\ in\_shouldtime,\ uint64\_t\ in2\_id,\ uint8\_t\ in2\_chid,\ uint32\_t\ in2\_shouldtime,\ uint64\_t\ auutime);}
+\DoxyCodeLine{00590\ stat\_m\ m\_ext\_fast\_run\_action(uint8\_t\ in\_ch,\ \textcolor{keywordtype}{bool}\ on\_off);}
+\DoxyCodeLine{00591\ }
+\DoxyCodeLine{00599\ stat\_m\ m\_ext\_fast\_run\_create(\textcolor{keywordtype}{char}\ *in\_fastsrc,\ \textcolor{keywordtype}{int}\ in\_len);}
+\DoxyCodeLine{00600\ }
+\DoxyCodeLine{00608\ stat\_m\ m\_callable\_fastRunInit(\textcolor{keywordtype}{char}\ *in\_fastsrc,\ \textcolor{keywordtype}{size\_t}\ in\_len);}
+\DoxyCodeLine{00609\ }
+\DoxyCodeLine{00610\ }
+\DoxyCodeLine{00611\ }
+\DoxyCodeLine{00612\ }
+\DoxyCodeLine{00620\ \textcolor{keywordtype}{void}\ m\_callable\_recove\_schedule\_comple(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00621\ }
+\DoxyCodeLine{00622\ }
+\DoxyCodeLine{00623\ }
+\DoxyCodeLine{00631\ stat\_m\ m\_callable\_properties\_zone\_global\_load(\ \textcolor{keywordtype}{void});}
+\DoxyCodeLine{00632\ }
+\DoxyCodeLine{00639\ stat\_m\ m\_callable\_properties\_zone\_global\_disable(\ uint8\_t\ in\_pc);}
+\DoxyCodeLine{00646\ stat\_m\ m\_callable\_properties\_zone\_global\_enable(\ uint8\_t\ in\_pc);}
+\DoxyCodeLine{00647\ }
+\DoxyCodeLine{00648\ }
+\DoxyCodeLine{00649\ }
+\DoxyCodeLine{00650\ }
+\DoxyCodeLine{00651\ stat\_m\ m\_callable\_global\_zone\_init(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00659\ stat\_m\ m\_callable\_zone\_global\_next(m\_chan\_managec\ *\ in\_mg\ ,\ uint8\_t\ *out\_pc,\ uint32\_t\ in\_sack,\ uint16\_t\ in\_max\_zone\ ,\ uint64\_t\ pre\_timesp);}
+\DoxyCodeLine{00660\ }
+\DoxyCodeLine{00661\ stat\_m\ m\_callable\_zone\_global\_available(m\_chan\_managec\ *\ in\_mg\ ,\ uint8\_t\ *out\_pc,\ uint32\_t\ in\_sack,\ uint16\_t\ in\_max\_zone\ ,\ uint64\_t\ pre\_timesp);}
+\DoxyCodeLine{00662\ }
+\DoxyCodeLine{00664\ stat\_m\ m\_callable\_zone\_have\_next(m\_watering\_schedule\ *mobj,uint64\_t\ present\_timesp);}
+\DoxyCodeLine{00665\ }
+\DoxyCodeLine{00666\ }
+\DoxyCodeLine{00667\ }
+\DoxyCodeLine{00668\ }
+\DoxyCodeLine{00669\ stat\_m\ m\_callable\_smartschedule\_config(\textcolor{keywordtype}{char}\ *\ in\_src\ ,\ uint64\_t\ \ in\_in\_skip\_flag);}
+\DoxyCodeLine{00670\ }
+\DoxyCodeLine{00671\ }
+\DoxyCodeLine{00672\ }
+\DoxyCodeLine{00673\ }
+\DoxyCodeLine{00674\ \textcolor{keywordtype}{void}\ m\_rgb\_all\_clear(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00675\ }
+\DoxyCodeLine{00676\ }
+\DoxyCodeLine{00677\ }
+\DoxyCodeLine{00678\ \textcolor{keywordtype}{void}\ clearOneChannel(uint8\_t\ channel);}
+\DoxyCodeLine{00679\ \textcolor{keywordtype}{void}\ showOneChannel(uint8\_t\ channel);}
+\DoxyCodeLine{00680\ }
+\DoxyCodeLine{00681\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ \_\_FSET\_LIB\_\_H\ */}\textcolor{preprocessor}{}}
+
+\end{DoxyCode}

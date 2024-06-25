@@ -1,0 +1,28 @@
+\hypertarget{m_callable_spec_scene_net_connext_tx-example}{}\doxysection{m\+\_\+callable\+\_\+spec\+\_\+scene\+\_\+net\+\_\+connext\+\_\+tx}
+发送指令到服务器
+
+发送指令到服务器
+
+
+\begin{DoxyParams}{Parameters}
+{\em in\+\_\+tx\+\_\+data} & 数据内容，这个是需要包含【\+CMD,】\#\# \\
+\hline
+{\em in\+\_\+tx\+\_\+len} & 长度 \\
+\hline
+{\em in\+\_\+spec\+\_\+cmd} & 单独的指令int格式 \\
+\hline
+{\em in\+\_\+spec\+\_\+cmd\+\_\+flag} & 这个忘记了 \\
+\hline
+{\em in\+\_\+timeout} & 指令发送超时。不加入队列，该参数无效 \\
+\hline
+{\em in\+\_\+tx\+\_\+queue} & 是否加入队列发送 (cmd\+\_\+data, cmd\+\_\+data\+\_\+len, cmd, cpcmd, 0, true); \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+stat\+\_\+m
+\end{DoxyReturn}
+
+\begin{DoxyCodeInclude}{0}
+
+\end{DoxyCodeInclude}
+ 

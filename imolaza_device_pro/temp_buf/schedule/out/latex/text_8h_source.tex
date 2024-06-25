@@ -1,0 +1,312 @@
+\hypertarget{text_8h_source}{}\doxysection{text.\+h}
+\label{text_8h_source}\index{core/utils/text.h@{core/utils/text.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ }
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#ifndef\ \_\_TEXT\_H}}
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#define\ \_\_TEXT\_H}}
+\DoxyCodeLine{00004\ }
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{comment}{/*\ WIFI\ */}}
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ AP\_CHINA\_HCTJ\_SSID\ "{}Intell"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ AP\_CHINA\_HCTJ\_PASSWORD\ "{}123123123"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ STA\_CHINA\_HCTJ\_SSID\ "{}HUAWEI\_B316\_AB84"{}}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#define\ STA\_CHINA\_HCTJ\_PASSWORD\ "{}sunnykong5555sdo"{}}}
+\DoxyCodeLine{00012\ }
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#define\ SPTES\ "{}8cce4e9afcb8"{}}}
+\DoxyCodeLine{00014\ \textcolor{preprocessor}{\#define\ SP1\ "{}a4e57cd69884"{}}}
+\DoxyCodeLine{00015\ \textcolor{preprocessor}{\#define\ SP2\ "{}a4e57cd6a0c4"{}}}
+\DoxyCodeLine{00016\ \textcolor{preprocessor}{\#define\ SP3\ "{}8cce4e9ad1b0"{}}}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ \textcolor{preprocessor}{\#define\ SOCK\_TIMEOUT\ 5}}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \textcolor{comment}{/*\ SERVER\ TRANSINFO\ */}}
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#define\ HOME\_SSID\ "{}HOME\_SSID"{}}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ SET\_DEVICE\_SENSOR\ 8}}
+\DoxyCodeLine{00023\ \textcolor{preprocessor}{\#define\ QUERY\_DEVICE\_STATE\ 9}}
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ ID\_HOME\_SSID\ 10}}
+\DoxyCodeLine{00025\ \textcolor{preprocessor}{\#define\ ID\_DEVICE\_CNT\ 11}}
+\DoxyCodeLine{00026\ \textcolor{comment}{//\ updata\ wifi\ info}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#define\ UPDATE\_WIFI\_INFO\ "{}DO\_UPDATE\_WIFI\_INFO"{}}}
+\DoxyCodeLine{00028\ \textcolor{preprocessor}{\#define\ ID\_UPDATE\_WIFI\_INFO\ 15}}
+\DoxyCodeLine{00029\ \textcolor{comment}{//\ time}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ SYN\_TIME\_RESP\ "{}SYN\_TIME\_RESP"{}}}
+\DoxyCodeLine{00031\ \textcolor{preprocessor}{\#define\ ID\_SYN\_TIME\_RESP\ 12}}
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#define\ SYN\_WEATHER\_INFO\ "{}SYN\_WEATHER\_INFO"{}}}
+\DoxyCodeLine{00033\ \textcolor{preprocessor}{\#define\ ID\_SYN\_WEATHER\_INFO\ 0x22}}
+\DoxyCodeLine{00034\ \textcolor{preprocessor}{\#define\ GET\_SUN\_INFO\ "{}SYN\_SUN\_INFO"{}}}
+\DoxyCodeLine{00035\ \textcolor{preprocessor}{\#define\ ID\_SYN\_SUN\_INFO\ 0x23}}
+\DoxyCodeLine{00036\ \textcolor{preprocessor}{\#define\ GET\_DEVICE\_TYPE\ "{}GET\_DEVICE\_TYPE"{}}}
+\DoxyCodeLine{00037\ \textcolor{preprocessor}{\#define\ ID\_GET\_DEVICE\_TYPE\ 18}}
+\DoxyCodeLine{00038\ \textcolor{preprocessor}{\#define\ DEVICE\_TYPE\ "{}DEVICE\_TYPE"{}}}
+\DoxyCodeLine{00039\ \textcolor{preprocessor}{\#define\ DEV\_REQ\_OTAUPDATE\ 18}}
+\DoxyCodeLine{00040\ \textcolor{preprocessor}{\#define\ DEVICE\_PREPARE\_OTA\_UPDATE\ 19}}
+\DoxyCodeLine{00041\ \textcolor{comment}{//\ \#define\ DEVICE\_PREPARE\_OTA\_UPDATE\ 16}}
+\DoxyCodeLine{00042\ \textcolor{preprocessor}{\#define\ ID\_DEVICE\_TYPE\ 18}}
+\DoxyCodeLine{00043\ \textcolor{preprocessor}{\#define\ SSID\_WIFI\ "{}ssid\_wifi0"{}}}
+\DoxyCodeLine{00044\ \textcolor{preprocessor}{\#define\ PSW\_WIFI\ "{}psw\_wifi0"{}}}
+\DoxyCodeLine{00045\ \textcolor{comment}{/*\ HTTP/HTTPS\ */}}
+\DoxyCodeLine{00046\ \textcolor{comment}{/*\ FAST\ RUN\ */}}
+\DoxyCodeLine{00047\ \textcolor{preprocessor}{\#define\ FAST\_RUN\ "{}QUICK\_CHANNEL\_START"{}}}
+\DoxyCodeLine{00048\ \textcolor{preprocessor}{\#define\ ID\_FAST\_RUN\ 40}}
+\DoxyCodeLine{00049\ \textcolor{preprocessor}{\#define\ FAST\_RUN\_STOP\ "{}QUICK\_CHANNEL\_DELETE"{}}}
+\DoxyCodeLine{00050\ \textcolor{preprocessor}{\#define\ ID\_FAST\_RUN\_NEXT\ 43}}
+\DoxyCodeLine{00051\ \textcolor{preprocessor}{\#define\ ID\_FAST\_RUN\_PRE\ 39}}
+\DoxyCodeLine{00052\ \textcolor{preprocessor}{\#define\ RESP\_FAST\_RUN\ "{}QUICK\_CHANNEL\_START"{}}}
+\DoxyCodeLine{00053\ \textcolor{preprocessor}{\#define\ ID\_FAST\_RUN\_COMPLETE\ 42}}
+\DoxyCodeLine{00054\ \textcolor{preprocessor}{\#define\ FAST\_RUN\_COMPLETE\ "{}QUICK\_CHANNEL\_COMPLETE"{}}}
+\DoxyCodeLine{00055\ }
+\DoxyCodeLine{00056\ \textcolor{comment}{/*\ PLAN\ */}}
+\DoxyCodeLine{00057\ \textcolor{preprocessor}{\#define\ ADD\_PLAN\_TO\_DEVICE\ "{}SCH\_ADD"{}}}
+\DoxyCodeLine{00058\ \textcolor{preprocessor}{\#define\ ID\_ADD\_PLAN\_TO\_DEVICE\ 20}}
+\DoxyCodeLine{00059\ \textcolor{preprocessor}{\#define\ RESP\_ADD\_PLAN\_TO\_DEVICE\ "{}SCH\_ADD\_REP"{}}}
+\DoxyCodeLine{00060\ \textcolor{preprocessor}{\#define\ ID\_RESP\_ADD\_PLAN\_TO\_DEVICE\ 21\ }}
+\DoxyCodeLine{00061\ \textcolor{preprocessor}{\#define\ DELETE\_SCHDULES\ "{}SCH\_DELETE"{}}}
+\DoxyCodeLine{00062\ \textcolor{preprocessor}{\#define\ ID\_DELETE\_SCHDULES\ 22}}
+\DoxyCodeLine{00063\ \textcolor{preprocessor}{\#define\ RESP\_DELETE\_SCHDULES\ "{}SCH\_DELETE\_REP"{}}}
+\DoxyCodeLine{00064\ \textcolor{preprocessor}{\#define\ ID\_RESP\_DELETE\_SCHDULES\ 23}}
+\DoxyCodeLine{00065\ \textcolor{preprocessor}{\#define\ SCH\_WATER\_START\ "{}SCH\_WATER\_START"{}}}
+\DoxyCodeLine{00066\ \textcolor{preprocessor}{\#define\ ID\_SCH\_WATER\_START\ 24}}
+\DoxyCodeLine{00067\ \textcolor{preprocessor}{\#define\ SCH\_WATER\_EDN\ "{}SCH\_WATER\_END"{}}}
+\DoxyCodeLine{00068\ \textcolor{preprocessor}{\#define\ ID\_SCH\_WATER\_EDN\ 25}}
+\DoxyCodeLine{00069\ \textcolor{preprocessor}{\#define\ SCH\_RAIN\_BREAK\ "{}SCH\_RAIN\_BREAK"{}}}
+\DoxyCodeLine{00070\ \textcolor{preprocessor}{\#define\ ID\_SCH\_RAIN\_BREAK\ 30}}
+\DoxyCodeLine{00071\ \textcolor{preprocessor}{\#define\ SCH\_WIND\_BREAK\ "{}SCH\_WIND\_BREAK"{}}}
+\DoxyCodeLine{00072\ \textcolor{preprocessor}{\#define\ ID\_SCH\_WIND\_BREAK\ 31}}
+\DoxyCodeLine{00073\ \textcolor{preprocessor}{\#define\ SCH\_FREEZ\_BREAK\ "{}SCH\_FREEZ\_BREAK"{}}}
+\DoxyCodeLine{00074\ \textcolor{preprocessor}{\#define\ ID\_SCH\_FREEZ\_BREAK\ 32}}
+\DoxyCodeLine{00075\ \textcolor{preprocessor}{\#define\ SYN\_SCH\_CHANNEL\_TIME\ "{}SYN\_SCH\_CHANNEL\_TIME"{}}}
+\DoxyCodeLine{00076\ \textcolor{preprocessor}{\#define\ ID\_SYN\_SCH\_CHANNEL\_TIME\ 28}}
+\DoxyCodeLine{00077\ \textcolor{comment}{//\ \ \ plan\ start\ zone}}
+\DoxyCodeLine{00078\ \textcolor{preprocessor}{\#define\ SCH\_CHANNEL\_WATER\_START\ "{}SCH\_CHANNEL\_WATER\_START"{}}}
+\DoxyCodeLine{00079\ \textcolor{preprocessor}{\#define\ ID\_SCH\_CHANNEL\_WATER\_START\ 26}}
+\DoxyCodeLine{00080\ \textcolor{preprocessor}{\#define\ SCH\_CHANNEL\_WATER\_END\ "{}SCH\_CHANNEL\_WATER\_END"{}}}
+\DoxyCodeLine{00081\ \textcolor{preprocessor}{\#define\ ID\_SCH\_CHANNEL\_WATER\_END\ 27}}
+\DoxyCodeLine{00082\ \textcolor{comment}{//\ \#define\ RESP\_SCH\_WATER\_START\ "{}SCH\_WATER\_START"{}}}
+\DoxyCodeLine{00083\ \textcolor{comment}{//\ \#define\ RESP\_SCH\_WATER\_EDN\ "{}SCH\_WATER\_END"{}}}
+\DoxyCodeLine{00084\ }
+\DoxyCodeLine{00085\ \textcolor{preprocessor}{\#define\ ID\_MANUAL\_CHANNEL\_START\ 48}}
+\DoxyCodeLine{00086\ \textcolor{preprocessor}{\#define\ ID\_MENUAL\_CHANNEL\_COMPLETE\ 49}}
+\DoxyCodeLine{00087\ \textcolor{preprocessor}{\#define\ DEVICE\_OFFLINE\_KEY\_WATERING\_START\ 85}}
+\DoxyCodeLine{00088\ }
+\DoxyCodeLine{00089\ \textcolor{preprocessor}{\#define\ ZONE\_WATER\_TIME\ "{}ZONE\_WATER\_TIME"{}}}
+\DoxyCodeLine{00090\ \textcolor{preprocessor}{\#define\ ID\_ZONE\_WATER\_TIME\ 29}}
+\DoxyCodeLine{00091\ \textcolor{comment}{/*\ SENSOR\ */}}
+\DoxyCodeLine{00092\ \textcolor{preprocessor}{\#define\ SENSOR\_ACHIEVED\ "{}SENSOR\_ACHIEVED"{}}}
+\DoxyCodeLine{00093\ \textcolor{preprocessor}{\#define\ ID\_SENSOR\_ACHIEVED\ 34}}
+\DoxyCodeLine{00094\ \textcolor{preprocessor}{\#define\ SENSOR\_DISCONNECT\ "{}SENSOR\_DISCONNECT"{}}}
+\DoxyCodeLine{00095\ \textcolor{preprocessor}{\#define\ ID\_SENSOR\_DISCONNECT\ 36}}
+\DoxyCodeLine{00096\ \textcolor{preprocessor}{\#define\ RESP\_SENSER\_ACHIVED\ "{}SENSER\_ACHIVED"{}}}
+\DoxyCodeLine{00097\ \textcolor{preprocessor}{\#define\ ID\_RESP\_SENSER\_ACHIVED\ 34}}
+\DoxyCodeLine{00098\ \textcolor{comment}{/*\ TEST\ */}}
+\DoxyCodeLine{00099\ \textcolor{preprocessor}{\#define\ DEVICE\_INFO\_SCH\_LIST\ "{}DEVICE\_INFO\_SCH\_LIST"{}}}
+\DoxyCodeLine{00100\ \textcolor{preprocessor}{\#define\ ID\_DEVICE\_INFO\_SCH\_LIST\ 57}}
+\DoxyCodeLine{00101\ \textcolor{preprocessor}{\#define\ SCH\_DEBUG\_TIME\ "{}DEVICE\_INFO\_DATE\_CHANGE"{}}}
+\DoxyCodeLine{00102\ \textcolor{preprocessor}{\#define\ ID\_SCH\_DEBUG\_TIME\ 54}}
+\DoxyCodeLine{00103\ \textcolor{comment}{//\ \#define\ UP\_DATA\ "{}OTA\_UPDATE"{}}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ \#define\ ID\_UP\_DATA\ 0x62}}
+\DoxyCodeLine{00105\ \textcolor{preprocessor}{\#define\ DEVICE\_MODE\_DEBUG\ "{}DEVICE\_MODE\_DEBUG"{}}}
+\DoxyCodeLine{00106\ \textcolor{preprocessor}{\#define\ ID\_DEVICE\_MODE\_DEBUG\ 59}}
+\DoxyCodeLine{00107\ \textcolor{comment}{//\ key\ imitate}}
+\DoxyCodeLine{00108\ \textcolor{preprocessor}{\#define\ DEVICE\_IMITATE\_KEY\ "{}DEVICE\_IMITATE\_KEY"{}}}
+\DoxyCodeLine{00109\ \textcolor{preprocessor}{\#define\ ID\_DEVICE\_IMITATE\_KEY\ 58}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{comment}{/*\ DEVICE\ FUN\ AND\ INFO\ QUERY*/}}
+\DoxyCodeLine{00112\ \textcolor{preprocessor}{\#define\ DEVICE\_CNT\ "{}DEVICE\_CNT"{}}}
+\DoxyCodeLine{00113\ \textcolor{preprocessor}{\#define\ DEVICE\_INFO\_CLEAN\ "{}DEVICE\_INFO\_CLEAN"{}}}
+\DoxyCodeLine{00114\ \textcolor{preprocessor}{\#define\ ID\_DEVICE\_INFO\_CLEAN\ 52}}
+\DoxyCodeLine{00115\ \textcolor{preprocessor}{\#define\ DEVICE\_INFO\_QUERY\ "{}DEVICE\_INFO\_QUERY"{}}}
+\DoxyCodeLine{00116\ \textcolor{preprocessor}{\#define\ ID\_DEVICE\_INFO\_QUERY\ 50}}
+\DoxyCodeLine{00117\ \textcolor{preprocessor}{\#define\ DEVICE\_FUNCTION\_LIGHT\_ON\ "{}DEVICE\_FUNCTION\_LIGHT\_ON"{}}}
+\DoxyCodeLine{00118\ \textcolor{preprocessor}{\#define\ ID\_DEVICE\_FUNCTION\_LIGHT\_ON\ 56}}
+\DoxyCodeLine{00119\ \textcolor{preprocessor}{\#define\ DEVICE\_FUNCTION\_LIGHT\_OFF\ "{}DEVICE\_FUNCTION\_LIGHT\_OFF"{}}}
+\DoxyCodeLine{00120\ \textcolor{preprocessor}{\#define\ ID\_DEVICE\_FUNCTION\_LIGHT\_OFF\ 55}}
+\DoxyCodeLine{00121\ \textcolor{comment}{/*\ NVS\ */}}
+\DoxyCodeLine{00122\ \textcolor{preprocessor}{\#define\ TEMP\_PLAN\_RUN\_TIME\ "{}pl\_run\_tim"{}}}
+\DoxyCodeLine{00123\ \textcolor{preprocessor}{\#define\ TIME\ "{}time"{}}}
+\DoxyCodeLine{00124\ \textcolor{preprocessor}{\#define\ PAGE1\ "{}pag1"{}}}
+\DoxyCodeLine{00125\ \textcolor{preprocessor}{\#define\ PAGE2\ "{}pag2"{}}}
+\DoxyCodeLine{00126\ \textcolor{preprocessor}{\#define\ VERSION\ "{}version"{}}}
+\DoxyCodeLine{00127\ \textcolor{preprocessor}{\#define\ NVS\_KEY\_SN\ "{}*SN"{}}}
+\DoxyCodeLine{00128\ \textcolor{preprocessor}{\#define\ NVS\_KEY\_EN\_KEY\ "{}*encrKey"{}}}
+\DoxyCodeLine{00129\ \textcolor{preprocessor}{\#define\ STARTUP\ "{}STARTUP"{}}}
+\DoxyCodeLine{00130\ \textcolor{preprocessor}{\#define\ PLAN\_NUM\ "{}PL\_NUM"{}}}
+\DoxyCodeLine{00131\ \textcolor{preprocessor}{\#define\ PLAN\_LIST\ "{}PL\_LIST"{}}}
+\DoxyCodeLine{00132\ \textcolor{preprocessor}{\#define\ RESET\_SW\ "{}rtsw"{}}}
+\DoxyCodeLine{00133\ \textcolor{preprocessor}{\#define\ RESET\_HW\ "{}rthw"{}}}
+\DoxyCodeLine{00134\ \textcolor{preprocessor}{\#define\ SERVER\_IPADDR\ "{}serid"{}}}
+\DoxyCodeLine{00135\ }
+\DoxyCodeLine{00136\ \textcolor{preprocessor}{\#define\ DEFINE\_ESP\_RST\_UNKNOWN\ "{}Resreset\ reason\ could\ not\ be\ determined"{}}}
+\DoxyCodeLine{00137\ \textcolor{preprocessor}{\#define\ DEFINE\_ESP\_RST\_POWERON\ "{}Reset\ due\ to\ a\ power\ event."{}}}
+\DoxyCodeLine{00138\ \textcolor{preprocessor}{\#define\ DEFINE\_ESP\_RST\_SW\ "{}Due\ to\ software\ esp\_restart"{}}}
+\DoxyCodeLine{00139\ \textcolor{preprocessor}{\#define\ DEFINE\_ESP\_RST\_PANIC\ "{}Software\ reset\ due\ to\ abnormality/panic"{}}}
+\DoxyCodeLine{00140\ \textcolor{preprocessor}{\#define\ DEFINE\_ESP\_RST\_INT\_WDT\ "{}Reset\ due\ to\ interrupt\ watchdog"{}}}
+\DoxyCodeLine{00141\ \textcolor{preprocessor}{\#define\ DEFINE\_ESP\_RST\_TASK\_WDT\ "{}Reset\ due\ to\ task\ watchdog"{}}}
+\DoxyCodeLine{00142\ \textcolor{preprocessor}{\#define\ DEFINE\_ESP\_RST\_BROWNOUT\ "{}RBrownout\ reset\ (software\ or\ hardware)"{}}}
+\DoxyCodeLine{00143\ \textcolor{preprocessor}{\#define\ DEFINE\_ESP\_RST\_WDT\ "{}DOG\ BOM"{}}}
+\DoxyCodeLine{00144\ }
+\DoxyCodeLine{00145\ \textcolor{preprocessor}{\#define\ DEVICE\_OTASTART\ "{}[19]\#@\#"{}}}
+\DoxyCodeLine{00146\ \textcolor{preprocessor}{\#define\ PING\ "{}ping"{}}\ }
+\DoxyCodeLine{00147\ }
+\DoxyCodeLine{00148\ \textcolor{preprocessor}{\#define\ PING\_TIME\ 70}}
+\DoxyCodeLine{00149\ }
+\DoxyCodeLine{00150\ \textcolor{preprocessor}{\#define\ PING\_COUNT\ 7}}
+\DoxyCodeLine{00151\ }
+\DoxyCodeLine{00152\ \textcolor{preprocessor}{\#define\ PING\_MAX\ 150}}
+\DoxyCodeLine{00153\ }
+\DoxyCodeLine{00154\ \textcolor{preprocessor}{\#define\ D\_PLAN\_SKIP\ "{}PK"{}}}
+\DoxyCodeLine{00155\ \textcolor{preprocessor}{\#define\ D\_PLAN\_SKIP\_ONCE\ "{}PKA"{}}}
+\DoxyCodeLine{00156\ }
+\DoxyCodeLine{00157\ \textcolor{preprocessor}{\#define\ L\_LEVEL\ "{}LL"{}}}
+\DoxyCodeLine{00158\ \textcolor{preprocessor}{\#define\ D\_SENSOR\ "{}SS0"{}}}
+\DoxyCodeLine{00159\ \textcolor{preprocessor}{\#define\ D\_DBUG\ "{}DB"{}}}
+\DoxyCodeLine{00160\ \textcolor{preprocessor}{\#define\ OFF\_LINE\_WIFI\_SATAE\ "{}NAT"{}}}
+\DoxyCodeLine{00161\ }
+\DoxyCodeLine{00162\ \textcolor{comment}{/*\ \ 启用了传感器的计划标记，会伴随计划id一起保存\ （新增和结束时间一起保存\ PLAN\_SENSOR\_SKIP\_REMARK）\ */}}
+\DoxyCodeLine{00163\ \textcolor{preprocessor}{\#define\ PLAN\_SENSOR\_SKIP\_FLAG\ "{}P\_SK"{}}}
+\DoxyCodeLine{00164\ \textcolor{comment}{/*\ \ 用于记录跳过标记的计划结束时间，以免计划重复跳过\ \ */}}
+\DoxyCodeLine{00165\ \textcolor{preprocessor}{\#define\ PLAN\_SENSOR\_SKIP\_REMARK\_FLAG\ "{}P\_MK"{}}}
+\DoxyCodeLine{00166\ }
+\DoxyCodeLine{00167\ \textcolor{comment}{/*\ \ 没有启用传感器时，记录的标记\ \ */}}
+\DoxyCodeLine{00168\ \textcolor{preprocessor}{\#define\ PLAN\_SENSOR\_KXIN\_SKIP\_FLAG\ "{}P\_KK"{}}}
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ \textcolor{comment}{//\ other}}
+\DoxyCodeLine{00171\ \textcolor{preprocessor}{\#define\ SKIP\_ONE\_RUN\_As\ "{}Ss"{}}}
+\DoxyCodeLine{00172\ \textcolor{preprocessor}{\#define\ SKIP\_ONE\_RUN\_Ae\ "{}Ss"{}}}
+\DoxyCodeLine{00173\ }
+\DoxyCodeLine{00174\ \textcolor{preprocessor}{\#define\ SKIP\_SOMETIME\_As\ "{}As"{}}}
+\DoxyCodeLine{00175\ \textcolor{preprocessor}{\#define\ SKIP\_SOMETIME\_Ae\ "{}Ae"{}}}
+\DoxyCodeLine{00176\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_CMD\ "{}cmd"{}}}
+\DoxyCodeLine{00177\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_SSID\ "{}ssid"{}}}
+\DoxyCodeLine{00178\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_PSW\ "{}psw"{}}}
+\DoxyCodeLine{00179\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_KEY\ "{}key"{}}}
+\DoxyCodeLine{00180\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_INFO\ "{}info"{}}}
+\DoxyCodeLine{00181\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_SUCC\ "{}success"{}}}
+\DoxyCodeLine{00182\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_WIFI\_NOT\_F\ "{}no\_found\_wifi"{}}}
+\DoxyCodeLine{00183\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_PSW\_ERR\ "{}psw\_err"{}}}
+\DoxyCodeLine{00184\ }
+\DoxyCodeLine{00185\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_KEY\_IMITATE\_LEFT\ "{}left"{}}}
+\DoxyCodeLine{00186\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_KEY\_IMITATE\_RIGHT\ "{}right"{}}}
+\DoxyCodeLine{00187\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_KEY\_IMITATE\_START\ "{}start"{}}}
+\DoxyCodeLine{00188\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_KEY\_IMITATE\_STOP\ "{}stop"{}}}
+\DoxyCodeLine{00189\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_STAUS\ "{}status"{}}}
+\DoxyCodeLine{00190\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_DEBUG\_OPEN\ "{}open"{}}}
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_DEBUG\_CLOSE\ "{}close"{}}}
+\DoxyCodeLine{00192\ }
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_SYSTEM\_DETYPE\ "{}dev\_type"{}}}
+\DoxyCodeLine{00194\ }
+\DoxyCodeLine{00195\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_NULL\ "{}null"{}}}
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_TYPE\ "{}type"{}}}
+\DoxyCodeLine{00197\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_OK\ "{}ok"{}}}
+\DoxyCodeLine{00198\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_FAIL\ "{}fail"{}}}
+\DoxyCodeLine{00199\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_TIME\ "{}time"{}}}
+\DoxyCodeLine{00200\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_PRESENT\_TIME\ "{}present\_time"{}}}
+\DoxyCodeLine{00201\ }
+\DoxyCodeLine{00202\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PLAN\_VALUE\_SMARTY\_CYCLE\ "{}smarty\_cycle"{}}}
+\DoxyCodeLine{00203\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PLAN\_VALUE\_START\_DATE\ "{}start\_date"{}}}
+\DoxyCodeLine{00204\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PLAN\_VALUE\_END\_DATE\ "{}end\_date"{}}}
+\DoxyCodeLine{00205\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PLAN\_VALUE\_WATER\_START\_TIME\ "{}water\_start\_time"{}}}
+\DoxyCodeLine{00206\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PLAN\_VALUE\_ZONE\ "{}zones"{}}}
+\DoxyCodeLine{00207\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PLAN\_VALUE\_CYCLE\_TYPE\ "{}water\_cycle\_type"{}}}
+\DoxyCodeLine{00208\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PLAN\_VALUE\_SKIP\_WIND\ "{}wind\_skip"{}}}
+\DoxyCodeLine{00209\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PLAN\_VALUE\_SKIP\_RAIN\ "{}rain\_skip"{}}}
+\DoxyCodeLine{00210\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PLAN\_VALUE\_SKIP\_FREEZ\ "{}freez\_skip"{}}}
+\DoxyCodeLine{00211\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PLAN\_VALUE\_CYCLE\_VALUE\ "{}water\_cycle\_value"{}}}
+\DoxyCodeLine{00212\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PLAN\_VALUE\_PRIORITY\ "{}priority"{}}}
+\DoxyCodeLine{00213\ }
+\DoxyCodeLine{00214\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_PLAN\_TASK\_ID\ "{}schedule\_id"{}}}
+\DoxyCodeLine{00215\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_FAST\_TASK\_ID\ "{}task\_id"{}}}
+\DoxyCodeLine{00216\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_PLAN\_CHANNEL\_ID\ "{}channel\_id"{}}}
+\DoxyCodeLine{00217\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_PLAN\_RUNTIME\ "{}run\_time"{}}}
+\DoxyCodeLine{00218\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_PLAN\_STATE\ "{}plan\_state"{}}}
+\DoxyCodeLine{00219\ \textcolor{preprocessor}{\#define\ TEMP\_WORD\_PUBLIC\_PLAN\_CHANNEL\ "{}channel"{}}}
+\DoxyCodeLine{00220\ }
+\DoxyCodeLine{00221\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_DEBUG\_TASK\_INVA\ "{}task\ water\_start\_time\ invalid\ !!"{}}}
+\DoxyCodeLine{00222\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_DEBUG\_TASK\_NOT\_RUN\ "{}The\ plan\ is\ not\ within\ the\ execution\ scope\ !"{}}}
+\DoxyCodeLine{00223\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_DEBUG\_TASK\_NOT\_FIND\ "{}not\ found\ sch\ list\ !!"{}}}
+\DoxyCodeLine{00224\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_DEBUG\_TASK\_NOT\_RUNUN\ "{}There\ are\ higher\ priority\ plans\ running\ !!(\ It\ could\ be\ smart\ plans\ )"{}}}
+\DoxyCodeLine{00225\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_DEBUG\_TASK\_NOT\_SPEC\ "{}\ This\ plan\ should\ not\ be\ run"{}}}
+\DoxyCodeLine{00226\ }
+\DoxyCodeLine{00227\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_CAUSE\_RESTART\_DUE\_WIFI\ "{}wifi\ connectiong\ fail"{}}}
+\DoxyCodeLine{00228\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_CAUSE\_RESTART\_DUE\_NETWORK\ "{}network\ connection\ fail"{}}}
+\DoxyCodeLine{00229\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_CAUSE\_RESTART\_DUE\_SOCK\ "{}socket\ connection\ fail"{}}}
+\DoxyCodeLine{00230\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_CAUSE\_RESTART\_DUE\_TASKWDT\ "{}task\ wdt"{}}}
+\DoxyCodeLine{00231\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_CAUSE\_RESTART\_DUE\_INWDT\ "{}in\ wdt"{}}}
+\DoxyCodeLine{00232\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_CAUSE\_RESTART\_DUE\_HW\_IS31\ "{}is31\ not\ found"{}}}
+\DoxyCodeLine{00233\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_CAUSE\_RESTART\_DUE\_HW\_IOIO\ "{}ioio\ not\ found"{}}}
+\DoxyCodeLine{00234\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_CAUSE\_RESTART\_DUE\_HSW\_POWER\ "{}sw\ reset\ or\ power\ reset"{}}}
+\DoxyCodeLine{00235\ \textcolor{preprocessor}{\#define\ TEMP\_SYNTAGMAA\_CAUSE\_RESTART\_DUE\_OTHER\ "{}other"{}}}
+\DoxyCodeLine{00236\ }
+\DoxyCodeLine{00237\ \textcolor{comment}{/*\ \ */}}
+\DoxyCodeLine{00238\ \textcolor{preprocessor}{\#define\ TEMP\_CONFIG\_WIFI\_UDP\_APINFO\ "{}Imolaza"{}}}
+\DoxyCodeLine{00239\ \textcolor{preprocessor}{\#define\ TEMP\_CONFIG\_WIFI\_UDP\_IMOLAZA\_OFFLINE\_WIFI\_CHANGE\ "{}IOFWC"{}}}
+\DoxyCodeLine{00240\ \textcolor{preprocessor}{\#define\ TEMP\_CONFIG\_WIFI\_UDP\_IMOLAZA\_DONE\_OFFLINE\_WIFI\_CHANGE\ "{}DIOFWC"{}}}
+\DoxyCodeLine{00241\ \textcolor{preprocessor}{\#define\ TEMP\_CONFIG\_WIFI\_UDP\_SERVER\_IPADDR\ "{}192.168.4.255"{}}}
+\DoxyCodeLine{00242\ }
+\DoxyCodeLine{00243\ }
+\DoxyCodeLine{00244\ \textcolor{preprocessor}{\#define\ M\_INV1\ "{}|"{}}}
+\DoxyCodeLine{00245\ \textcolor{preprocessor}{\#define\ M\_INV7\ "{}\&"{}}}
+\DoxyCodeLine{00246\ }
+\DoxyCodeLine{00247\ }
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ }
+\DoxyCodeLine{00250\ \textcolor{preprocessor}{\#define\ M\_D\ "{}\%d"{}}}
+\DoxyCodeLine{00251\ \textcolor{preprocessor}{\#define\ M\_HD\ "{}\%hd"{}}}
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#define\ M\_HHD\ "{}\%hd"{}}}
+\DoxyCodeLine{00253\ \textcolor{preprocessor}{\#define\ M\_LLD\ "{}\%lld"{}}}
+\DoxyCodeLine{00254\ \textcolor{preprocessor}{\#define\ M\_STRM\_STR\_3(a,b,c)\ a\ b\ c}}
+\DoxyCodeLine{00255\ }
+\DoxyCodeLine{00256\ }
+\DoxyCodeLine{00257\ \textcolor{comment}{/*\ new\ */}}
+\DoxyCodeLine{00258\ \textcolor{preprocessor}{\#define\ SETTIME\ 60}}
+\DoxyCodeLine{00259\ \textcolor{preprocessor}{\#define\ APP\_ADD\_DEVICE\_SUCC\ 14}}
+\DoxyCodeLine{00260\ \textcolor{preprocessor}{\#define\ DEVICE\_RESTART\ 17}}
+\DoxyCodeLine{00261\ \textcolor{preprocessor}{\#define\ QuERY\_WIFI\_SIGNAL\_STRENGTH\ 86}}
+\DoxyCodeLine{00262\ }
+\DoxyCodeLine{00263\ \textcolor{preprocessor}{\#define\ MANUAL\_RUNNING\_QUICK\_SWITCH\ 51}}
+\DoxyCodeLine{00264\ \textcolor{preprocessor}{\#define\ SCH\_WEATHER\_SKIP\ 31}}
+\DoxyCodeLine{00265\ \textcolor{preprocessor}{\#define\ SCH\_SENSOR\_WATER\_TRIG\ 6}}
+\DoxyCodeLine{00266\ \textcolor{preprocessor}{\#define\ SCH\_SENSOR\_WATER\_RESEALE\ 7}}
+\DoxyCodeLine{00267\ }
+\DoxyCodeLine{00268\ \textcolor{preprocessor}{\#define\ QUICK\_CHANNEL\_PRE\_CHANNEL\ 41}}
+\DoxyCodeLine{00269\ \textcolor{preprocessor}{\#define\ QUICK\_CHANNEL\_PAUSE\ 44}}
+\DoxyCodeLine{00270\ \textcolor{preprocessor}{\#define\ QUICK\_CHANNEL\_RECOVER\ 45}}
+\DoxyCodeLine{00271\ \textcolor{preprocessor}{\#define\ QUICK\_CHANNEL\_STOP\ 46}}
+\DoxyCodeLine{00272\ \textcolor{preprocessor}{\#define\ QUICK\_CHANNEL\_NEXT\_CHANNEL\ 47}}
+\DoxyCodeLine{00273\ \textcolor{preprocessor}{\#define\ QUICK\_RUN\_FEEDBACK\ 61}}
+\DoxyCodeLine{00274\ }
+\DoxyCodeLine{00275\ \textcolor{preprocessor}{\#define\ SCH\_NEXT\_TIME\ 72}}
+\DoxyCodeLine{00276\ \textcolor{preprocessor}{\#define\ SKIP\_SOMETIME\_PERIOD\_WATERING\ 62}}
+\DoxyCodeLine{00277\ \textcolor{preprocessor}{\#define\ NOTIFY\_THAT\_SOME\_PLANS\_ARE\_BEING\_SKIPPED\ \ 74}}
+\DoxyCodeLine{00278\ \textcolor{preprocessor}{\#define\ UNDO\_PLAN\_SKIP\ \ \ 75}}
+\DoxyCodeLine{00279\ \textcolor{preprocessor}{\#define\ UNDO\_PLAN\_SKIPS\ \ \ 76}}
+\DoxyCodeLine{00280\ }
+\DoxyCodeLine{00281\ }
+\DoxyCodeLine{00282\ \textcolor{preprocessor}{\#define\ UPDAT\_SCH\_CHANNEL\_TIME\ 64}}
+\DoxyCodeLine{00283\ \textcolor{preprocessor}{\#define\ DEV\_PLAN\_CLASH\_HUNG\_UP\ 65}}
+\DoxyCodeLine{00284\ \textcolor{preprocessor}{\#define\ DEV\_PLAN\_CLASH\_HUNG\_UP\_REGAIN\ 66}}
+\DoxyCodeLine{00285\ \textcolor{preprocessor}{\#define\ NETWORK\_OUTAGE\_RECONNECT\ 67}}
+\DoxyCodeLine{00286\ \textcolor{preprocessor}{\#define\ NETWORK\_OUTAGE\_KEY\_RUNNING\ 68}}
+\DoxyCodeLine{00287\ \textcolor{preprocessor}{\#define\ NETWORK\_OUTAGE\_QUICK\_RUNNING\ 69}}
+\DoxyCodeLine{00288\ \textcolor{preprocessor}{\#define\ SERVER\_PLAN\_SKIP\_A\_RUN\ 70}}
+\DoxyCodeLine{00289\ \textcolor{preprocessor}{\#define\ DEV\_RESET\ 71}}
+\DoxyCodeLine{00290\ \textcolor{preprocessor}{\#define\ TEST\_KEY\_IMITATE\ 73}}
+\DoxyCodeLine{00291\ \textcolor{preprocessor}{\#define\ DEVICE\_REQUEST\_LOCAL\_INFO\ 80}}
+\DoxyCodeLine{00292\ \textcolor{preprocessor}{\#define\ DEVICE\_LOCAL\_INFO\_REP\ 81}}
+\DoxyCodeLine{00293\ \textcolor{preprocessor}{\#define\ DEVICE\_LOCAL\_INFO\_CHANGE\ 82}}
+\DoxyCodeLine{00294\ \textcolor{preprocessor}{\#define\ DEVICE\_LOCAL\_INFO\_CHANGE\_REP\ 83}}
+\DoxyCodeLine{00295\ \textcolor{preprocessor}{\#define\ DEVICE\_WEATHER\_INFO\_RESP\ 90}}
+\DoxyCodeLine{00296\ \textcolor{preprocessor}{\#define\ CAUSE\_RESTARTD\ 13}}
+\DoxyCodeLine{00297\ \textcolor{preprocessor}{\#define\ SYNC\_SCHEDULE\ 16}}
+\DoxyCodeLine{00298\ \textcolor{preprocessor}{\#define\ SYNC\_SERVER\_DEBUG\ 101}}
+\DoxyCodeLine{00299\ \textcolor{preprocessor}{\#define\ DEVICE\_CLOSE\_BUFF\ 1}}
+\DoxyCodeLine{00300\ \textcolor{preprocessor}{\#define\ DEVICE\_SYSTEM\_HALTED\ 2}}
+\DoxyCodeLine{00301\ }
+\DoxyCodeLine{00302\ \textcolor{comment}{//\ 计划通知跳过和恢复}}
+\DoxyCodeLine{00303\ \textcolor{preprocessor}{\#define\ NOTICE\_PLAN\_SKIP\ 4}}
+\DoxyCodeLine{00304\ \textcolor{preprocessor}{\#define\ UNNOTICE\_PLAN\_SKIP\ 5}}
+\DoxyCodeLine{00305\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00306\ }
+
+\end{DoxyCode}

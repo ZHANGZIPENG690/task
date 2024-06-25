@@ -1,0 +1,73 @@
+\hypertarget{mschedule_8h_source}{}\doxysection{mschedule.\+h}
+\label{mschedule_8h_source}\index{core/schedule/mschedule.h@{core/schedule/mschedule.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_MSCHEDULE\_HH\_\_}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_\_MSCHEDULE\_HH\_\_}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{comment}{//\ \#ifndef(TEST\_CODE)}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ "{}core/core.h"{}}}
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ \#endif}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{preprocessor}{\#define\ M\_SCHEDULE\_MODE\_NEWLWAN\_FLAG\ "{}nl"{}}}
+\DoxyCodeLine{00009\ \textcolor{preprocessor}{\#define\ MAX\_SCHEDU\_NUM\ 16}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#define\ MAX\_TIME\_NUM\ 25}}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ struct\ \_plan\_manager\_}}
+\DoxyCodeLine{00013\ \textcolor{comment}{//\ \{}}
+\DoxyCodeLine{00014\ \textcolor{comment}{//\ \ \ \ \ uint64\_t\ current\_id;}}
+\DoxyCodeLine{00015\ \textcolor{comment}{//\ \ \ \ \ stat\_m\ current\_stete;}}
+\DoxyCodeLine{00016\ \textcolor{comment}{//\ \ \ \ \ m\_watering\_schedule\ *\ current\_running\_obj;}}
+\DoxyCodeLine{00017\ \textcolor{comment}{//\ \};}}
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ \textcolor{comment}{//\ typedef\ struct\ \_plan\_manager\_\ plan\_manager;}}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct__schedule__run__instance}{\_schedule\_run\_instance}}}
+\DoxyCodeLine{00022\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ uint64\_t\ in\_instance\_id;}
+\DoxyCodeLine{00024\ \ \ \ \ uint64\_t\ in\_run\_id;}
+\DoxyCodeLine{00025\ \ \ \ \ uint8\_t\ in\_run\_type;}
+\DoxyCodeLine{00026\ \ \ \ \ uint32\_t\ in\_sack\_param\_run\_time;}
+\DoxyCodeLine{00027\ \ \ \ \ uint32\_t\ in\_sack\_param\_sack\_time;}
+\DoxyCodeLine{00028\ \ \ \ \ uint32\_t\ in\_sack\_type;}
+\DoxyCodeLine{00029\ }
+\DoxyCodeLine{00030\ \ \ \ \ \mbox{\hyperlink{structchan__managec}{m\_chan\_managec}}\ in\_channel[16];\ }
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \mbox{\hyperlink{structrun__buff}{m\_run\_data}}\ in\_running\_buff;}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \ \ \ \ uint64\_t\ WSTime;}
+\DoxyCodeLine{00035\ \};\ }
+\DoxyCodeLine{00036\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct__schedule__run__instance}{\_schedule\_run\_instance}}\ \mbox{\hyperlink{struct__schedule__run__instance}{schedule\_instance\_m}};}
+\DoxyCodeLine{00037\ }
+\DoxyCodeLine{00044\ stat\_m\ m\_splan\_remove(uint64\_t\ in\_id);}
+\DoxyCodeLine{00051\ stat\_m\ m\_splan\_remove\_all(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00052\ }
+\DoxyCodeLine{00059\ stat\_m\ m\_schedule\_think\_hangup(\mbox{\hyperlink{structwatering__schedule}{m\_watering\_schedule}}\ *in\_obj);}
+\DoxyCodeLine{00065\ stat\_m\ m\_schedule\_think\_wakeup(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00066\ }
+\DoxyCodeLine{00073\ stat\_m\ m\_schedule\_state\_flushed(\mbox{\hyperlink{structwatering__schedule}{m\_watering\_schedule}}\ *in\_obj);}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00081\ stat\_m\ m\_sch\_forthwith\_add(\mbox{\hyperlink{structwatering__schedule}{m\_watering\_schedule}}\ *ws\_item,\ \textcolor{keywordtype}{bool}\ boo);}
+\DoxyCodeLine{00082\ }
+\DoxyCodeLine{00088\ stat\_m\ splan\_flash\_recover\_item(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \textcolor{comment}{//\ plan\_manager\ \_plan;}}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00097\ stat\_m\ m\_splan\_parse\_all(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00101\ stat\_m\ m\_splan\_parse\_one(uint64\_t\ in\_id);}
+\DoxyCodeLine{00102\ }
+\DoxyCodeLine{00103\ stat\_m\ m\_callable\_schedule\_initial(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00104\ }
+\DoxyCodeLine{00115\ stat\_m\ m\_callable\_flash\_flag\_special\_value\_u64(\textcolor{keywordtype}{int}\ in\_handle\_type,\ uint64\_t\ *specv1\_id,\ uint64\_t\ *specv2,\ uint64\_t\ *specv3,\ \textcolor{keywordtype}{int}\ in\_option);}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00118\ stat\_m\ m\_callable\_today\_need\_run\_odev(uint8\_t\ in\_run\_type,\ uint8\_t\ in\_inva\_type,\ uint32\_t\ runtime\_sum,\ uint32\_t\ presenttime);}
+\DoxyCodeLine{00119\ }
+\DoxyCodeLine{00127\ stat\_m\ m\_callable\_schedule\_list\_find(uint64\_t\ in\_uid,\ \mbox{\hyperlink{structwatering__schedule}{m\_watering\_schedule}}\ **out\_obj);}
+\DoxyCodeLine{00136\ stat\_m\ m\_newlwan\_mode\_schedule\_update\_time\_list(uint64\_t\ in\_id,\ \textcolor{keywordtype}{char}\ *consStr,\ \textcolor{keywordtype}{bool}\ update\_flash);}
+\DoxyCodeLine{00137\ }
+\DoxyCodeLine{00147\ stat\_m\ m\_newlwan\_mode\_schedule\_flush(uint64\_t\ in\_id,\ uint64\_t\ in\_present\_time,\ uint64\_t\ *out\_result,\ \textcolor{keywordtype}{bool}\ recover);}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00149\ \textcolor{preprocessor}{\#endif\ }}
+
+\end{DoxyCode}

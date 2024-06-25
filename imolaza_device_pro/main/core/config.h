@@ -1,0 +1,23 @@
+
+
+#ifndef __CONFIG__H__
+#define __CONFIG__H__
+
+/** 协议 网络连接方式  */
+#define M_GLOBAL_NETWORK_CONNECT_PRO_SELECT_TCP  /** TCP */
+
+// #define M_GLOBAL_NETWORK_CONNECT_PRO_SELECT_MQTT
+
+// #define M_GLOBAL_NETWORK_CONNECT_PRO_SELECT_WOLFSSL
+
+// #define M_GLOBAL_NETWORK_CONNECT_PRO_SELECT_MBEDTLS
+
+
+
+/** 使用 TEA 加密传输 */
+// #define M_GLOBAL_TRANSFORM_USE_TEA_ENCRYPT
+
+/** 检查  */
+
+// #ifdef M_GLOBAL_NETWORK_CONNECT_PRO_SELECT_TCP
+#endif /* __CONFIG__H__ */

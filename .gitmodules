@@ -1,0 +1,4 @@
+[submodule "imolaza_device_pro/core"]
+	url  = https://gitee.com/imolaza/core
+	path = imolaza_device_pro/core
+

@@ -1,0 +1,612 @@
+\hypertarget{core_8h_source}{}\doxysection{core.\+h}
+\label{core_8h_source}\index{core/core.h@{core/core.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_CORE\_\_H\_\_}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \_\_CORE\_\_H\_\_}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#define\ CONFIG\_NEW\_CHANNEL\_INFO\ 0}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ \textcolor{comment}{//\ \#include\ "{}freertos/FreeRTOS.h"{}}}
+\DoxyCodeLine{00007\ \textcolor{comment}{//\ \#include\ "{}freertos/task.h"{}}}
+\DoxyCodeLine{00008\ \textcolor{comment}{//\ \#include\ "{}esp\_log.h"{}}}
+\DoxyCodeLine{00009\ \textcolor{comment}{//\ \#include\ "{}hot\_so\_fast.h"{}}}
+\DoxyCodeLine{00010\ \textcolor{preprocessor}{\#if\ NEW\_BREANCH\_15001}}
+\DoxyCodeLine{00011\ \textcolor{preprocessor}{\#include\ "{}tool.h"{}}}
+\DoxyCodeLine{00012\ \textcolor{comment}{//\ \#include\ "{}esp32/fun/fun.h"{}}}
+\DoxyCodeLine{00013\ \textcolor{preprocessor}{\#endif\ }}
+\DoxyCodeLine{00015\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ uint8\_t;}
+\DoxyCodeLine{00016\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{short}\ uint16\_t;}
+\DoxyCodeLine{00017\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{int}\ uint32\_t;}
+\DoxyCodeLine{00018\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{long}\ uint64\_t;}
+\DoxyCodeLine{00019\ \textcolor{keyword}{typedef}\ \textcolor{keywordtype}{unsigned}\ \textcolor{keywordtype}{char}\ bool;}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \textcolor{preprocessor}{\#define\ true\ 1}}
+\DoxyCodeLine{00022\ \textcolor{preprocessor}{\#define\ false\ 0}}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \textcolor{preprocessor}{\#define\ DEVICE\_DEBUG\ "{}im"{}}}
+\DoxyCodeLine{00025\ }
+\DoxyCodeLine{00026\ \textcolor{preprocessor}{\#define\ None\ 254}}
+\DoxyCodeLine{00027\ \textcolor{preprocessor}{\#define\ NUM\_OF\_DAY\_SEC\_SUM\ 86400}}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{preprocessor}{\#define\ M\_MALLOC\ malloc}}
+\DoxyCodeLine{00030\ \textcolor{preprocessor}{\#define\ M\_FREE\ free}}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \textcolor{preprocessor}{\#include\ <stdio.h>}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____SN__KEY__AUTH}{\_\_SN\_KEY\_AUTH}}}
+\DoxyCodeLine{00035\ \{}
+\DoxyCodeLine{00036\ \ \ \ \ \textcolor{keywordtype}{char}\ sn[15];}
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keywordtype}{char}\ key[35];}
+\DoxyCodeLine{00038\ \};}
+\DoxyCodeLine{00039\ }
+\DoxyCodeLine{00040\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____HARDWARE__INFO}{\_\_HARDWARE\_INFO}}}
+\DoxyCodeLine{00041\ \{}
+\DoxyCodeLine{00042\ \ \ \ \ \textcolor{keywordtype}{char}\ mac[15];}
+\DoxyCodeLine{00043\ \ \ \ \ \textcolor{keywordtype}{char}\ macsuffix[5];}
+\DoxyCodeLine{00044\ \ \ \ \ \textcolor{keywordtype}{char}\ version[32];}
+\DoxyCodeLine{00045\ \ \ \ \ \textcolor{keywordtype}{int}\ out\_drive\_chip;}
+\DoxyCodeLine{00046\ \ \ \ \ uint32\_t\ generations;}
+\DoxyCodeLine{00047\ \ \ \ \ uint8\_t\ type;}
+\DoxyCodeLine{00048\ \};}
+\DoxyCodeLine{00049\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____STATE__INFO}{\_\_STATE\_INFO}}}
+\DoxyCodeLine{00050\ \{}
+\DoxyCodeLine{00051\ \ \ \ \ \textcolor{keywordtype}{bool}\ onLine;}
+\DoxyCodeLine{00052\ \ \ \ \ \textcolor{keywordtype}{bool}\ ReConnectServer;}
+\DoxyCodeLine{00053\ \ \ \ \ uint32\_t\ startup\_count;}
+\DoxyCodeLine{00054\ \};}
+\DoxyCodeLine{00055\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____SERVER__INFO}{\_\_SERVER\_INFO}}}
+\DoxyCodeLine{00056\ \{}
+\DoxyCodeLine{00057\ \ \ \ \ \textcolor{keywordtype}{char}\ addr[20];}
+\DoxyCodeLine{00058\ \ \ \ \ \textcolor{keywordtype}{int}\ port;}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keywordtype}{char}\ server\_address\_buffer[50];}
+\DoxyCodeLine{00060\ }
+\DoxyCodeLine{00061\ \ \ \ \ \textcolor{keywordtype}{bool}\ DirConnectServer;}
+\DoxyCodeLine{00062\ \};}
+\DoxyCodeLine{00063\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____EXTRA__MSG}{\_\_EXTRA\_MSG}}}
+\DoxyCodeLine{00064\ \{}
+\DoxyCodeLine{00065\ \ \ \ \ \textcolor{keywordtype}{bool}\ local;}
+\DoxyCodeLine{00066\ \ \ \ \ \textcolor{keywordtype}{bool}\ debug;}
+\DoxyCodeLine{00067\ \ \ \ \ \textcolor{keywordtype}{int}\ timezone;}
+\DoxyCodeLine{00068\ \ \ \ \ \textcolor{keywordtype}{int}\ wifi\_sign;}
+\DoxyCodeLine{00069\ \ \ \ \ uint16\_t\ schedule\_sum;}
+\DoxyCodeLine{00070\ \ \ \ \ uint32\_t\ led\_level;}
+\DoxyCodeLine{00071\ \ \ \ \ \textcolor{keywordtype}{double}\ lon;}
+\DoxyCodeLine{00072\ \ \ \ \ \textcolor{keywordtype}{double}\ lat;}
+\DoxyCodeLine{00073\ \};}
+\DoxyCodeLine{00074\ }
+\DoxyCodeLine{00075\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____SERVER__INFO}{\_\_SERVER\_INFO}}\ \mbox{\hyperlink{struct____SERVER__INFO}{SERVER\_INFO}};}
+\DoxyCodeLine{00076\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____SN__KEY__AUTH}{\_\_SN\_KEY\_AUTH}}\ \mbox{\hyperlink{struct____SN__KEY__AUTH}{SN\_KEY\_CODE}};}
+\DoxyCodeLine{00077\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____STATE__INFO}{\_\_STATE\_INFO}}\ \mbox{\hyperlink{struct____STATE__INFO}{current\_state}};}
+\DoxyCodeLine{00078\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____HARDWARE__INFO}{\_\_HARDWARE\_INFO}}\ \mbox{\hyperlink{struct____HARDWARE__INFO}{physical\_information}};}
+\DoxyCodeLine{00079\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____EXTRA__MSG}{\_\_EXTRA\_MSG}}\ \mbox{\hyperlink{struct____EXTRA__MSG}{extre\_info}};}
+\DoxyCodeLine{00080\ }
+\DoxyCodeLine{00081\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____DEVICE__INFO}{\_\_DEVICE\_INFO}}}
+\DoxyCodeLine{00082\ \{}
+\DoxyCodeLine{00084\ \ \ \ \ \mbox{\hyperlink{struct____SN__KEY__AUTH}{SN\_KEY\_CODE}}\ \mbox{\hyperlink{struct____DEVICE__INFO_a105edbc1d0a475feba5bb5a97afc4f3a}{encrypt\_code}};}
+\DoxyCodeLine{00086\ \ \ \ \ \mbox{\hyperlink{struct____HARDWARE__INFO}{physical\_information}}\ \mbox{\hyperlink{struct____DEVICE__INFO_aaf9dc1fc039e42d5b5bdaa57f58bb423}{hardware}};}
+\DoxyCodeLine{00087\ }
+\DoxyCodeLine{00088\ \ \ \ \ \mbox{\hyperlink{struct____STATE__INFO}{current\_state}}\ state;}
+\DoxyCodeLine{00089\ }
+\DoxyCodeLine{00090\ \ \ \ \ \mbox{\hyperlink{struct____EXTRA__MSG}{extre\_info}}\ extreinfo;}
+\DoxyCodeLine{00092\ \ \ \ \ \mbox{\hyperlink{struct____SERVER__INFO}{SERVER\_INFO}}\ \mbox{\hyperlink{struct____DEVICE__INFO_ab72a6cd72eec0649b85574208d8615fc}{server}};}
+\DoxyCodeLine{00093\ \};}
+\DoxyCodeLine{00094\ }
+\DoxyCodeLine{00095\ \textcolor{comment}{/***}}
+\DoxyCodeLine{00096\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00097\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00098\ }
+\DoxyCodeLine{00099\ \textcolor{comment}{//\ enum\ DEVICE\_TYPE\_ZONE}}
+\DoxyCodeLine{00100\ \textcolor{comment}{//\ \{}}
+\DoxyCodeLine{00101\ \textcolor{comment}{//\ \ \ \ \ DEVICE\_8\_ZONE\ =\ 8,}}
+\DoxyCodeLine{00102\ \textcolor{comment}{//\ \ \ \ \ DEVICE\_4\_ZONE\ =\ 4,}}
+\DoxyCodeLine{00103\ \textcolor{comment}{//\ \ \ \ \ DEVICE\_16\_ZONE\ =\ 16,}}
+\DoxyCodeLine{00104\ \textcolor{comment}{//\ \ \ \ \ DEVICE\_12\_ZONE\ =\ 12,}}
+\DoxyCodeLine{00105\ \textcolor{comment}{//\ \ \ \ \ DEVICE\_1\_ZONE\ =\ 1}}
+\DoxyCodeLine{00106\ \textcolor{comment}{//\ \};}}
+\DoxyCodeLine{00107\ \textcolor{comment}{//\ \#define\ A001\ 0xa001}}
+\DoxyCodeLine{00108\ \textcolor{comment}{//\ \#define\ A002\ 0xa002}}
+\DoxyCodeLine{00109\ \textcolor{comment}{//\ \#define\ A003\ 0xa003}}
+\DoxyCodeLine{00110\ }
+\DoxyCodeLine{00111\ \textcolor{comment}{/***}}
+\DoxyCodeLine{00112\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00113\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00114\ \textcolor{comment}{\ *}}
+\DoxyCodeLine{00115\ \textcolor{comment}{\ */}}
+\DoxyCodeLine{00116\ }
+\DoxyCodeLine{00117\ \textcolor{keyword}{enum}\ schedule\_status}
+\DoxyCodeLine{00118\ \{}
+\DoxyCodeLine{00119\ \ \ \ \ M\_PLAN\_INVALID\ =\ -\/1,}
+\DoxyCodeLine{00120\ \ \ \ \ M\_PLAN\_RUNNING\ =\ 1,}
+\DoxyCodeLine{00121\ \ \ \ \ M\_PLAN\_NOT\_RUN\ =\ 2,\ \textcolor{comment}{//\ 设备空闲}}
+\DoxyCodeLine{00122\ \ \ \ \ M\_PLAN\_SACK\ =\ 3,\ \ \ \ \textcolor{comment}{//\ 计划运行浸泡}}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ \ \ \ \ M\_MANUAL\_RUNNING\ =\ 4,}
+\DoxyCodeLine{00125\ }
+\DoxyCodeLine{00126\ \ \ \ \ M\_FAST\_RUNNING\ =\ 5,\ \textcolor{comment}{//\ 快速运行}}
+\DoxyCodeLine{00127\ \ \ \ \ M\_FAST\_PAUSE\ =\ 6,\ \ \ \textcolor{comment}{//\ 快速运行暂停}}
+\DoxyCodeLine{00128\ }
+\DoxyCodeLine{00129\ \ \ \ \ M\_PLAN\_NONE\ =\ 254}
+\DoxyCodeLine{00130\ \};}
+\DoxyCodeLine{00131\ \textcolor{comment}{//\ FAST\_SACK\ 3\ //快速运行浸泡}}
+\DoxyCodeLine{00132\ }
+\DoxyCodeLine{00133\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}}
+\DoxyCodeLine{00134\ \{}
+\DoxyCodeLine{00135\ \ \ \ \ \textcolor{comment}{//\ enum\ state\_resp}}
+\DoxyCodeLine{00136\ \ \ \ \ M\_ERR\ =\ 0,}
+\DoxyCodeLine{00137\ \ \ \ \ M\_OKK\ =\ 1,}
+\DoxyCodeLine{00138\ \ \ \ \ \textcolor{comment}{//\ enum\ state\_wifi}}
+\DoxyCodeLine{00139\ \ \ \ \ m\_normal\_r,}
+\DoxyCodeLine{00140\ \ \ \ \ unnormal\_r,}
+\DoxyCodeLine{00141\ \ \ \ \ general\_r,}
+\DoxyCodeLine{00142\ \ \ \ \ no\_exist,}
+\DoxyCodeLine{00143\ \ \ \ \ ap\_no\_exist\_r,}
+\DoxyCodeLine{00144\ \ \ \ \ ap\_time\_out\_r,}
+\DoxyCodeLine{00145\ \ \ \ \ existed\_r,}
+\DoxyCodeLine{00146\ \ \ \ \ unknow\_r,}
+\DoxyCodeLine{00147\ \ \ \ \ \textcolor{comment}{//\ enum\ state\_schedule}}
+\DoxyCodeLine{00148\ \ \ \ \ should\_running\_r,}
+\DoxyCodeLine{00149\ \ \ \ \ should\_sack\_r,}
+\DoxyCodeLine{00150\ \ \ \ \ not\_should\_r,}
+\DoxyCodeLine{00151\ \ \ \ \ \textcolor{comment}{//\ enum\ state\_ext}}
+\DoxyCodeLine{00152\ \ \ \ \ succ\_r,}
+\DoxyCodeLine{00153\ \ \ \ \ fail\_r,}
+\DoxyCodeLine{00154\ }
+\DoxyCodeLine{00155\ \ \ \ \ enable\_r,}
+\DoxyCodeLine{00156\ \ \ \ \ disable\_r,}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ \ \ \ \ special\_newlwan\_r}
+\DoxyCodeLine{00159\ \}\ stat\_m;}
+\DoxyCodeLine{00160\ }
+\DoxyCodeLine{00165\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}}
+\DoxyCodeLine{00166\ \{}
+\DoxyCodeLine{00167\ \ \ \ \ M\_FSM\_EVENT\_PREPARE\_RUN\ =\ 10,}
+\DoxyCodeLine{00168\ \ \ \ \ M\_FSM\_EVENT\_WILL\_START,}
+\DoxyCodeLine{00169\ \ \ \ \ M\_FSM\_EVENT\_RUNNING,}
+\DoxyCodeLine{00170\ \ \ \ \ M\_FSM\_EVENT\_SACKING,}
+\DoxyCodeLine{00171\ \ \ \ \ M\_FSM\_EVENT\_PAUSE,}
+\DoxyCodeLine{00172\ \ \ \ \ M\_FSM\_EVENT\_STOP,}
+\DoxyCodeLine{00173\ \ \ \ \ M\_FSM\_EVENT\_IDLE,}
+\DoxyCodeLine{00174\ \ \ \ \ M\_FSM\_EVENT\_SACKING\_RECOVER,}
+\DoxyCodeLine{00175\ \ \ \ \ \textcolor{comment}{//\ M\_FSM\_EVENT\_ENTER\_IDLE}}
+\DoxyCodeLine{00176\ \}\ m\_fsm\_events;}
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}}
+\DoxyCodeLine{00179\ \{}
+\DoxyCodeLine{00180\ \ \ \ \ m\_schedule\_\_prepare\ =\ 30,\ \textcolor{comment}{//\ 29-\/24}}
+\DoxyCodeLine{00181\ \ \ \ \ m\_schedule\_\_start\ =\ 20,\ \ \ \textcolor{comment}{//\ x-\/254}}
+\DoxyCodeLine{00182\ \ \ \ \ m\_schedule\_\_sack\ =\ 35,\ \ \ \ \textcolor{comment}{//\ x-\/254}}
+\DoxyCodeLine{00183\ \ \ \ \ m\_schedule\_\_running\ =\ 40,\ \textcolor{comment}{//\ 24-\/x}}
+\DoxyCodeLine{00184\ \ \ \ \ m\_schedule\_\_pause\ =\ 45,\ \ \ \textcolor{comment}{//\ x-\/50}}
+\DoxyCodeLine{00185\ \ \ \ \ m\_schedule\_\_stop\ =\ 46,\ \ \ \ \textcolor{comment}{//\ x-\/50}}
+\DoxyCodeLine{00186\ \ \ \ \ m\_schedule\_\_idle\ =\ 50,}
+\DoxyCodeLine{00187\ \}\ m\_status;}
+\DoxyCodeLine{00188\ }
+\DoxyCodeLine{00189\ \textcolor{keyword}{typedef}\ stat\_m\ (*m\_fsm\_event\_handle\_fun)(m\_fsm\_events,\ \textcolor{keywordtype}{void}\ *,\ uint64\_t);}
+\DoxyCodeLine{00190\ }
+\DoxyCodeLine{00191\ \textcolor{preprocessor}{\#define\ m\_schedule\_event\_prepare\_callback\ stat\_m\ m\_action\_schedule\_\_prepare(m\_status\ ste,\ void\ *pdata,\ uint64\_t\ in\_time)}}
+\DoxyCodeLine{00192\ \textcolor{preprocessor}{\#define\ m\_schedule\_event\_start\_callback\ stat\_m\ m\_action\_schedule\_\_start(m\_status\ ste,\ void\ *pdata,\ uint64\_t\ in\_time)}}
+\DoxyCodeLine{00193\ \textcolor{preprocessor}{\#define\ m\_schedule\_event\_running\_callback\ stat\_m\ m\_action\_schedule\_\_running(m\_status\ ste,\ void\ *pdata,\ uint64\_t\ in\_time)}}
+\DoxyCodeLine{00194\ \textcolor{preprocessor}{\#define\ m\_schedule\_event\_sack\_callback\ stat\_m\ m\_action\_schedule\_\_sack\_recover(m\_status\ ste,\ void\ *pdata,\ uint64\_t\ in\_time)}}
+\DoxyCodeLine{00195\ \textcolor{preprocessor}{\#define\ m\_schedule\_event\_stop\_callback\ stat\_m\ m\_action\_schedule\_\_stop(m\_status\ ste,\ void\ *pdata,\ uint64\_t\ in\_time)}}
+\DoxyCodeLine{00196\ \textcolor{preprocessor}{\#define\ m\_schedule\_event\_idle\_callback\ stat\_m\ m\_action\_schedule\_\_idle(m\_status\ ste,\ void\ *pdata,\ uint64\_t\ in\_time)}}
+\DoxyCodeLine{00197\ }
+\DoxyCodeLine{00202\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct__io__contr}{\_io\_contr}}}
+\DoxyCodeLine{00203\ \{}
+\DoxyCodeLine{00204\ \ \ \ \ uint8\_t\ io\_contrc[20];\ \ \ \ \textcolor{comment}{//\ 区域}}
+\DoxyCodeLine{00205\ \ \ \ \ uint8\_t\ io\_contrc\_cl[20];\ \textcolor{comment}{//\ 区域复制}}
+\DoxyCodeLine{00206\ \ \ \ \ \textcolor{keywordtype}{bool}\ io\_update;\ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//\ 是否更新}}
+\DoxyCodeLine{00207\ \ \ \ \ \textcolor{keywordtype}{bool}\ io\_update\_state;\ \ \ \ \ \textcolor{comment}{//\ 更新的状态}}
+\DoxyCodeLine{00208\ \ \ \ \ void\ (*m\_contr\_watering)(uint8\_t,\ bool);}
+\DoxyCodeLine{00209\ \};}
+\DoxyCodeLine{00210\ }
+\DoxyCodeLine{00213\ \textcolor{comment}{/*\ \ \ time\ zone\ */}}
+\DoxyCodeLine{00214\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtime__range}{time\_range}}}
+\DoxyCodeLine{00215\ \{}
+\DoxyCodeLine{00216\ \ \ \ \ uint64\_t\ tr\_start\_time;}
+\DoxyCodeLine{00217\ \ \ \ \ uint64\_t\ tr\_end\_time;}
+\DoxyCodeLine{00218\ \};}
+\DoxyCodeLine{00219\ }
+\DoxyCodeLine{00220\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structextrafun__}{extrafun\_}}}
+\DoxyCodeLine{00221\ \{}
+\DoxyCodeLine{00222\ }
+\DoxyCodeLine{00223\ \ \ \ \ uint8\_t\ maxChan;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00224\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structextrafun___ae6f1a0a03abcb2f0711e2155b7bdbff6}{max\_should\_runtime}};\ \ \ }
+\DoxyCodeLine{00225\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structextrafun___a16b22b9907011a278cd31dcc9f424296}{week}}[7];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00226\ \ \ \ \ \textcolor{keywordtype}{bool}\ \mbox{\hyperlink{structextrafun___ae4aba54b85c1bb045b584a4b53952d2a}{fun\_soak\_use}};\ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00227\ \ \ \ \ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{structextrafun___a996854ac3a8b6de3c70a566b8768d5da}{fun\_soak\_str}}[10];\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00228\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structextrafun___a26c4f82f5412e27ff1886d17f95adfff}{fun\_soak\_water}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{00229\ \ \ \ \ uint16\_t\ \mbox{\hyperlink{structextrafun___a31b966db4170183d2a0a0d2d5400e851}{fun\_soak\_cycle}};\ \ \ \ \ \ \ }
+\DoxyCodeLine{00230\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structextrafun___ad178dd5578ffe66d50f875df44a4ec6a}{fun\_smarty\_channel}}[8];\ }
+\DoxyCodeLine{00231\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structextrafun___a320d54b3381e7b1bae337dc60b117de9}{fun\_smarty\_cycle}};\ \ \ \ \ \ }
+\DoxyCodeLine{00232\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structextrafun___a2723cb891f32548c285d27324eefc1ae}{fun\_solenoid\_mode}};\ \ \ \ }
+\DoxyCodeLine{00233\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structextrafun___ac14adce4fec022116cb7798b86e41810}{fun\_solenoid\_time}};\ \ \ \ }
+\DoxyCodeLine{00234\ \};}
+\DoxyCodeLine{00235\ }
+\DoxyCodeLine{00236\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structtime__range}{time\_range}}\ \mbox{\hyperlink{structtime__range}{m\_time\_range}};}
+\DoxyCodeLine{00237\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrun__buff}{run\_buff}}}
+\DoxyCodeLine{00238\ \{}
+\DoxyCodeLine{00239\ \ \ \ \ uint8\_t\ rb\_pre\_pc;}
+\DoxyCodeLine{00240\ \ \ \ \ uint8\_t\ rb\_pc;}
+\DoxyCodeLine{00241\ \ \ \ \ uint8\_t\ maxChan;}
+\DoxyCodeLine{00242\ \ \ \ \ uint64\_t\ maxTime;}
+\DoxyCodeLine{00243\ \ \ \ \ uint64\_t\ rb\_WSTime\_clone;}
+\DoxyCodeLine{00244\ \ \ \ \ uint32\_t\ wind\_water\_ice\_skip;}
+\DoxyCodeLine{00245\ \ \ \ \ uint32\_t\ chan\_already\_RunTimeSum;}
+\DoxyCodeLine{00246\ \ \ \ \ \mbox{\hyperlink{structtime__range}{m\_time\_range}}\ current\_running\_time\_region;}
+\DoxyCodeLine{00247\ \};}
+\DoxyCodeLine{00248\ }
+\DoxyCodeLine{00249\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structrun__buff}{run\_buff}}\ \mbox{\hyperlink{structrun__buff}{m\_run\_data}};}
+\DoxyCodeLine{00250\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structextrafun__}{extrafun\_}}\ \mbox{\hyperlink{structextrafun__}{m\_extrafun}};}
+\DoxyCodeLine{00251\ }
+\DoxyCodeLine{00252\ \textcolor{preprocessor}{\#if\ CONFIG\_NEW\_CHANNEL\_INFO}}
+\DoxyCodeLine{00253\ \textcolor{keyword}{struct\ }chan\_manage}
+\DoxyCodeLine{00254\ \{}
+\DoxyCodeLine{00255\ \ \ \ \ uint8\_t\ chanID;}
+\DoxyCodeLine{00256\ \ \ \ \ uint64\_t\ chanStartTime;}
+\DoxyCodeLine{00257\ \ \ \ \ uint64\_t\ chanEndTime;}
+\DoxyCodeLine{00258\ \ \ \ \ uint32\_t\ shouldRunTime;}
+\DoxyCodeLine{00259\ \ \ \ \ uint32\_t\ realityRunTime;}
+\DoxyCodeLine{00260\ \ \ \ \ \textcolor{comment}{/*\ The\ actual\ running\ time\ of\ the\ area\ and\ realityruntime\ is\ that\ he\ expresses\ the\ actual\ watering\ time,\ also\ called\ the\ effective\ cumulative\ running\ time\ \ */}}
+\DoxyCodeLine{00261\ \ \ \ \ uint32\_t\ has\_been\_watering\_time;}
+\DoxyCodeLine{00262\ \ \ \ \ uint32\_t\ has\_been\_power\_watering\_time;}
+\DoxyCodeLine{00263\ \ \ \ \ \textcolor{comment}{/*\ Current\ zone\ cumulative\ run\ time,\ (\ A\ pause\ in\ any\ area\ will\ interrupt\ it\ \ )*/}}
+\DoxyCodeLine{00264\ \ \ \ \ uint32\_t\ thisOperationTime;}
+\DoxyCodeLine{00265\ \ \ \ \ \textcolor{keywordtype}{int}\ enable;}
+\DoxyCodeLine{00266\ \ \ \ \ \textcolor{comment}{//\ uint32\_t\ RunTimeSum;}}
+\DoxyCodeLine{00267\ \ \ \ \ \textcolor{keywordtype}{bool}\ isRun;}
+\DoxyCodeLine{00268\ \};}
+\DoxyCodeLine{00269\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }chan\_manage\ m\_chan\_manage;}
+\DoxyCodeLine{00270\ \textcolor{preprocessor}{\#else}}
+\DoxyCodeLine{00271\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structchan__managec}{chan\_managec}}}
+\DoxyCodeLine{00272\ \{}
+\DoxyCodeLine{00273\ \ \ \ \ \textcolor{keywordtype}{int}\ enable;}
+\DoxyCodeLine{00274\ \ \ \ \ uint64\_t\ startTime;}
+\DoxyCodeLine{00275\ \ \ \ \ \textcolor{comment}{//\ uint32\_t\ RunTimeSum;}}
+\DoxyCodeLine{00276\ \ \ \ \ \textcolor{keywordtype}{bool}\ isRun;}
+\DoxyCodeLine{00277\ \ \ \ \ uint8\_t\ id;}
+\DoxyCodeLine{00278\ \ \ \ \ \mbox{\hyperlink{structtime__range}{m\_time\_range}}\ runtime;}
+\DoxyCodeLine{00279\ }
+\DoxyCodeLine{00280\ \ \ \ \ uint32\_t\ shouldRunTime;}
+\DoxyCodeLine{00281\ \ \ \ \ uint32\_t\ realityRunTime;}
+\DoxyCodeLine{00282\ \ \ \ \ \textcolor{comment}{/*\ The\ actual\ running\ time\ of\ the\ area\ and\ realityruntime\ is\ that\ he\ expresses\ the\ actual\ watering\ time,\ also\ called\ the\ effective\ cumulative\ running\ time\ \ */}}
+\DoxyCodeLine{00283\ \ \ \ \ uint32\_t\ has\_been\_watering\_time;}
+\DoxyCodeLine{00284\ \ \ \ \ \textcolor{comment}{/*\ 本轮运行时间\ */}}
+\DoxyCodeLine{00285\ \ \ \ \ uint32\_t\ cruuent\_round\_running\_time;}
+\DoxyCodeLine{00286\ \ \ \ \ uint32\_t\ has\_been\_power\_watering\_time;}
+\DoxyCodeLine{00287\ \ \ \ \ \textcolor{comment}{/*\ Current\ zone\ cumulative\ run\ time,\ (\ A\ pause\ in\ any\ area\ will\ interrupt\ it\ \ )*/}}
+\DoxyCodeLine{00288\ \ \ \ \ uint32\_t\ thisOperationTime;}
+\DoxyCodeLine{00289\ \};}
+\DoxyCodeLine{00290\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structchan__managec}{chan\_managec}}\ \mbox{\hyperlink{structchan__managec}{m\_chan\_managec}};}
+\DoxyCodeLine{00291\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00292\ }
+\DoxyCodeLine{00293\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structschedule__key__info}{schedule\_key\_info}}}
+\DoxyCodeLine{00294\ \{}
+\DoxyCodeLine{00295\ \ \ \ \ uint64\_t\ cu\_id;\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00296\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structschedule__key__info_a559eb36cd9722806f09018878e48974c}{cu\_smart}};\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00297\ \ \ \ \ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{structschedule__key__info_acfe7c14effaa8b5697a1f3b2cf46a3e4}{cu\_sack}}[15];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00298\ \ \ \ \ \mbox{\hyperlink{structtime__range}{m\_time\_range}}\ \mbox{\hyperlink{structschedule__key__info_aa2d388af4a47c88216dd451574610226}{available\_time}};\ \ \ \ \ }
+\DoxyCodeLine{00299\ \ \ \ \ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{structschedule__key__info_aeedbed97e8b943997791a0fead96c481}{cu\_temp\_param}}[10];\ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00300\ \ \ \ \ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{structschedule__key__info_aed6c786ba236d50cbda3e9f2d59a16a5}{cu\_execute\_time}}[10];\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00301\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structschedule__key__info_a597443ac674d68e95ba8b67b1f3ab1d8}{cu\_execute\_type}};\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00302\ \ \ \ \ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{structschedule__key__info_ab60540e25d04c9dd7eb01c038fd87a30}{cu\_zone}}[65];\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00303\ \ \ \ \ \textcolor{keywordtype}{char}\ \mbox{\hyperlink{structschedule__key__info_a8f1f74cff2f240e57e3e52ffd2dfe068}{cu\_week\_list}}[15];\ \ \ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00304\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structschedule__key__info_af1c4f54f082f1ceb462521f4ae39bb5f}{cu\_interval\_hour\_or\_day}};\ }
+\DoxyCodeLine{00305\ \ \ \ \ uint8\_t\ \mbox{\hyperlink{structschedule__key__info_a307688e094cf08fbbddc4bbe83805374}{cu\_run\_interval\_type}};\ \ \ \ }
+\DoxyCodeLine{00306\ \ \ \ \ uint32\_t\ \mbox{\hyperlink{structschedule__key__info_a19c5428a841ed411cde6d291d77883ae}{cu\_run\_time\_sum}};\ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00307\ \};}
+\DoxyCodeLine{00308\ }
+\DoxyCodeLine{00310\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structschedule__key__info}{schedule\_key\_info}}\ \mbox{\hyperlink{structschedule__key__info}{m\_schedule\_info}};}
+\DoxyCodeLine{00311\ }
+\DoxyCodeLine{00312\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{enum}}
+\DoxyCodeLine{00313\ \{}
+\DoxyCodeLine{00314\ \ \ \ \ SCHEDULE\_RUN\_TYPE\_AT\ =\ 100,}
+\DoxyCodeLine{00315\ \ \ \ \ SCHEDULE\_RUN\_TYPE\_BEFROE,}
+\DoxyCodeLine{00316\ \ \ \ \ SCHEDULE\_RUN\_TYPE\_SUNSET,}
+\DoxyCodeLine{00317\ \ \ \ \ SCHEDULE\_RUN\_TYPE\_SUNRISE,}
+\DoxyCodeLine{00318\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_SPEC\_DAYS,}
+\DoxyCodeLine{00319\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_ODD\_DAY,}
+\DoxyCodeLine{00320\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_EVEN\_DAY,}
+\DoxyCodeLine{00321\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_INVERTAL\_DAY,}
+\DoxyCodeLine{00322\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_INVERYAL\_HOUR,}
+\DoxyCodeLine{00323\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_EVERY\_DAYS,}
+\DoxyCodeLine{00324\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_SUNRISE\_PLUS,\ \textcolor{comment}{//\ 日出之后开始}}
+\DoxyCodeLine{00325\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_SUNSET\_PLUS,\ \ \textcolor{comment}{//\ 日落之前结束}}
+\DoxyCodeLine{00326\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_112,\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00327\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_113,\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00328\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_114,\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00329\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_115,\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00330\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_116,\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00331\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_117,\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00332\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_118,\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00333\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_119,\ \ \ \ \ \ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00334\ \ \ \ \ SCHEDULE\_RUN\_RHYTHM\_NEW\_LAWN,\ \ \ \ \ \textcolor{comment}{//}}
+\DoxyCodeLine{00335\ \}\ SCHEDULE\_TYPE;}
+\DoxyCodeLine{00336\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structwatering__schedule}{watering\_schedule}}}
+\DoxyCodeLine{00337\ \{}
+\DoxyCodeLine{00339\ \ \ \ \ \mbox{\hyperlink{structschedule__key__info}{m\_schedule\_info}}\ \mbox{\hyperlink{structwatering__schedule_a8ed4e6499dfbf1e4109460330a157045}{sch\_info}};}
+\DoxyCodeLine{00341\ \ \ \ \ \mbox{\hyperlink{structtime__range}{m\_time\_range}}\ \mbox{\hyperlink{structwatering__schedule_a173b6eb8520b7a5e8197cf667d1c5214}{deadlineofsch}};}
+\DoxyCodeLine{00343\ \ \ \ \ \mbox{\hyperlink{structtime__range}{m\_time\_range}}\ \mbox{\hyperlink{structwatering__schedule_a8b9a41a95ece7fb57ecf1075a26b929c}{skip\_range\_time}};}
+\DoxyCodeLine{00345\ \ \ \ \ m\_status\ \mbox{\hyperlink{structwatering__schedule_a7cf6c94cb6b0a94efcb84f283a173f87}{state}};}
+\DoxyCodeLine{00346\ }
+\DoxyCodeLine{00347\ \ \ \ \ \mbox{\hyperlink{structextrafun__}{m\_extrafun}}\ exfun;}
+\DoxyCodeLine{00348\ }
+\DoxyCodeLine{00350\ \ \ \ \ \mbox{\hyperlink{structchan__managec}{m\_chan\_managec}}\ \mbox{\hyperlink{structwatering__schedule_a79aa1daa42641f0d899385e747976905}{cmg\_channel}}[16];\ }
+\DoxyCodeLine{00351\ \ \ \ \ \textcolor{comment}{//\ m\_chan\_managec\ mc\_channel[16];}}
+\DoxyCodeLine{00352\ }
+\DoxyCodeLine{00354\ \ \ \ \ uint64\_t\ \mbox{\hyperlink{structwatering__schedule_a3c751c322efa62e6e030cfdfa0c7f49d}{WSTime}};}
+\DoxyCodeLine{00355\ }
+\DoxyCodeLine{00357\ \ \ \ \ \mbox{\hyperlink{structrun__buff}{m\_run\_data}}\ \mbox{\hyperlink{structwatering__schedule_a8f8554bdbac9a779d95c5f80574813a3}{running}};}
+\DoxyCodeLine{00358\ \};}
+\DoxyCodeLine{00360\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structwatering__schedule}{watering\_schedule}}\ \mbox{\hyperlink{structwatering__schedule}{m\_watering\_schedule}};}
+\DoxyCodeLine{00361\ }
+\DoxyCodeLine{00367\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____GLOBAL__SCHEDULE__PARAM}{\_\_GLOBAL\_SCHEDULE\_PARAM}}}
+\DoxyCodeLine{00368\ \{}
+\DoxyCodeLine{00369\ \ \ \ \ \mbox{\hyperlink{structtime__range}{m\_time\_range}}\ water\_delay;}
+\DoxyCodeLine{00370\ \ \ \ \ \mbox{\hyperlink{structtime__range}{m\_time\_range}}\ suninfo;}
+\DoxyCodeLine{00371\ \ \ \ \ uint8\_t\ zone\_enable[16];}
+\DoxyCodeLine{00372\ \};}
+\DoxyCodeLine{00373\ }
+\DoxyCodeLine{00374\ \textcolor{preprocessor}{\#define\ BUG\ "{}Imolaza"{}}}
+\DoxyCodeLine{00375\ \textcolor{preprocessor}{\#define\ END\ "{}\(\backslash\)r\(\backslash\)n"{}}}
+\DoxyCodeLine{00376\ }
+\DoxyCodeLine{00377\ \textcolor{comment}{//\ \#define\ \_logi(form,\ ...)\ ESP\_LOGI(BUG,\ form,\ \#\#\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00378\ \textcolor{comment}{//\ \#define\ \_logw(form,\ ...)\ ESP\_LOGW(BUG,\ form,\ \#\#\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00379\ \textcolor{comment}{//\ \#define\ \_loge(form,\ ...)\ ESP\_LOGE(BUG,\ form,\ \#\#\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00380\ }
+\DoxyCodeLine{00381\ \textcolor{comment}{//\ \#define\ DEBUG\_I(form,\ ...)\ \_logi("{}\{\%s\}\ "{}}}
+\DoxyCodeLine{00382\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}[\%d]\ "{}\ form,}}
+\DoxyCodeLine{00383\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_FUNCTION\_\_,\ \_\_LINE\_\_,\ \#\#\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00384\ \textcolor{comment}{//\ \#define\ DEBUG\_W(form,\ ...)\ \_logw("{}\{\%s\}\ "{}}}
+\DoxyCodeLine{00385\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}[\%d]\ "{}\ form,}}
+\DoxyCodeLine{00386\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_FUNCTION\_\_,\ \_\_LINE\_\_,\ \#\#\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00387\ \textcolor{comment}{//\ \#define\ DEBUG\_E(form,\ ...)\ \_loge("{}\{\%s\}\ "{}}}
+\DoxyCodeLine{00388\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ "{}[\%d]\ "{}\ form,}}
+\DoxyCodeLine{00389\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \_\_FUNCTION\_\_,\ \_\_LINE\_\_,\ \#\#\_\_VA\_ARGS\_\_)}}
+\DoxyCodeLine{00390\ }
+\DoxyCodeLine{00391\ \textcolor{keyword}{static}\ FILE\ *fpWrite;}
+\DoxyCodeLine{00392\ }
+\DoxyCodeLine{00393\ \textcolor{preprocessor}{\#define\ DEBUG\_I(form,\ ...)\ printf("{}\(\backslash\)033[0;32m\{\%s\}[\%d]\ "{}}\ form\ "{}\(\backslash\)n\(\backslash\)033[0;m"{},\ \_\_FUNCTION\_\_,\ \_\_LINE\_\_,\ \#\#\_\_VA\_ARGS\_\_)}
+\DoxyCodeLine{00394\ }
+\DoxyCodeLine{00395\ \textcolor{preprocessor}{\#define\ DEBUG\_W(form,\ ...)\ printf("{}\(\backslash\)033[0;33m\{\%s\}[\%d]\ "{}}\ form\ "{}\(\backslash\)n\(\backslash\)033[0;m"{},\ \_\_FUNCTION\_\_,\ \_\_LINE\_\_,\ \#\#\_\_VA\_ARGS\_\_)}
+\DoxyCodeLine{00396\ }
+\DoxyCodeLine{00397\ \textcolor{preprocessor}{\#define\ DEBUG\_E(form,\ ...)\ printf("{}\(\backslash\)033[0;31m\{\%s\}[\%d]\ "{}}\ form\ "{}\(\backslash\)n\(\backslash\)033[0;m"{},\ \_\_FUNCTION\_\_,\ \_\_LINE\_\_,\ \#\#\_\_VA\_ARGS\_\_)}
+\DoxyCodeLine{00398\ }
+\DoxyCodeLine{00399\ \textcolor{preprocessor}{\#define\ DEBUG\_OUT\_TO\_FILE\_COLOR(str,\ ...)\ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00400\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00401\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ fpWrite\ =\ fopen("{}debug.txt"{}},\ "{}a"{});\ \ \ \ \(\backslash\)}
+\DoxyCodeLine{00402\ \ \ \ \ \ \ \ \ fprintf(fpWrite,\ str,\ \#\#\_\_VA\_ARGS\_\_);\ \(\backslash\)}
+\DoxyCodeLine{00403\ \ \ \ \ \ \ \ \ fclose(fpWrite);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{00404\ \ \ \ \ \}}
+\DoxyCodeLine{00405\ \textcolor{preprocessor}{\#define\ DEBUG\_OUT\_TO\_FILE(str,\ ...)\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00406\ \textcolor{preprocessor}{\ \ \ \ \{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}}
+\DoxyCodeLine{00407\ \textcolor{preprocessor}{\ \ \ \ \ \ \ \ fpWrite\ =\ fopen("{}debug.txt"{}},\ "{}a"{});\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{00408\ \ \ \ \ \ \ \ \ fprintf(fpWrite,\ "{}\(\backslash\)033[0;33m\{\%s\}[\%d]\ "{}\ str\ "{}\(\backslash\)n\(\backslash\)033[0;m"{},\ \_\_FUNCTION\_\_,\ \_\_LINE\_\_,\ \#\#\_\_VA\_ARGS\_\_);\ \(\backslash\)}
+\DoxyCodeLine{00409\ \ \ \ \ \ \ \ \ fclose(fpWrite);\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \(\backslash\)}
+\DoxyCodeLine{00410\ \ \ \ \ \}}
+\DoxyCodeLine{00411\ }
+\DoxyCodeLine{00412\ \textcolor{preprocessor}{\#define\ CAREFULY\_CHANGE\_CONSTVALUE\_INT(vue,\ offset)\ \(\backslash\)}}
+\DoxyCodeLine{00413\ \textcolor{preprocessor}{\ \ \ \ vue\ +=\ offset;}}
+\DoxyCodeLine{00414\ \textcolor{comment}{//\ enum\ \_led\_color}}
+\DoxyCodeLine{00415\ \textcolor{comment}{//\ \{}}
+\DoxyCodeLine{00416\ \textcolor{comment}{//\ \ \ \ \ red\ =\ 0xff0000,}}
+\DoxyCodeLine{00417\ \textcolor{comment}{//\ \ \ \ \ blue\ =\ 0xff,}}
+\DoxyCodeLine{00418\ \textcolor{comment}{//\ \ \ \ \ greed\ =\ 0x00ff00,}}
+\DoxyCodeLine{00419\ \textcolor{comment}{//\ \ \ \ \ purple\ =\ 0x800080,}}
+\DoxyCodeLine{00420\ \textcolor{comment}{//\ \ \ \ \ grey\ =\ 0x808080,}}
+\DoxyCodeLine{00421\ \textcolor{comment}{//\ \ \ \ \ brow\ =\ 0xd2691e,}}
+\DoxyCodeLine{00422\ \textcolor{comment}{//\ \ \ \ \ orange\ =\ 0xffd700,}}
+\DoxyCodeLine{00423\ \textcolor{comment}{//\ \ \ \ \ white\ =\ 0xffffff,}}
+\DoxyCodeLine{00424\ \textcolor{comment}{//\ \ \ \ \ yellow\ =\ 0x111100}}
+\DoxyCodeLine{00425\ \textcolor{comment}{//\ \};}}
+\DoxyCodeLine{00426\ \textcolor{comment}{//\ enum\ ledDisplaySatte}}
+\DoxyCodeLine{00427\ \textcolor{comment}{//\ \{}}
+\DoxyCodeLine{00428\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_TESTMODE\ =\ 66,}}
+\DoxyCodeLine{00429\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_CONFIGNET\ =\ 1,}}
+\DoxyCodeLine{00430\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_CONFIGNET\_ONE\ =\ 1,}}
+\DoxyCodeLine{00431\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_CONFIGNET\_TWO\ =\ 2,}}
+\DoxyCodeLine{00432\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_CONFIGNET\_THREE\ =\ 3,}}
+\DoxyCodeLine{00433\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_CONFIGNET\_FOUR\ =\ 4,}}
+\DoxyCodeLine{00434\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_CONFIGNET\_FIVE\ =\ 5,}}
+\DoxyCodeLine{00435\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_SYSTEM\_RESET\ =\ 2,}}
+\DoxyCodeLine{00436\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_START\_UP\ =\ 3,}}
+\DoxyCodeLine{00437\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_CONFIGNET\_FINISH\ =\ 5,}}
+\DoxyCodeLine{00438\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_CLEAN\_WATERING\ =\ 6,}}
+\DoxyCodeLine{00439\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_IDLE\_MODE\ =\ 7,}}
+\DoxyCodeLine{00440\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_WATERING\ =\ 8,}}
+\DoxyCodeLine{00441\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_LIGHT\_0\ =\ 10,}}
+\DoxyCodeLine{00442\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_OTA\ =\ 11,}}
+\DoxyCodeLine{00443\ \textcolor{comment}{//\ \ \ \ \ RGB\_FLAG\_POSTITION\_TEST\ =\ 12,}}
+\DoxyCodeLine{00444\ \textcolor{comment}{//\ \};}}
+\DoxyCodeLine{00445\ \textcolor{comment}{//\ \#define\ COLOR\_MAX(color)\ (color\ >\ 0\ ?\ 0x01\ :\ 0x00)}}
+\DoxyCodeLine{00446\ }
+\DoxyCodeLine{00447\ \textcolor{comment}{//\ \#define\ COLOR\_CONCOC(color)\ (((COLOR\_MAX(((color\ >>\ 16)\ \&\ 0xff))\ *\ (LED\_RANK))\ <<\ 16)\ |}}
+\DoxyCodeLine{00448\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ((COLOR\_MAX(((color\ >>\ 8)\ \&\ 0xff))\ *\ (LED\_RANK))\ <<\ 8)\ |}}
+\DoxyCodeLine{00449\ \textcolor{comment}{//\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ (COLOR\_MAX((color\ \&\ 0xff))\ *\ (LED\_RANK)))}}
+\DoxyCodeLine{00450\ }
+\DoxyCodeLine{00451\ \textcolor{comment}{//\ \#define\ LED\_RANK\ 50}}
+\DoxyCodeLine{00452\ }
+\DoxyCodeLine{00453\ \textcolor{comment}{//\ \#define\ CONFIG\_ordinary\ 1}}
+\DoxyCodeLine{00454\ }
+\DoxyCodeLine{00455\ \textcolor{comment}{//\ \#ifdef\ CONFIG\_colorful}}
+\DoxyCodeLine{00456\ \textcolor{comment}{//\ \#define\ LED\_MODE\ colorful}}
+\DoxyCodeLine{00457\ \textcolor{comment}{//\ \#endif}}
+\DoxyCodeLine{00458\ \textcolor{comment}{//\ \#ifdef\ CONFIG\_loader}}
+\DoxyCodeLine{00459\ \textcolor{comment}{//\ \#define\ LED\_MODE\ loader}}
+\DoxyCodeLine{00460\ \textcolor{comment}{//\ \#endif}}
+\DoxyCodeLine{00461\ \textcolor{comment}{//\ \#ifdef\ CONFIG\_beastie}}
+\DoxyCodeLine{00462\ \textcolor{comment}{//\ \#define\ LED\_MODE\ beastie}}
+\DoxyCodeLine{00463\ \textcolor{comment}{//\ \#endif}}
+\DoxyCodeLine{00464\ \textcolor{comment}{//\ \#ifdef\ CONFIG\_ordinary}}
+\DoxyCodeLine{00465\ \textcolor{comment}{//\ \#define\ LED\_MODE\ ordinary}}
+\DoxyCodeLine{00466\ \textcolor{comment}{//\ \#endif}}
+\DoxyCodeLine{00467\ }
+\DoxyCodeLine{00468\ \textcolor{comment}{//\ \#define\ CONFIG\_nor\_blue\ 1}}
+\DoxyCodeLine{00469\ \textcolor{comment}{//\ //\ \#define\ CONFIG\_nor\_greed\ 1}}
+\DoxyCodeLine{00470\ \textcolor{comment}{//\ //\ \#define\ CONFIG\_nor\_purple\ 1}}
+\DoxyCodeLine{00471\ \textcolor{comment}{//\ //\ \#define\ CONFIG\_nor\_yellow\ 1}}
+\DoxyCodeLine{00472\ \textcolor{comment}{//\ \#define\ CONFIG\_idle\_blue\ 1}}
+\DoxyCodeLine{00473\ \textcolor{comment}{//\ \#define\ CONFIG\_err\_yellow\ 1}}
+\DoxyCodeLine{00474\ }
+\DoxyCodeLine{00475\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_nor\_blue}}
+\DoxyCodeLine{00476\ \textcolor{preprocessor}{\#define\ LED\_NOR\_COLOR\ COLOR\_CONCOC(blue)}}
+\DoxyCodeLine{00477\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00478\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_nor\_greed}}
+\DoxyCodeLine{00479\ \textcolor{preprocessor}{\#define\ LED\_NOR\_COLOR\ COLOR\_CONCOC(blue)}}
+\DoxyCodeLine{00480\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00481\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_nor\_purple}}
+\DoxyCodeLine{00482\ \textcolor{preprocessor}{\#define\ LED\_NOR\_COLOR\ COLOR\_CONCOC(purple)}}
+\DoxyCodeLine{00483\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00484\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_nor\_grey}}
+\DoxyCodeLine{00485\ \textcolor{preprocessor}{\#define\ LED\_NOR\_COLOR\ COLOR\_CONCOC(grey)}}
+\DoxyCodeLine{00486\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00487\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_nor\_brow}}
+\DoxyCodeLine{00488\ \textcolor{preprocessor}{\#define\ LED\_NOR\_COLOR\ COLOR\_CONCOC(brow)}}
+\DoxyCodeLine{00489\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00490\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_nor\_orange}}
+\DoxyCodeLine{00491\ \textcolor{preprocessor}{\#define\ LED\_NOR\_COLOR\ COLOR\_CONCOC(orange)}}
+\DoxyCodeLine{00492\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00493\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_nor\_white}}
+\DoxyCodeLine{00494\ \textcolor{preprocessor}{\#define\ LED\_NOR\_COLOR\ COLOR\_CONCOC(white)}}
+\DoxyCodeLine{00495\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00496\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_nor\_red}}
+\DoxyCodeLine{00497\ \textcolor{preprocessor}{\#define\ LED\_NOR\_COLOR\ COLOR\_CONCOC(red)}}
+\DoxyCodeLine{00498\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00499\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_nor\_yellow}}
+\DoxyCodeLine{00500\ \textcolor{preprocessor}{\#define\ LED\_NOR\_COLOR\ COLOR\_CONCOC(yellow)}}
+\DoxyCodeLine{00501\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00502\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_idle\_blue}}
+\DoxyCodeLine{00503\ \textcolor{preprocessor}{\#define\ LED\_IDLE\_COLOR\ COLOR\_CONCOC(blue)}}
+\DoxyCodeLine{00504\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00505\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_idle\_greed}}
+\DoxyCodeLine{00506\ \textcolor{preprocessor}{\#define\ LED\_IDLE\_COLOR\ COLOR\_CONCOC(greed)}}
+\DoxyCodeLine{00507\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00508\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_idle\_purple}}
+\DoxyCodeLine{00509\ \textcolor{preprocessor}{\#define\ LED\_IDLE\_COLOR\ COLOR\_CONCOC(purple)}}
+\DoxyCodeLine{00510\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00511\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_idle\_grey}}
+\DoxyCodeLine{00512\ \textcolor{preprocessor}{\#define\ LED\_IDLE\_COLOR\ COLOR\_CONCOC(grey)}}
+\DoxyCodeLine{00513\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00514\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_idle\_brow}}
+\DoxyCodeLine{00515\ \textcolor{preprocessor}{\#define\ LED\_IDLE\_COLOR\ COLOR\_CONCOC(brow)}}
+\DoxyCodeLine{00516\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00517\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_idle\_orange}}
+\DoxyCodeLine{00518\ \textcolor{preprocessor}{\#define\ LED\_IDLE\_COLOR\ COLOR\_CONCOC(range)}}
+\DoxyCodeLine{00519\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00520\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_idle\_white}}
+\DoxyCodeLine{00521\ \textcolor{preprocessor}{\#define\ LED\_IDLE\_COLOR\ COLOR\_CONCOC(white)}}
+\DoxyCodeLine{00522\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00523\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_idle\_red}}
+\DoxyCodeLine{00524\ \textcolor{preprocessor}{\#define\ LED\_IDLE\_COLOR\ COLOR\_CONCOC(red)}}
+\DoxyCodeLine{00525\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00526\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_idle\_yellow}}
+\DoxyCodeLine{00527\ \textcolor{preprocessor}{\#define\ LED\_IDLE\_COLOR\ COLOR\_CONCOC(yellow)}}
+\DoxyCodeLine{00528\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00529\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_err\_blue}}
+\DoxyCodeLine{00530\ \textcolor{preprocessor}{\#define\ LED\_ERR\_COLOR\ COLOR\_CONCOC(blue)}}
+\DoxyCodeLine{00531\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00532\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_err\_greed}}
+\DoxyCodeLine{00533\ \textcolor{preprocessor}{\#define\ LED\_ERR\_COLOR\ COLOR\_CONCOC(greed)}}
+\DoxyCodeLine{00534\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00535\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_err\_purple}}
+\DoxyCodeLine{00536\ \textcolor{preprocessor}{\#define\ LED\_ERR\_COLOR\ COLOR\_CONCOC(purple)}}
+\DoxyCodeLine{00537\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00538\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_err\_grey}}
+\DoxyCodeLine{00539\ \textcolor{preprocessor}{\#define\ LED\_ERR\_COLOR\ COLOR\_CONCOC(rey)}}
+\DoxyCodeLine{00540\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00541\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_err\_brow}}
+\DoxyCodeLine{00542\ \textcolor{preprocessor}{\#define\ LED\_ERR\_COLOR\ COLOR\_CONCOC(brow)}}
+\DoxyCodeLine{00543\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00544\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_err\_orange}}
+\DoxyCodeLine{00545\ \textcolor{preprocessor}{\#define\ LED\_ERR\_COLOR\ COLOR\_CONCOC(orange)}}
+\DoxyCodeLine{00546\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00547\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_err\_white}}
+\DoxyCodeLine{00548\ \textcolor{preprocessor}{\#define\ LED\_ERR\_COLOR\ COLOR\_CONCOC(white)}}
+\DoxyCodeLine{00549\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00550\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_err\_red}}
+\DoxyCodeLine{00551\ \textcolor{preprocessor}{\#define\ LED\_ERR\_COLOR\ COLOR\_CONCOC(red)}}
+\DoxyCodeLine{00552\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00553\ \textcolor{preprocessor}{\#ifdef\ CONFIG\_err\_yellow}}
+\DoxyCodeLine{00554\ \textcolor{preprocessor}{\#define\ LED\_ERR\_COLOR\ COLOR\_CONCOC(yellow)}}
+\DoxyCodeLine{00555\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00556\ \textcolor{preprocessor}{\#define\ LED\_WIFI\_CONNECT\_COLOR\ 0x100030}}
+\DoxyCodeLine{00557\ \textcolor{preprocessor}{\#define\ LED\_OTA\_COLOR\ 0x151515}}
+\DoxyCodeLine{00558\ }
+\DoxyCodeLine{00559\ \textcolor{comment}{//\ \#define\ GPIO\_KEY\_RIGHT\ CONFIG\_KEY\_LEFT\_PIN\ \ //\ CONFIG\_KEY\_START\_PIN}}
+\DoxyCodeLine{00560\ \textcolor{comment}{//\ \#define\ GPIO\_KEY\_PAUSE\ CONFIG\_KEY\_PAUSE\_PIN\ //\ CONFIG\_KEY\_LEFT\_PIN}}
+\DoxyCodeLine{00561\ \textcolor{comment}{//\ \#define\ GPIO\_KEY\_PLAY\ CONFIG\_KEY\_START\_PIN\ \ //\ CONFIG\_KEY\_RIGHT\_PIN}}
+\DoxyCodeLine{00562\ \textcolor{comment}{//\ \#define\ GPIO\_KEY\_LEFT\ CONFIG\_KEY\_RIGHT\_PIN\ \ //\ CONFIG\_KEY\_PAUSE\_PIN}}
+\DoxyCodeLine{00563\ \textcolor{comment}{//\ \#define\ GPIO\_MAIN\_RESET\ CONFIG\_KEY\_RESET\_PIN}}
+\DoxyCodeLine{00564\ \textcolor{preprocessor}{\#define\ GPIO\_TEST\_PIN\ 2}}
+\DoxyCodeLine{00565\ }
+\DoxyCodeLine{00566\ \textcolor{preprocessor}{\#define\ LED\_START\_UP\ COLOR\_CONCOC(greed)}}
+\DoxyCodeLine{00567\ \textcolor{preprocessor}{\#define\ I2C\_MASTER\_SCL\_IO\ 17}}
+\DoxyCodeLine{00568\ \textcolor{preprocessor}{\#define\ I2C\_MASTER\_SDA\_IO\ 16}}
+\DoxyCodeLine{00569\ \textcolor{preprocessor}{\#define\ I2C\_MASTER\_FREQ\_HZ\ CONFIG\_IIC\_FREQ}}
+\DoxyCodeLine{00570\ }
+\DoxyCodeLine{00571\ \textcolor{preprocessor}{\#define\ LED\_CONFIG\_NET\_DONE\ COLOR\_CONCOC(blue)}}
+\DoxyCodeLine{00572\ \textcolor{preprocessor}{\#define\ LED\_CONFIG\_NET\_ING\ COLOR\_CONCOC(greed)}}
+\DoxyCodeLine{00573\ }
+\DoxyCodeLine{00574\ \textcolor{preprocessor}{\#define\ LED\_TEST\_COLOR\_BLUE\ COLOR\_CONCOC(blue)}}
+\DoxyCodeLine{00575\ \textcolor{preprocessor}{\#define\ LED\_TEST\_COLOR\_RED\ COLOR\_CONCOC(red)}}
+\DoxyCodeLine{00576\ \textcolor{preprocessor}{\#define\ LED\_TEST\_COLOR\_GREED\ COLOR\_CONCOC(greed)}}
+\DoxyCodeLine{00577\ \textcolor{preprocessor}{\#define\ LED\_TEST\_COLOR\_YELLOW\ COLOR\_CONCOC(yellow)}}
+\DoxyCodeLine{00578\ \textcolor{preprocessor}{\#define\ LED\_TEST\_COLOR\_PURPLE\ COLOR\_CONCOC(purple)}}
+\DoxyCodeLine{00579\ \textcolor{preprocessor}{\#define\ LED\_TEST\_COLOR\_WHITR\ COLOR\_CONCOC(white)}}
+\DoxyCodeLine{00580\ }
+\DoxyCodeLine{00581\ \textcolor{preprocessor}{\#define\ NET\_ERR\_COUNT\_MAX\ 5}}
+\DoxyCodeLine{00582\ \textcolor{preprocessor}{\#define\ SOCKET\_ERR\_COUNT\_MAX\ 5}}
+\DoxyCodeLine{00583\ }
+\DoxyCodeLine{00584\ \textcolor{preprocessor}{\#define\ NON\_EMPTY(obj)\ (obj\ !=\ NULL)}}
+\DoxyCodeLine{00585\ \textcolor{preprocessor}{\#define\ NETWORK\_DNS\_CHECK(a)\ (a\ >\ 3\ \&\&\ (a\ <\ NET\_ERR\_COUNT\_MAX))}}
+\DoxyCodeLine{00586\ \textcolor{preprocessor}{\#define\ NETWORK\_CHECK(a)\ (a\ >\ NET\_ERR\_COUNT\_MAX\ \&\&\ (a\ \%\ 3\ ==\ 0))}}
+\DoxyCodeLine{00587\ \textcolor{preprocessor}{\#define\ NETWORK\_FAIL\_FIX(a)\ (a\ ==\ NET\_ERR\_COUNT\_MAX)}}
+\DoxyCodeLine{00588\ }
+\DoxyCodeLine{00589\ \textcolor{keyword}{enum}\ offline\_cause\_t}
+\DoxyCodeLine{00590\ \{}
+\DoxyCodeLine{00591\ \ \ \ \ unknow\ =\ -\/1,}
+\DoxyCodeLine{00592\ \ \ \ \ power\_dump\ =\ 1,}
+\DoxyCodeLine{00593\ \ \ \ \ network\_anomaly\ =\ 2,}
+\DoxyCodeLine{00594\ \ \ \ \ wifi\_disconnect\ =\ 3,}
+\DoxyCodeLine{00595\ \ \ \ \ device\_abnormal\_restart\ =\ 4,}
+\DoxyCodeLine{00596\ \ \ \ \ other\ =\ 5,}
+\DoxyCodeLine{00597\ \};}
+\DoxyCodeLine{00598\ }
+\DoxyCodeLine{00599\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct__errTable__}{\_errTable\_}}}
+\DoxyCodeLine{00600\ \{}
+\DoxyCodeLine{00601\ \ \ \ \ \textcolor{comment}{/*\ wifi\ */}}
+\DoxyCodeLine{00602\ \ \ \ \ \textcolor{keywordtype}{bool}\ functionTest\_is\_wifi;}
+\DoxyCodeLine{00603\ \ \ \ \ \textcolor{keywordtype}{char}\ functionTest\_WIFISSID[32];}
+\DoxyCodeLine{00604\ \ \ \ \ \textcolor{keywordtype}{char}\ functionTest\_WIFIPSW[20];}
+\DoxyCodeLine{00605\ \ \ \ \ \textcolor{keywordtype}{int}\ functionTest\_not\_found\_wifi;}
+\DoxyCodeLine{00606\ \ \ \ \ \textcolor{keywordtype}{int}\ functionTest\_pswerr;}
+\DoxyCodeLine{00607\ \ \ \ \ \textcolor{keywordtype}{int}\ functionTest\_connectTimeOut;}
+\DoxyCodeLine{00608\ \ \ \ \ \textcolor{keywordtype}{int}\ functionTest\_succ;}
+\DoxyCodeLine{00609\ }
+\DoxyCodeLine{00610\ \ \ \ \ \textcolor{comment}{/*\ led\ */}}
+\DoxyCodeLine{00611\ \ \ \ \ \textcolor{keywordtype}{bool}\ functionTest\_is\_led;}
+\DoxyCodeLine{00612\ \ \ \ \ \textcolor{keywordtype}{int}\ functionTest\_not\_found\_chip;}
+\DoxyCodeLine{00613\ \ \ \ \ \textcolor{keywordtype}{int}\ functionTest\_linkTimeOut;}
+\DoxyCodeLine{00614\ }
+\DoxyCodeLine{00615\ \ \ \ \ \textcolor{comment}{/*\ socket\ */}}
+\DoxyCodeLine{00616\ \ \ \ \ \textcolor{keywordtype}{bool}\ functionTest\_is\_socket;}
+\DoxyCodeLine{00617\ \ \ \ \ \textcolor{keywordtype}{int}\ functionTest\_socketFail;}
+\DoxyCodeLine{00618\ \ \ \ \ \textcolor{keywordtype}{int}\ functionTest\_socketFail\_count;}
+\DoxyCodeLine{00619\ \ \ \ \ \textcolor{keywordtype}{int}\ functionTest\_socketNotFoundDNS;}
+\DoxyCodeLine{00620\ \ \ \ \ \textcolor{keywordtype}{int}\ functionTest\_socketSucc;}
+\DoxyCodeLine{00621\ }
+\DoxyCodeLine{00622\ \ \ \ \ \textcolor{keywordtype}{int}\ system\_wifi\_event\_disconn;}
+\DoxyCodeLine{00623\ \ \ \ \ \textcolor{keywordtype}{int}\ offline\_hedging;}
+\DoxyCodeLine{00624\ \ \ \ \ \textcolor{keyword}{enum}\ offline\_cause\_t\ offline\_cause;}
+\DoxyCodeLine{00625\ \};}
+\DoxyCodeLine{00626\ \textcolor{keyword}{enum}\ WIFI\_RESCUE\_MESSAGE}
+\DoxyCodeLine{00627\ \{}
+\DoxyCodeLine{00628\ \ \ \ \ M\_RESCUE\_MESSAGE\_SET\ =\ 50,}
+\DoxyCodeLine{00629\ \ \ \ \ M\_RESCUE\_MESSAGE\_GET\ =\ 51,}
+\DoxyCodeLine{00630\ \ \ \ \ M\_RESCUE\_MESSAGE\_DEL\ =\ 52,}
+\DoxyCodeLine{00631\ \};}
+\DoxyCodeLine{00632\ }
+\DoxyCodeLine{00633\ \textcolor{preprocessor}{\#endif\ }\textcolor{comment}{/*\ "{}\_\_CORE\_\_H\_\_"{}*/}\textcolor{preprocessor}{}}
+\DoxyCodeLine{00634\ }
+
+\end{DoxyCode}

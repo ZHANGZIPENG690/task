@@ -1,0 +1,72 @@
+\hypertarget{structwatering__schedule}{}\doxysection{watering\+\_\+schedule Struct Reference}
+\label{structwatering__schedule}\index{watering\_schedule@{watering\_schedule}}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{structschedule__key__info}{m\+\_\+schedule\+\_\+info}} \mbox{\hyperlink{structwatering__schedule_a8ed4e6499dfbf1e4109460330a157045}{sch\+\_\+info}}
+\item 
+\mbox{\hyperlink{structtime__range}{m\+\_\+time\+\_\+range}} \mbox{\hyperlink{structwatering__schedule_a173b6eb8520b7a5e8197cf667d1c5214}{deadlineofsch}}
+\item 
+\mbox{\hyperlink{structtime__range}{m\+\_\+time\+\_\+range}} \mbox{\hyperlink{structwatering__schedule_a8b9a41a95ece7fb57ecf1075a26b929c}{skip\+\_\+range\+\_\+time}}
+\item 
+m\+\_\+status \mbox{\hyperlink{structwatering__schedule_a7cf6c94cb6b0a94efcb84f283a173f87}{state}}
+\item 
+\mbox{\Hypertarget{structwatering__schedule_a5bf435a84d646d221f00affea4f79cb0}\label{structwatering__schedule_a5bf435a84d646d221f00affea4f79cb0}} 
+\mbox{\hyperlink{structextrafun__}{m\+\_\+extrafun}} {\bfseries exfun}
+\item 
+\mbox{\hyperlink{structchan__managec}{m\+\_\+chan\+\_\+managec}} \mbox{\hyperlink{structwatering__schedule_a79aa1daa42641f0d899385e747976905}{cmg\+\_\+channel}} \mbox{[}16\mbox{]}
+\item 
+uint64\+\_\+t \mbox{\hyperlink{structwatering__schedule_a3c751c322efa62e6e030cfdfa0c7f49d}{WSTime}}
+\item 
+\mbox{\hyperlink{structrun__buff}{m\+\_\+run\+\_\+data}} \mbox{\hyperlink{structwatering__schedule_a8f8554bdbac9a779d95c5f80574813a3}{running}}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structwatering__schedule_a79aa1daa42641f0d899385e747976905}\label{structwatering__schedule_a79aa1daa42641f0d899385e747976905}} 
+\index{watering\_schedule@{watering\_schedule}!cmg\_channel@{cmg\_channel}}
+\index{cmg\_channel@{cmg\_channel}!watering\_schedule@{watering\_schedule}}
+\doxysubsubsection{\texorpdfstring{cmg\_channel}{cmg\_channel}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structchan__managec}{m\+\_\+chan\+\_\+managec}} watering\+\_\+schedule\+::cmg\+\_\+channel\mbox{[}16\mbox{]}}
+
+老的计数方式 ，暂时 \mbox{\Hypertarget{structwatering__schedule_a173b6eb8520b7a5e8197cf667d1c5214}\label{structwatering__schedule_a173b6eb8520b7a5e8197cf667d1c5214}} 
+\index{watering\_schedule@{watering\_schedule}!deadlineofsch@{deadlineofsch}}
+\index{deadlineofsch@{deadlineofsch}!watering\_schedule@{watering\_schedule}}
+\doxysubsubsection{\texorpdfstring{deadlineofsch}{deadlineofsch}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structtime__range}{m\+\_\+time\+\_\+range}} watering\+\_\+schedule\+::deadlineofsch}
+
+计划的禁止有效时间 计划的死亡线 \mbox{\Hypertarget{structwatering__schedule_a8f8554bdbac9a779d95c5f80574813a3}\label{structwatering__schedule_a8f8554bdbac9a779d95c5f80574813a3}} 
+\index{watering\_schedule@{watering\_schedule}!running@{running}}
+\index{running@{running}!watering\_schedule@{watering\_schedule}}
+\doxysubsubsection{\texorpdfstring{running}{running}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structrun__buff}{m\+\_\+run\+\_\+data}} watering\+\_\+schedule\+::running}
+
+运行缓存数据 \mbox{\Hypertarget{structwatering__schedule_a8ed4e6499dfbf1e4109460330a157045}\label{structwatering__schedule_a8ed4e6499dfbf1e4109460330a157045}} 
+\index{watering\_schedule@{watering\_schedule}!sch\_info@{sch\_info}}
+\index{sch\_info@{sch\_info}!watering\_schedule@{watering\_schedule}}
+\doxysubsubsection{\texorpdfstring{sch\_info}{sch\_info}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structschedule__key__info}{m\+\_\+schedule\+\_\+info}} watering\+\_\+schedule\+::sch\+\_\+info}
+
+计划的标准信息 \mbox{\Hypertarget{structwatering__schedule_a8b9a41a95ece7fb57ecf1075a26b929c}\label{structwatering__schedule_a8b9a41a95ece7fb57ecf1075a26b929c}} 
+\index{watering\_schedule@{watering\_schedule}!skip\_range\_time@{skip\_range\_time}}
+\index{skip\_range\_time@{skip\_range\_time}!watering\_schedule@{watering\_schedule}}
+\doxysubsubsection{\texorpdfstring{skip\_range\_time}{skip\_range\_time}}
+{\footnotesize\ttfamily \mbox{\hyperlink{structtime__range}{m\+\_\+time\+\_\+range}} watering\+\_\+schedule\+::skip\+\_\+range\+\_\+time}
+
+计划的单独跳过时间 \mbox{\Hypertarget{structwatering__schedule_a7cf6c94cb6b0a94efcb84f283a173f87}\label{structwatering__schedule_a7cf6c94cb6b0a94efcb84f283a173f87}} 
+\index{watering\_schedule@{watering\_schedule}!state@{state}}
+\index{state@{state}!watering\_schedule@{watering\_schedule}}
+\doxysubsubsection{\texorpdfstring{state}{state}}
+{\footnotesize\ttfamily m\+\_\+status watering\+\_\+schedule\+::state}
+
+计划当前的状态 \mbox{\Hypertarget{structwatering__schedule_a3c751c322efa62e6e030cfdfa0c7f49d}\label{structwatering__schedule_a3c751c322efa62e6e030cfdfa0c7f49d}} 
+\index{watering\_schedule@{watering\_schedule}!WSTime@{WSTime}}
+\index{WSTime@{WSTime}!watering\_schedule@{watering\_schedule}}
+\doxysubsubsection{\texorpdfstring{WSTime}{WSTime}}
+{\footnotesize\ttfamily uint64\+\_\+t watering\+\_\+schedule\+::\+WSTime}
+
+运行细化时间 参数 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+core/core.\+h\end{DoxyCompactItemize}

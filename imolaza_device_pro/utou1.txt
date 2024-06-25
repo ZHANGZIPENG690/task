@@ -1,0 +1,5 @@
+Executing action: monitor
+Serial port /dev/ttyUSB0
+/dev/ttyUSB0 failed to connect: [Errno 13] could not open port /dev/ttyUSB0: [Errno 13] Permission denied: '/dev/ttyUSB0'
+Serial port /dev/ttyS0
+/dev/ttyS0 failed to connect: [Errno 13] could not open port /dev/ttyS0: [Errno 13] Permission denied: '/dev/ttyS0'

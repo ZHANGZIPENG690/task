@@ -1,0 +1,11 @@
+
+/master
+build
+unit_test/network/build
+.vscode
+.vscode/settings.json
+sdkconfig
+sdkconfig.old
+
+
+

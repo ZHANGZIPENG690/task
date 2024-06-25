@@ -1,0 +1,90 @@
+\hypertarget{option_8h_source}{}\doxysection{option.\+h}
+\label{option_8h_source}\index{core/schedule/option/option.h@{core/schedule/option/option.h}}
+
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#ifndef\ \_\_OPTION\_\_H\_\_}}
+\DoxyCodeLine{00002\ \textcolor{preprocessor}{\#define\ \ \_\_OPTION\_\_H\_\_}}
+\DoxyCodeLine{00003\ }
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ "{}core/fset\_lib.h"{}}}
+\DoxyCodeLine{00005\ }
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structm__zone__able}{m\_zone\_able}}}
+\DoxyCodeLine{00011\ \{}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{comment}{/*\ 句柄*/}}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{char}\ zone\_list[16][5];}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{comment}{/*\ 状态*/}}
+\DoxyCodeLine{00015\ \ \ \ \ \textcolor{keywordtype}{char}\ zone\_state[16];}
+\DoxyCodeLine{00016\ \};}
+\DoxyCodeLine{00017\ }
+\DoxyCodeLine{00018\ }
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ }
+\DoxyCodeLine{00022\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____GLOBAL__OPTION}{\_\_GLOBAL\_OPTION}}}
+\DoxyCodeLine{00023\ \{}
+\DoxyCodeLine{00024\ \ \ \ \ \mbox{\hyperlink{structtime__range}{m\_time\_range}}\ global\_dormancy;}
+\DoxyCodeLine{00025\ \ \ \ \ \mbox{\hyperlink{structtime__range}{m\_time\_range}}\ global\_skip;}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keyword}{struct\ }\mbox{\hyperlink{structm__zone__able}{m\_zone\_able}}\ mz\_able;}
+\DoxyCodeLine{00027\ \};}
+\DoxyCodeLine{00028\ }
+\DoxyCodeLine{00029\ \textcolor{keyword}{typedef}\ \textcolor{keyword}{struct\ }\mbox{\hyperlink{struct____GLOBAL__OPTION}{\_\_GLOBAL\_OPTION}}\ \mbox{\hyperlink{struct____GLOBAL__OPTION}{GLOBAL\_OPTION}};}
+\DoxyCodeLine{00030\ }
+\DoxyCodeLine{00031\ \textcolor{keyword}{extern}\ \mbox{\hyperlink{struct____GLOBAL__OPTION}{GLOBAL\_OPTION}}\ \_option;}
+\DoxyCodeLine{00032\ }
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00034\ }
+\DoxyCodeLine{00035\ }
+\DoxyCodeLine{00036\ }
+\DoxyCodeLine{00042\ stat\_m\ m\_global\_zone\_init(\textcolor{keywordtype}{void});}
+\DoxyCodeLine{00049\ stat\_m\ m\_global\_zone\_enable(\textcolor{keywordtype}{int}\ in\_zone);}
+\DoxyCodeLine{00056\ stat\_m\ m\_global\_zone\_disable(\textcolor{keywordtype}{int}\ in\_zone);}
+\DoxyCodeLine{00057\ }
+\DoxyCodeLine{00058\ }
+\DoxyCodeLine{00059\ }
+\DoxyCodeLine{00060\ stat\_m\ m\_global\_zone\_query(\textcolor{keywordtype}{int}\ in\_zone);}
+\DoxyCodeLine{00061\ }
+\DoxyCodeLine{00062\ }
+\DoxyCodeLine{00063\ }
+\DoxyCodeLine{00064\ }
+\DoxyCodeLine{00075\ \textcolor{comment}{//\ stat\_m\ m\_insi\_schedule\_compute\_zone\_distill(m\_watering\_schedule\ *in\_obj,\ char\ *format,\ char\ zseparate,\ char\ *in\_src,\ uint32\_t\ *out\_should\_time\_array);}}
+\DoxyCodeLine{00076\ stat\_m\ m\_operation\_schedule\_compute\_zone\_distill(\mbox{\hyperlink{structwatering__schedule}{m\_watering\_schedule}}\ *in\_obj,\ \textcolor{keywordtype}{char}\ *format,\ \textcolor{keywordtype}{char}\ zseparate,\ \textcolor{keywordtype}{char}\ *in\_src,\ uint32\_t\ *out\_should\_time\_array);}
+\DoxyCodeLine{00077\ }
+\DoxyCodeLine{00090\ stat\_m\ m\_operation\_sack\_recover\_schedule\_time\_and\_status(\mbox{\hyperlink{structwatering__schedule}{m\_watering\_schedule}}\ *waterObj,\ \textcolor{keywordtype}{int}\ sockWater,\ \textcolor{keywordtype}{int}\ sockTime,\ uint32\_t\ *tempChanWater,\ \textcolor{keywordtype}{int}\ waterSum,\ uint32\_t\ present\_time,\ uint32\_t\ *out\_running\_time);}
+\DoxyCodeLine{00091\ }
+\DoxyCodeLine{00098\ stat\_m\ m\_operation\_normal\_recover\_schedule\_time\_and\_status(\mbox{\hyperlink{structwatering__schedule}{m\_watering\_schedule}}\ *in\_Obj\ ,\ uint32\_t\ present\_time);}
+\DoxyCodeLine{00099\ }
+\DoxyCodeLine{00100\ }
+\DoxyCodeLine{00101\ }
+\DoxyCodeLine{00111\ \textcolor{keywordtype}{void}\ m\_operation\_schedule\_calculate\_the\_interval\_hour(uint32\_t\ in\_present\_time,\ uint32\_t\ in\_present\_timespeam,\ uint8\_t\ inver\_hour,\ uint64\_t\ planTimesp,\ uint64\_t\ *out\_waterTime);\ \textcolor{comment}{//\ 传入计划的时间戳\ ，}}
+\DoxyCodeLine{00112\ }
+\DoxyCodeLine{00122\ uint64\_t\ m\_operation\_schedule\_calculate\_near\_start\_timesp(uint64\_t\ in\_start\_time,\ uint32\_t\ in\_wstime,\ uint32\_t\ watert\_time\_sum,\ uint64\_t\ *in\_schedule\_start);}
+\DoxyCodeLine{00123\ }
+\DoxyCodeLine{00124\ }
+\DoxyCodeLine{00131\ \textcolor{keywordtype}{void}\ m\_operation\_calculate\_the\_interval\_5\_hours(uint64\_t\ planTimesp,\ uint64\_t\ *waterTime\ ,\ uint32\_t\ hhmmss);\ \textcolor{comment}{//\ 传入计划的时间戳\ ，}}
+\DoxyCodeLine{00139\ \textcolor{comment}{}\textcolor{keywordtype}{bool}\ m\_operation\_nextruntime\_interval\_hour(uint64\_t\ *wsTime\_clo,\ uint64\_t\ *wsTime,\ uint32\_t\ hour\ ,\ uint32\_t\ hhmmss);}
+\DoxyCodeLine{00140\ }
+\DoxyCodeLine{00147\ \textcolor{keywordtype}{bool}\ m\_operation\_date\_subtract(uint64\_t\ in\_planstart\ ,\ uint64\_t\ in\_planstop,\ uint8\_t\ cy\_day);}
+\DoxyCodeLine{00148\ }
+\DoxyCodeLine{00156\ \textcolor{keywordtype}{bool}\ m\_operation\_schedule\_skip\_checkout(\mbox{\hyperlink{structwatering__schedule}{m\_watering\_schedule}}\ *in\_obj,uint64\_t\ in\_presenttime\ ,\textcolor{keywordtype}{bool}\ in\_reserver);}
+\DoxyCodeLine{00157\ }
+\DoxyCodeLine{00158\ }
+\DoxyCodeLine{00159\ }
+\DoxyCodeLine{00167\ \textcolor{keywordtype}{int}\ m\_operation\_recovery\_needs\_to\_run\_or\_change\_the\_state(\mbox{\hyperlink{structwatering__schedule}{m\_watering\_schedule}}\ *out\_plan\_obj,\ stat\_m\ in\_state);}
+\DoxyCodeLine{00168\ }
+\DoxyCodeLine{00169\ }
+\DoxyCodeLine{00170\ }
+\DoxyCodeLine{00171\ }
+\DoxyCodeLine{00172\ }
+\DoxyCodeLine{00173\ \textcolor{preprocessor}{\#endif}}
+\DoxyCodeLine{00174\ }
+\DoxyCodeLine{00175\ }
+\DoxyCodeLine{00176\ }
+\DoxyCodeLine{00177\ }
+\DoxyCodeLine{00178\ }
+\DoxyCodeLine{00179\ }
+\DoxyCodeLine{00180\ }
+
+\end{DoxyCode}

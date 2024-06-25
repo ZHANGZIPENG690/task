@@ -1,0 +1,45 @@
+\hypertarget{structqueNode}{}\doxysection{que\+Node Struct Reference}
+\label{structqueNode}\index{queNode@{queNode}}
+\doxysubsection*{Data Fields}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\Hypertarget{structqueNode_ac9a362da10276de61e7f01b68ec74994}\label{structqueNode_ac9a362da10276de61e7f01b68ec74994}} 
+struct \mbox{\hyperlink{structqueNode}{que\+Node}} $\ast$ {\bfseries next\+Que\+Node}
+\item 
+\mbox{\Hypertarget{structqueNode_ad4537a4c529e0bdf7fdcd5d1a9f2152b}\label{structqueNode_ad4537a4c529e0bdf7fdcd5d1a9f2152b}} 
+struct \mbox{\hyperlink{structqueNode}{que\+Node}} $\ast$ {\bfseries pre\+Que\+Node}
+\item 
+\mbox{\Hypertarget{structqueNode_a5ac285e6139f0253aed914dc8bada58d}\label{structqueNode_a5ac285e6139f0253aed914dc8bada58d}} 
+char {\bfseries Qdata} \mbox{[}RECE\+\_\+\+BUF\+\_\+\+SIZE\mbox{]}
+\item 
+uint64\+\_\+t \mbox{\hyperlink{structqueNode_a2ebd777591016f5c18f7ab06d10eac21}{spec\+\_\+main\+\_\+cmd}}
+\item 
+uint64\+\_\+t \mbox{\hyperlink{structqueNode_a2063d0a6dd79ab109bccf5b4639f5e51}{spec\+\_\+cmd\+\_\+flag}}
+\item 
+\mbox{\Hypertarget{structqueNode_acacd7d072cb19ae073fdb0638786ac7e}\label{structqueNode_acacd7d072cb19ae073fdb0638786ac7e}} 
+uint64\+\_\+t {\bfseries timeout}
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Field Documentation}
+\mbox{\Hypertarget{structqueNode_a2063d0a6dd79ab109bccf5b4639f5e51}\label{structqueNode_a2063d0a6dd79ab109bccf5b4639f5e51}} 
+\index{queNode@{queNode}!spec\_cmd\_flag@{spec\_cmd\_flag}}
+\index{spec\_cmd\_flag@{spec\_cmd\_flag}!queNode@{queNode}}
+\doxysubsubsection{\texorpdfstring{spec\_cmd\_flag}{spec\_cmd\_flag}}
+{\footnotesize\ttfamily uint64\+\_\+t que\+Node\+::spec\+\_\+cmd\+\_\+flag}
+
+Additional instruction parameters ~\newline
+ 指令附加参数，可以用表示及当前发送的叠加值 ~\newline
+ \mbox{\Hypertarget{structqueNode_a2ebd777591016f5c18f7ab06d10eac21}\label{structqueNode_a2ebd777591016f5c18f7ab06d10eac21}} 
+\index{queNode@{queNode}!spec\_main\_cmd@{spec\_main\_cmd}}
+\index{spec\_main\_cmd@{spec\_main\_cmd}!queNode@{queNode}}
+\doxysubsubsection{\texorpdfstring{spec\_main\_cmd}{spec\_main\_cmd}}
+{\footnotesize\ttfamily uint64\+\_\+t que\+Node\+::spec\+\_\+main\+\_\+cmd}
+
+The cmd value of the current instruction ~\newline
+ 当前指令的cmd值 ~\newline
+ 
+
+The documentation for this struct was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+core/utils/util.\+h\end{DoxyCompactItemize}
