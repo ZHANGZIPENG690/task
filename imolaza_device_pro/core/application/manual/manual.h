@@ -47,7 +47,7 @@ stat_m m_callable_manual_function_monitor( uint64_t current_time_ms);
  * @param time_s 
  * @return stat_m 
  */
-stat_m m_callable_manual_set_auto_stop_s(uint32_t time_s );
+stat_m m_callable_manual_set_auto_stop_s(uint8_t channel);
 
 /**
  * @brief 事件处理

@@ -10,19 +10,18 @@ enum manual_state
     M_MANUAL_STATTE_RUNNING,
     M_MANUAL_STATTE_PAUSE,
     M_MANUAL_STATTE_STOP,
-    M_MANUAL_STATTE_ALL,//全部区域运行
+    /**全部区域浇水运行**/
+    M_MANUAL_STATTE_WATER_ALL,
 };
 
 stat_m (*m_callable_manual_handle)(enum operate_event event_id, uint8_t pre_channel, uint8_t next_channel, uint32_t has_benn_runnint_time, uint64_t current_time);
 
 struct _manual
 {
-    /**最大时长**/
-    uint64_t Maximum_duration[50];
     /* 是否在运行 */
     enum manual_state status;
     /* 自动停止的时间 */
-    uint32_t auto_stop_s;
+    uint64_t auto_stop_s[40];
     /* 上一个运行的区域 */
     uint8_t pre_channel;
     /* 当前运行的区域 */
@@ -31,8 +30,6 @@ struct _manual
     uint64_t runnint_time_start;
     /* 当前运行的时间 */
     uint64_t runnint_time_current;
-    /**上次时长**/
-    uint64_t runnint_time_last;
     /** 当前的ms */
     uint64_t global_current_time_ms;
     /** 记录操作 */
@@ -54,12 +51,10 @@ stat_m m_callable_manual_init(void)
     /**初始化 Button*/
     manual.max_channel = m_static_drive_get_max_channel();
     manual.minx = 254;
-    manual.auto_stop_s = 0;
-    m_callable_drive_flash_read(M_TYPE_U32, M_MANUAL_RUNNING_AUTO_STOP_TIME, &manual.auto_stop_s);
-    if (manual.auto_stop_s <= 0)
-        manual.auto_stop_s = 100 * manual.max_channel * 3;
+    // manual.auto_stop_s = 0;
+    m_callable_drive_flash_read(M_TYPE_U32, M_MANUAL_RUNNING_AUTO_STOP_TIME, manual.auto_stop_s);
     for (int i = 0; i < manual.max_channel; ++i) {
-        manual.Maximum_duration[i] = 10;
+        manual.auto_stop_s[i] = 10 * 60 * 100;
     }
     return stat;
 }
@@ -69,14 +64,15 @@ stat_m m_callable_manual_init(void)
  * @param time_s 
  * @return stat_m 
  */
-stat_m m_callable_manual_set_auto_stop_s(uint32_t time_s)
+stat_m m_callable_manual_set_auto_stop_s(uint8_t channel)
 {
     stat_m stat = fail_r;
-    if (time_s > 0)
+    uint32_t time_s;
+    if (channel > 0)
     {
         stat = succ_r;
-        manual.auto_stop_s = time_s * 100;
-        m_callable_drive_flash_write(M_TYPE_U32, M_MANUAL_RUNNING_AUTO_STOP_TIME, &manual.auto_stop_s);
+        time_s = manual.auto_stop_s[channel-1];
+        m_callable_drive_flash_write(M_TYPE_U32, M_MANUAL_RUNNING_AUTO_STOP_TIME, &time_s);
     }
     return stat;
 }
@@ -161,17 +157,17 @@ stat_m m_callable_manual_event_input(enum key_id event_id, uint8_t pre_channel, 
     {
     case M_KEY_EVENT_WATERED_ALL:
         //printf("全部浇灌\n");
-        if (manual.status != M_MANUAL_STATTE_ALL)
+        if (manual.status != M_MANUAL_STATTE_WATER_ALL)
         {
             /** 如果暂停或者选择 那么继续开始 更新下参数*/
             manual.sol_even = M_OPERATE_EVENT_RUNNING_SWITCH_ALL;
             //m_callable_device_proper_status_update_to_manual_running();
-            manual.status = M_MANUAL_STATTE_ALL;
+            manual.status = M_MANUAL_STATTE_WATER_ALL;
             manual.pre_channel = 1;
             manual.channel = 1;
             next_channel = manual.channel;
             manual.runnint_time_start = current_time_ms;
-            m_callable_manual_set_auto_stop_s(manual.Maximum_duration[manual.channel-1]);
+            m_callable_manual_set_auto_stop_s(manual.channel-1);
             m_ext_manual_event_handle(manual.sol_even, pre_channel, next_channel, manual.runnint_time_current /100, current_time_ms);
         }else
         {
@@ -180,7 +176,7 @@ stat_m m_callable_manual_event_input(enum key_id event_id, uint8_t pre_channel, 
             manual.runnint_time_current = (current_time_ms - manual.runnint_time_start);        
             manual.channel = next_channel;
             manual.runnint_time_start = current_time_ms;
-            m_callable_manual_set_auto_stop_s(manual.Maximum_duration[manual.channel-1]);
+            m_callable_manual_set_auto_stop_s(manual.channel-1);
             m_ext_manual_event_handle(manual.sol_even, pre_channel, next_channel, manual.runnint_time_current /100, current_time_ms);
         }
     break;
@@ -220,7 +216,7 @@ stat_m m_callable_manual_event_input(enum key_id event_id, uint8_t pre_channel, 
             manual.channel = next_channel;
             manual.runnint_time_start = current_time_ms;
             m_ext_manual_event_handle(manual.sol_even, pre_channel, next_channel, manual.runnint_time_current / 100, current_time_ms);
-            m_callable_manual_set_auto_stop_s(manual.Maximum_duration[next_channel-1]);
+            m_callable_manual_set_auto_stop_s(next_channel-1);
         }
         break;
     case M_KEY_EVENT_STOP:
@@ -228,7 +224,7 @@ stat_m m_callable_manual_event_input(enum key_id event_id, uint8_t pre_channel, 
         {
             if (next_channel == M_CONST_SACK_NUM)
                 next_channel = manual.channel;
-            if (manual.status == M_MANUAL_STATTE_RUNNING || manual.status == M_MANUAL_STATTE_ALL)
+            if (manual.status == M_MANUAL_STATTE_RUNNING || manual.status == M_MANUAL_STATTE_WATER_ALL)
             {
                 manual.sol_even = M_OPERATE_EVENT_STOP;
                 manual.status = M_OPERATE_EVENT_STOP;
@@ -275,14 +271,14 @@ stat_m m_callable_manual_function_monitor(uint64_t current_time_ms)
 
     // DEBUG_TEST(DB_W,"[%d]    [%lld] > [%lld]", manual.auto_stop_s, current_time_ms, manual.runnint_time_start);
     manual.runnint_time_current = manual.global_current_time_ms - manual.runnint_time_start;
-    if(manual.channel != 0 && ((manual.runnint_time_current/100) <= manual.Maximum_duration[manual.channel-1]) && manual.sol_even !=  M_OPERATE_EVENT_STOP && manual.sol_even != M_OPERATE_EVENT_PAUSE && manual.sol_even != M_OPERATE_EVENT_STOP_SELECT)
-    {
-        if((manual.runnint_time_current/100) != (manual.runnint_time_last/100) && (manual.runnint_time_current/100) != 0)
-        {
-            manual.runnint_time_last = manual.runnint_time_current;
-            //printf("区域%d运行了%lld秒\n",manual.channel,manual.runnint_time_current/100);
-        }
-    }
+    // if(manual.channel != 0 && ((manual.runnint_time_current/100) <= manual.auto_stop_s[manual.channel-1]) && manual.sol_even !=  M_OPERATE_EVENT_STOP && manual.sol_even != M_OPERATE_EVENT_PAUSE && manual.sol_even != M_OPERATE_EVENT_STOP_SELECT)
+    // {
+    //     if((manual.runnint_time_current/100) != (manual.runnint_time_last/100) && (manual.runnint_time_current/100) != 0)
+    //     {
+    //         manual.runnint_time_last = manual.runnint_time_current;
+    //         printf("区域%d运行了%lld秒\n",manual.channel,manual.runnint_time_current/100);
+    //     }
+    // }
 
     if (manual.sol_even != M_OPERATE_EVENT_START && manual.sol_even != M_OPERATE_EVENT_PAUSE &&
         current_time_ms == manual.runnint_time_start + 40 && manual.runnint_time_start != 0)
@@ -293,9 +289,9 @@ stat_m m_callable_manual_function_monitor(uint64_t current_time_ms)
         manual.pre_channel = manual.channel;
     }
 
-    if ((manual.status == M_MANUAL_STATTE_RUNNING || manual.status == M_MANUAL_STATTE_ALL)  && current_time_ms > manual.auto_stop_s + manual.runnint_time_start)
+    if ((manual.status == M_MANUAL_STATTE_RUNNING || manual.status == M_MANUAL_STATTE_WATER_ALL)  && current_time_ms > manual.auto_stop_s[manual.channel-1] + manual.runnint_time_start)
     {
-        if( manual.status == M_MANUAL_STATTE_ALL)
+        if( manual.status == M_MANUAL_STATTE_WATER_ALL)
         {
             if(manual.channel == manual.max_channel)
             {
@@ -357,29 +353,29 @@ stat_m m_callable_manual_adjust_time(enum key_id kid,uint8_t currentTempVue)
     switch(kid)
     {
         case M_KEY_EVENT_RIGHT:
-        if(manual.Maximum_duration[currentTempVue-1] <= 5)
+        if(manual.auto_stop_s[currentTempVue-1] <= 30000)
         {
-            //printf("时间不足5分钟,无法减去5分钟\n");
+            // printf("时间不足5分钟,无法减去5分钟\n");
         }
         else
         {
-            manual.Maximum_duration[currentTempVue-1] -=5;
-            //printf("成功减少5分钟\n");
-            //printf("区域%d的时间为%lld",currentTempVue,manual.Maximum_duration[currentTempVue-1]);
+            manual.auto_stop_s[currentTempVue-1] -=30000;
+            // printf("成功减少5分钟\n");
+            // printf("区域%d的时间为%lld",currentTempVue,manual.auto_stop_s[currentTempVue-1]);
         }     
         break;
         case M_KEY_EVENT_START:
         return true;
         break;
         case M_KEY_EVENT_LEFT:
-        if(manual.Maximum_duration[currentTempVue-1] == 60)
+        if(manual.auto_stop_s[currentTempVue-1] == 360000)
         {
             //printf("时间最大值为60分钟,无法继续增加\n");
         }else
         {
-            manual.Maximum_duration[currentTempVue-1] +=5;
-            //printf("成功增加5分钟\n");
-            //printf("区域%d的时间为%lld",currentTempVue,manual.Maximum_duration[currentTempVue-1]);
+            manual.auto_stop_s[currentTempVue-1] +=30000;
+            // printf("成功增加5分钟\n");
+            // printf("区域%d的时间为%lld",currentTempVue,manual.auto_stop_s[currentTempVue-1]);
         }
         break;
         default:

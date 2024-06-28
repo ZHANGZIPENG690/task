@@ -181,9 +181,11 @@ stat_m m_ext_drive_button_event_handle(enum key_id key_id, enum key_event key_ev
     // if(m_ext_drive_gpio_get_level(key_event) == 0  )
     // {
     // stat = fail_r;
-
     // }
-
+    if((m_callable_manual_get_sol_even() == M_OPERATE_EVENT_RUNNING_SWITCH_ALL) && key_id != M_KEY_EVENT_STOP)
+    {
+        stat = fail_r;
+    }
     if (stat == succ_r)
     {
         switch (out_ste)
@@ -194,6 +196,9 @@ stat_m m_ext_drive_button_event_handle(enum key_id key_id, enum key_event key_ev
         case M_DEVICE_GLOBAL_STATUS_MANUAL_RUNNING:
             if (m_callable_display_status_get() == M_DISPLAY_M_TERMINAL_SHORT_CIRCUIT_MODE && (key_id == M_KEY_EVENT_LEFT || key_id == M_KEY_EVENT_RIGHT))
                 break;
+            if(key_event == M_KEY_EVENT_LONG_PRESS)
+                break;
+            m_callable_display_status(M_DISPLAY_ZONE_SELECT_MODE, current_key_index);
             m_callable_manual_event_input(key_id, pre_key_index, current_key_index, current_time_ms);
             break;
         case M_DEVICE_GLOBAL_STATUS_SCHEDULE_RUNNING:
@@ -208,16 +213,29 @@ stat_m m_ext_drive_button_event_handle(enum key_id key_id, enum key_event key_ev
 
             break;
         case M_DEVICE_GLOBAL_STATUS_IDLE:
-            if (key_id == M_KEY_EVENT_START && m_callable_display_status_get() != M_DISPLAY_IDLE_STATUS_MODE)
+            if (key_id == M_KEY_EVENT_WATERED_ALL && m_callable_display_status_get() != M_DISPLAY_ZONE_SELECT_MODE)
+            {
                 m_callable_manual_event_input(key_id, pre_key_index, current_key_index, current_time_ms);
+            }
+            if (key_id == M_KEY_EVENT_START && m_callable_display_status_get() != M_DISPLAY_IDLE_STATUS_MODE && key_event != M_KEY_EVENT_LONG_PRESS)
+            {
+                m_callable_manual_event_input(key_id, pre_key_index, current_key_index, current_time_ms);
+            }   
             else if (key_id == M_KEY_EVENT_STOP)
             {
                 m_callable_display_status(M_DISPLAY_IDLE_STATUS_MODE, current_key_index);
+                m_callable_manual_event_input(key_id, pre_key_index, current_key_index, current_time_ms);
                 m_callable_drive_io_pin12_init();
             }
             else if (key_id != M_KEY_EVENT_START && key_id != M_KEY_EVENT_RESET)
+            {
                 m_callable_display_status(M_DISPLAY_ZONE_SELECT_MODE, current_key_index);
-
+            }
+            // }else if (key_id == M_KEY_EVENT_START && m_callable_display_status_get() == M_DISPLAY_ZONE_SELECT_MODE)
+            // {
+            //     printf("4\n");
+            //     m_callable_manual_event_input(key_id, pre_key_index, current_key_index, current_time_ms);
+            // }
             break;
         default:
             m_callable_display_status(M_DISPLAY_ZONE_SELECT_MODE, current_key_index);

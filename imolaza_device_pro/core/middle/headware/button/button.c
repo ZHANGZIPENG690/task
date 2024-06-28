@@ -20,6 +20,9 @@ struct limitButtonOperation
     uint8_t currentTempVue;
     /** 第一次或者重新计算的时间 */
     uint64_t tranf_key_pressdown_time_ms;
+    /**按键按下的长短按类型**/
+    enum key_event key_event;
+
 };
 
 struct limitButtonOperation lmo = {0};
@@ -161,10 +164,11 @@ stat_m m_callable_drive_button_function_monitor(uint64_t current_time_ms)
             mDelay_ms(10);
             if(m_ext_drive_gpio_get_level(tran_port(lmo.event)) == 1)
             {
+                lmo.pre_count = 1;
                 if(current_time_ms  > lmo.tranf_key_pressdown_time_ms + 480)
-                    lmo.pre_count = 2;
+                    lmo.key_event = M_KEY_EVENT_LONG_PRESS;
                 else
-                    lmo.pre_count = 1;
+                    lmo.key_event = M_KEY_EVENT_SIGN_CLICK;
             }
         }
     }  
@@ -223,7 +227,7 @@ stat_m m_static_drive_button_tranfmoss(uint64_t current_time_ms)
 
     if (lmo.pre_count!=0 && current_time_ms > lmo.tranf_key_pressdown_time_ms + M_KEY_LIMIT_TIME_HANDLE_MAX)
     {
-        if(lmo.pre_count == 2)
+        if(lmo.key_event == M_KEY_EVENT_LONG_PRESS)//长按
         {
             if(lmo.event == M_KEY_EVENT_START)
             {
@@ -231,30 +235,13 @@ stat_m m_static_drive_button_tranfmoss(uint64_t current_time_ms)
                 {
                     //区域被选中，进去修改时长
                     lmo.adjusttime = true;
-                    if(lmo.currentTempVue < 1)
-                        lmo.currentTempVue = 1;
-                }else
+                }else if(m_callable_display_status_get() == M_DISPLAY_IDLE_STATUS_MODE)//是否为空闲
                 {
-                    //区域未选中
                     lmo.event = M_KEY_EVENT_WATERED_ALL;
-                    m_ext_drive_button_event_handle(lmo.event, M_KEY_EVENT_SIGN_CLICK, lmo.preTempVue, lmo.currentTempVue, current_time_ms);
                 }
-                //m_ext_drive_button_event_handle(M_KEY_EVENT_RESET, M_KEY_EVENT_LONG_PRESS, M_KEY_EVENT_RESET, lmo.currentTempVue, current_time_ms);
             }
-        }else
+        }else if(lmo.key_event == M_KEY_EVENT_SIGN_CLICK)//短按
         {
-            // if((m_callable_display_status_get() == M_DISPLAY_IDLE_STATUS_MODE || m_callable_display_status_get() == M_DISPLAY_ZONE_SELECT_MODE) && lmo.adjusttime == true)
-            // {
-            //     lmo.adjusttime = false;
-            // }
-            if((m_callable_manual_get_sol_even() == M_OPERATE_EVENT_RUNNING_SWITCH_ALL) && lmo.event != M_KEY_EVENT_STOP)
-            {
-                lmo.stateUpdate = false;
-                lmo.preTempVue = lmo.currentTempVue;
-                lmo.tranf_key_pressdown_time_ms = 0;
-                lmo.pre_count = 0;
-                return 0;
-            }
             gl_zone_select_add_add = gl_zone_select = 0;
 
             /** 普通设备和Pro设备相反，这里取反下*/
@@ -271,7 +258,7 @@ stat_m m_static_drive_button_tranfmoss(uint64_t current_time_ms)
                 if(lmo.adjusttime == true)
                 {
                     m_callable_manual_adjust_time(lmo.event,lmo.currentTempVue);
-                }else
+                }else if(m_callable_manual_get_sol_even() != M_OPERATE_EVENT_RUNNING_SWITCH_ALL)
                 {
                      lmo.preTempVue = lmo.currentTempVue;
                     if (m_callable_display_status_get() != M_DISPLAY_IDLE_STATUS_MODE && m_callable_display_status_get() != M_DISPLAY_START_UP_OR_FIND_NETWORK_MODE)
@@ -285,7 +272,7 @@ stat_m m_static_drive_button_tranfmoss(uint64_t current_time_ms)
                 if(lmo.adjusttime == true)
                 {
                     m_callable_manual_adjust_time(lmo.event,lmo.currentTempVue);
-                }else
+                }else if(m_callable_manual_get_sol_even() != M_OPERATE_EVENT_RUNNING_SWITCH_ALL)
                 {
                     // lmo.preTempVue = lmo.currentTempVue;
                     // if (lmo.currentTempVue <= 1)
@@ -298,27 +285,19 @@ stat_m m_static_drive_button_tranfmoss(uint64_t current_time_ms)
                         lmo.currentTempVue--;
                     if (lmo.currentTempVue < 1)
                         lmo.currentTempVue = lmo.max_channel;
+                    // printf("lmo.currentTempVue %d   max_channel %d  \n", lmo.currentTempVue, lmo.max_channel);
                 }
- 
             }else if(lmo.event == M_KEY_EVENT_START)
             {
-                if(m_callable_display_status_get() != M_DISPLAY_ZONE_SELECT_MODE && m_callable_display_status_get() != M_DISPLAY_ZONE_RUNNING_MODE)
-                {
-                    lmo.stateUpdate = false;
-                    lmo.preTempVue = lmo.currentTempVue;
-                    lmo.tranf_key_pressdown_time_ms = 0;
-                    lmo.pre_count = 0;
-                    return 0;
-                }
                 if(lmo.adjusttime == true)
                     lmo.adjusttime = false;
             }
-            m_ext_drive_button_event_handle(lmo.event, M_KEY_EVENT_SIGN_CLICK, lmo.preTempVue, lmo.currentTempVue, current_time_ms);
         }
-            lmo.stateUpdate = false;
-            lmo.preTempVue = lmo.currentTempVue;
-            lmo.tranf_key_pressdown_time_ms = 0;
-            lmo.pre_count = 0;
+        m_ext_drive_button_event_handle(lmo.event, lmo.key_event, lmo.preTempVue, lmo.currentTempVue, current_time_ms);
+        lmo.stateUpdate = false;
+        lmo.preTempVue = lmo.currentTempVue;
+        lmo.tranf_key_pressdown_time_ms = 0;
+        lmo.pre_count = 0;
     }
     return 0;
 }

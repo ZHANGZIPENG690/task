@@ -75,6 +75,10 @@ stat_m m_ext_manual_event_handle(enum operate_event event_id, uint8_t pre_channe
         DEBUG_TEST(DB_W,"M_OPERATE_EVENT_CHANNEL_SWITCH .. ");
         // m_callable_solenoid_manage_continuously(pre_channel, next_channel);
         break;
+    case M_OPERATE_EVENT_RUNNING_SWITCH_ALL:
+        m_callable_solenoid_manage_continuously(pre_channel, next_channel);
+        //m_callable_solenoid_manage_open(next_channel);
+        break;
     case M_OPERATE_EVENT_PAUSE:
 
         resp = M_CMD_NOTIFY_TO_SERVER_MANUAL_RUNNING_STOP;

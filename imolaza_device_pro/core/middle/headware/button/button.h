@@ -106,7 +106,7 @@ stat_m m_callable_drive_button_init(uint8_t device_type);
  * @param time_s
  * @return stat_m
  */
-stat_m m_callable_manual_set_auto_stop_s(uint32_t time_s);
+stat_m m_callable_manual_set_auto_stop_s(uint8_t channel);
 
 /**
  * @brief Construct a new m callable key init object

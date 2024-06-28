@@ -136,6 +136,8 @@ enum key_id
     M_KEY_EVENT_RIGHT,
     /** 重置按键 */
     M_KEY_EVENT_RESET,
+    /**全体浇灌**/
+    M_KEY_EVENT_WATERED_ALL,
 };
 
 #define M_STRM_STR_3(a, b, c) a b c
@@ -150,6 +152,8 @@ enum operate_event
     M_OPERATE_EVENT_START_SELECT,
     /** 事件：运行中切换 - 切换下一个运行 */
     M_OPERATE_EVENT_RUNNING_SWITCH,
+    /** 事件：全部运行时自动切换 - 切换下一个运行 */
+    M_OPERATE_EVENT_RUNNING_SWITCH_ALL,
     /** 事件：非运行切换 - 普通通道选择切换 */
     M_OPERATE_EVENT_CHANNEL_SWITCH,
     /** 事件：暂停 */

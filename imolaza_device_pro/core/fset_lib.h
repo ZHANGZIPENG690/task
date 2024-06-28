@@ -2090,7 +2090,7 @@ extern stat_m m_callable_drive_button_init(uint8_t device_type);
  * @param time_s
  * @return stat_m
  */
-extern stat_m m_callable_manual_set_auto_stop_s(uint32_t time_s);
+extern stat_m m_callable_manual_set_auto_stop_s(uint8_t channel);
 
 /**
  * @brief Construct a new m callable key init object
@@ -3824,5 +3824,32 @@ extern stat_m m_callable_offline_bluetooth_running_mode_getting(enum running_mod
  * @return stat_m
  */
 extern stat_m m_callable_network_reset_server_start_connect_server(void);
+
+/**
+ * @brief 修改时长
+ * 
+ * @param kid 
+ * @param currentTempVue 
+ * @return stat_m 
+ */
+extern stat_m m_callable_manual_adjust_time(enum key_id kid,uint8_t currentTempVue);
+
+/**
+ * @brief 获取记录操作
+ * 
+ * @param 
+ * @param  
+ * @return stat_m 
+ */
+extern int m_callable_manual_get_sol_even(void);
+
+/**
+ * @brief 获取最大个通道数发给manual_run.c中存放时间的数组
+ *
+ * @param current_time_ms
+ * @return stat_m
+ */
+extern int m_static_drive_get_max_channel(void);
+
 
 #endif /* __FSET_LIB__H */
