@@ -3,6 +3,8 @@
 /** 控制区分感性负载接触触发的短路中中断还是真实的中断短路 */
 static int interrupt_short_invalid_count = 0;
 
+int area_power_calibration_flag = 0;
+
 void m_calllable_current_monitor_task(void *pvParameters);
 
 float m_callable_volatage_transform_current(void);
@@ -180,16 +182,9 @@ int m_callable_current_check_get_final_value(void)
     }
     current_monitor.current_value1_averge = 0;
     current_monitor.current_value1_count = 0;
+    current_monitor.first_time = m_callable_timer_manage_get_device_time();
 
-    // /** 最后采样得到的电流值  */
-    // float current_val = 0;
-    // for (int i = 0; i < 10; i++)
-    // {
-    //     current_val += m_callable_current_check_get_max_value();
-    //     current_monitor.current_monitor_flag = 1;
-    // }
-    // current_val = current_val / 10;
-    DEBUG_TEST(DB_I, "current_resul tcurrent_result %d ", current_result);
+    // DEBUG_TEST(DB_I, "current_resul tcurrent_result %d ", current_result);
     return current_result;
 }
 
@@ -217,33 +212,6 @@ float m_callable_volatage_transform_current(void)
     current_monitor.min_current = (current_monitor.min_voltage_output - VCC / 2.0) / AD / PRECISION * 1000;
     current_monitor.avg_current = (current_monitor.max_current - current_monitor.min_current) / 2.0;
     return current_monitor.avg_current;
-
-    // for (int i = 0; i < 10; i++)
-    // {
-    //     current_monitor.avg_current_values[i] = current_monitor.avg_current_values[i + 1];
-    // }
-    // current_monitor.avg_current_values[9] = current_monitor.avg_current; // 将新计算的电流值存放在数组的第五位
-
-    // // // 取10次的平均值
-    // // for (int i = 0; i < 10; i++)
-    // // {
-    // //     current_monitor.max_avg_current += current_monitor.avg_current_values[i];
-    // //     DEBUG_E("avg_current_values[%d]:%.02f", i, current_monitor.avg_current_values[i]);
-    // // }
-    // // current_monitor.max_avg_current = current_monitor.max_avg_current / 10;
-
-    // // DEBUG_E("max_avg_current:%.02f", current_monitor.max_avg_current);
-
-    // // 比较数组中的值，取最大值
-    // for (int i = 0; i < 10; i++)
-    // {
-    //     if (current_monitor.avg_current_values[i] > current_monitor.max_avg_current)
-    //     {
-    //         current_monitor.max_avg_current = current_monitor.avg_current_values[i];
-    //     }
-    // }
-
-    // return current_monitor.max_avg_current;
 }
 // void m_ext_current_monitor_result(enum current_event_id event_id, int current_vue, uint8_t is_interrupt, uint8_t channel_id);
 /**
@@ -358,14 +326,15 @@ stat_m m_calllable_current_monitor(int device_status)
         case M_DEVICE_GLOBAL_STATUS_FAST_RUN_RUNNING:
         case M_DEVICE_GLOBAL_STATUS_SCHEDULE_RUNNING:
 
-            if (current_monitor.first_time < m_callable_timer_manage_get_device_time() - 2)
+            // if (current_monitor.first_time < m_callable_timer_manage_get_device_time() - 2)
+            if (m_callable_timer_manage_get_device_time() > current_monitor.first_time + 2)
             {
                 if (current_monitor.current_value1_count == 0)
                 {
                     current_monitor.first_time = m_callable_timer_manage_get_device_time();
-                    DEBUG_TEST(DB_I, "Start Current 3 ..");
+                    DEBUG_TEST(DB_E, "Start Current 3 ..");
 
-                    for (int i = 0; i < 10; i++)
+                    for (int i = 0; i < 60; i++)
                     {
                         current_monitor.current_value1_count++;
                         current_monitor.current_value1_averge += m_callable_current_check_get_max_value();
@@ -378,7 +347,7 @@ stat_m m_calllable_current_monitor(int device_status)
                     }
                 }
             }
-            if (current_monitor.first_time < m_callable_timer_manage_get_device_time() - 8)
+            if (m_callable_timer_manage_get_device_time() > current_monitor.first_time + 8)
             {
                 DEBUG_TEST(DB_I, "Start Current 9 ..");
                 current_monitor.first_time = m_callable_timer_manage_get_device_time();
@@ -389,7 +358,7 @@ stat_m m_calllable_current_monitor(int device_status)
                 }
                 if (current_monitor.current_value1_count != 0)
                 {
-                    /** 高电流检测 */
+                    /** 高电流检测 */           
                     m_static_height_current_handle(current_monitor.current_value1_averge / current_monitor.current_value1_count, MAX_LIMIT_CURRENT_10S, m_callable_timer_manage_get_device_time());
                     // DEBUG_TEST(DB_I, "End Current 9[%d] ..", current_monitor.current_value1_averge / current_monitor.current_value1_count);
                 }
@@ -458,103 +427,15 @@ stat_m m_callable_current_calibration_interrupt_processing(void)
     return succ_r;
 }
 
-// #include "current_monitor.h"
+/*批量区域电流校准标志位设置 0表示关闭、1表示电流校准 、2表示电流测试*/
+stat_m m_callable_current_batch_area_power_calibration_flag_set(int flag)
+{
+    area_power_calibration_flag = flag;
+    return succ_r;
+}
 
-// void m_calllable_current_monitor_task(void *pvParameters);
-
-// stat_m m_static_current_interrupt_handle();
-
-// stat_m m_callable_current_monitor_init(void)
-// {
-//     mTaskCreate(NULL, m_calllable_current_monitor_task, "adc_task", 512 * 2, NULL, 2, NULL);
-//     return succ_r;
-// }
-
-// stat_m m_callable_current_monitor_start(void)
-// {
-//     current_monitor.current_monitor_flag = 1;
-//     current_monitor.current_value1 = 0;
-//     m_static_current_interrupt_handle();
-//     DEBUG_TEST( DB_I,"Start Current Check");
-//     return succ_r;
-// }
-
-// stat_m m_callable_current_monitor_stop(void)
-// {
-//     current_monitor.current_monitor_flag = 0;
-//     current_monitor.current_value1 = 0;
-//     DEBUG_TEST( DB_I,"Stop Current Check");
-//     return succ_r;
-// }
-// /**
-//  * @brief 获取一段时间内的最大值
-//  *
-//  * @return float
-//  */
-// int m_callable_current_check_get_max_value(void)
-// {
-//     int current_value1 = (int)m_ext_mda_adc_get_current();
-//     DEBUG_TEST( DB_I,"current_value1 %d", current_value1);
-//     return current_value1;
-// }
-// /**
-//  * @brief 获取到检测的电流值
-//  *
-//  * @return float
-//  */
-// int m_callable_current_check_get_final_value(void)
-// {
-//     return m_callable_current_check_get_max_value();
-// }
-
-// /**
-//  * @brief 查询短路是否
-//  *
-//  * @return stat_m  succ 短路
-//  */
-// stat_m m_callable_current_is_interrupt()
-// {
-//     if (current_monitor.m_global_short_interrupt)
-//     {
-//         current_monitor.m_global_short_interrupt = false;
-//         return succ_r;
-//     }
-//     else
-//         return fail_r;
-// }
-// stat_m m_static_current_interrupt_handle()
-// {
-//     if (current_monitor.m_global_short_interrupt && current_monitor.current_monitor_flag)
-//     {
-//         current_monitor.m_global_short_interrupt = false;
-//         current_monitor.current_value1 = 850;
-//         m_callable_solenoid_manage_close_all();
-//         mDelay_ms(100);
-//         DEBUG_TEST(DB_W,"Short Circuit  >  ????");
-//         m_ext_current_monitor_result(M_CURRENT_EVENT_INTERRUPT, 800, true, 0);
-//         current_monitor.m_global_short_interrupt = false;
-//     }
-//     return succ_r;
-// }
-
-// /**
-//  * @brief 电流检测人物
-//  *
-//  * @param pvParameters
-//  */
-// void m_calllable_current_monitor_task(void *pvParameters)
-// {
-//     while (1)
-//     {
-//         m_static_current_interrupt_handle();
-//         mDelay_ms(15);
-//     }
-// }
-// /**
-//  * @brief 电流中断短路通知
-//  *
-//  */
-// void m_callable_current_out_short_interrupt(void)
-// {
-//     current_monitor.m_global_short_interrupt = true;
-// }
+/*批量区域电流校准标志位获取 0表示关闭、1表示电流校准 、2表示电流测试*/
+int m_callable_current_batch_area_power_calibration_flag_get(void)
+{
+    return area_power_calibration_flag;
+}

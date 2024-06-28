@@ -32,7 +32,6 @@ static int dns_addr_flag = 0;
 stat_m ngethostbyname(unsigned char *host, int query_type, void *out_addr);
 void ChangetoDnsNameFormat(unsigned char *, unsigned char *);
 
-char a_chr_conf_notify[10] = {0};
 /*
 **DNS报文首部
 **这里使用了位域
@@ -262,8 +261,6 @@ stat_m ngethostbyname(unsigned char *host, int query_type, void *out_addr)
             }
             DEBUG_TEST(DB_W, "dns fail   - !  ");
             m_callable_middle_connect_handle_set_code(M_CONNECT_ERROR_CODE_DNS_RESOLVE_FAIL);
-            sprintf(a_chr_conf_notify, "%d", M_CONNECT_ERROR_CODE_SERVER_LOGIN_TIMEOUT_FAIL);
-            m_ext_network_transmisson_bluetool_tx(a_chr_conf_notify, strlen(a_chr_conf_notify));
             stat = fail_r;
         }
         else

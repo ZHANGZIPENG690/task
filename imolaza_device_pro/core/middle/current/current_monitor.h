@@ -10,14 +10,14 @@
 #define ADC_ATTEN ADC_ATTEN_DB_11
 #define ADC_WIDTH ADC_WIDTH_BIT_12
 
-// 用于计算电流 3.36
+// // 用于计算电流 3.36
 #define VCC 3.36
 #define AD 4.2
 #define PRECISION 0.132
 
 // 用于计算电流 3.36
 // #define VCC 3.36
-// #define AD 3.7
+// #define AD 3.8
 // #define PRECISION 0.132
 
 struct current_monitor_m
@@ -115,4 +115,12 @@ stat_m m_callable_current_set_short_mode(enum current_short_mode in_csm);
  * @return stat_m
  */
 stat_m m_callable_current_set_checkout_zone(int in_zone);
+
+
+/*批量区域电流校准标志位设置*/
+extern stat_m m_callable_current_batch_area_power_calibration_flag_set(int flag);
+
+/*批量区域电流校准标志位获取*/
+int m_callable_current_batch_area_power_calibration_flag_get(void);
+
 #endif /* __CURRENT_MONITOR__ */

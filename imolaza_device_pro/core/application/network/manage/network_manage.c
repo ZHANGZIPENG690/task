@@ -382,8 +382,8 @@ stat_m m_static_network_manage_set_connect_status(bool stus)
     if (stus)
     {
         m_callable_middle_connect_handle_set_code(M_CONNECT__CODE__WIFI_SUCCESS);
-        (nwkm.net_con_conf.state.active = M_NETWORK_CONNECT_PROGRESS_FULL_SUCCESS),
-            m_static_online_config_mode_event_handle(nwkm.net_con_conf.nm_mode, M_EVENT_FT_LOCAL_NET_CONNECT, NULL, 0);
+        (nwkm.net_con_conf.state.active = M_NETWORK_CONNECT_PROGRESS_FULL_SUCCESS);
+        m_static_online_config_mode_event_handle(nwkm.net_con_conf.nm_mode, M_EVENT_FT_LOCAL_NET_CONNECT, NULL, 0);
     }
     else
     {

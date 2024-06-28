@@ -1,10 +1,10 @@
 #include "early_warning.h"
 #include "core/middle/headware/sensor/sensor.h"
 
-#define EARLY_WARNING_TEST 0
+#define EARLY_WARNING_TEST 1
 
-// #define RTC_POWER_ALARM_TIME 3600 * 24
-#define RTC_POWER_ALARM_TIME 5
+#define RTC_POWER_ALARM_TIME 3600 * 24
+// #define RTC_POWER_ALARM_TIME 5
 
 #if !EARLY_WARNING_TEST
 int time_num = 3600;
@@ -16,6 +16,10 @@ uint32_t count_minu = 0;
 bool clear_flag_minu = true;
 uint32_t count = 0;
 bool clear_flag = true;
+
+uint32_t count_rain_poweroff = 0;
+uint32_t count_rain_poweron = 0;
+bool clear_flag_rain = true;
 
 const char *M_SENSOR_RAIN_TIME = "rant";
 const char *M_SENSOR_FLOW_TIME = "fltm";
@@ -153,7 +157,7 @@ stat_m m_callable_Flow_meter_leakage_detection_monitor_minutes(uint64_t current_
         if (current_time >= 60 + m_sen_warning.flow_sensor_first_time_minu && m_sen_warning.flow_sensor_flag_minu)
         {
             /*如果是Hunter流量计 则*/
-            if (m_sen_warning.sensor_type >= HC_075_FLOW_B && m_sen_warning.sensor_type <= HC_200_FLOW_B)
+            if ((m_sen_warning.sensor_type >= HC_075_FLOW_B && m_sen_warning.sensor_type <= HC_200_FLOW_B) || (m_sen_warning.sensor_type == P_OTHER_SENSOR))
             {
                 m_callable_leakage_velocity_detection(0, &m_sen_warning.sensor_flow_value_sum_minu, current_time, 2, true);
             }
@@ -164,7 +168,7 @@ stat_m m_callable_Flow_meter_leakage_detection_monitor_minutes(uint64_t current_
         if (current_time >= (60 + m_sen_warning.flow_sensor_first_time_minu))
         {
             /*如果是Hunter流量计 则*/
-            if (m_sen_warning.sensor_type >= HC_075_FLOW_B && m_sen_warning.sensor_type <= HC_200_FLOW_B)
+            if ((m_sen_warning.sensor_type >= HC_075_FLOW_B && m_sen_warning.sensor_type <= HC_200_FLOW_B) || (m_sen_warning.sensor_type == P_OTHER_SENSOR))
             {
 
                 m_callable_leakage_velocity_detection(60, &m_sen_warning.sensor_flow_value_sum_minu, current_time, 2, true);
@@ -229,7 +233,7 @@ stat_m m_callable_Flow_meter_leakage_detection_monitor(uint64_t current_time)
         if ((current_time >= 60 + m_sen_warning.flow_sensor_first_time) && m_sen_warning.flow_sensor_flag)
         {
             /*如果是Hunter流量计 则*/
-            if (m_sen_warning.sensor_type >= HC_075_FLOW_B && m_sen_warning.sensor_type <= HC_200_FLOW_B)
+            if ((m_sen_warning.sensor_type >= HC_075_FLOW_B && m_sen_warning.sensor_type <= HC_200_FLOW_B) || (m_sen_warning.sensor_type == P_OTHER_SENSOR))
             {
                 m_callable_leakage_velocity_detection(0, &m_sen_warning.sensor_flow_value_sum, current_time, 1, true);
             }
@@ -240,7 +244,7 @@ stat_m m_callable_Flow_meter_leakage_detection_monitor(uint64_t current_time)
         if (current_time >= (m_sen_warning.flow_leakage_time * time_num + m_sen_warning.flow_sensor_first_time) && m_sen_warning.flow_leakage_time != 0)
         {
             /*如果是Hunter流量计 则*/
-            if (m_sen_warning.sensor_type >= HC_075_FLOW_B && m_sen_warning.sensor_type <= HC_200_FLOW_B)
+            if ((m_sen_warning.sensor_type >= HC_075_FLOW_B && m_sen_warning.sensor_type <= HC_200_FLOW_B) || (m_sen_warning.sensor_type == P_OTHER_SENSOR))
             {
                 m_callable_leakage_velocity_detection(m_sen_warning.flow_leakage_time * time_num, &m_sen_warning.sensor_flow_value_sum, current_time, 1, true);
             }
@@ -389,6 +393,8 @@ stat_m m_callable_Flow_meter_leakage_detection_monitor(uint64_t current_time)
 stat_m m_callable_rtc_power_alarm_detection(uint64_t current_time)
 {
     bool flag = false;
+    int rtc_status = 0;
+    char percentage_battery_get[10];
     if (m_rtc_warning.rtc_detection_first_time <= NUM_OF_DAY_SEC_SUM)
     {
         m_rtc_warning.rtc_detection_first_time = current_time;
@@ -399,11 +405,12 @@ stat_m m_callable_rtc_power_alarm_detection(uint64_t current_time)
     }
     if (flag)
     {
-        if (m_callable_rtc_power_warning() != succ_r)
+        rtc_status = m_callable_rtc_power_warning(percentage_battery_get);
+        if (rtc_status != 0)
         {
             m_callable_local_resp_to_remote(M_CMD_NOTIFY_TO_DEVICE_RTC_POWER_CHECK,
-                                            M_TYPE_NULL, NULL,
-                                            M_TYPE_NULL, NULL,
+                                            M_TYPE_Int, (void *)&rtc_status,
+                                            M_TYPE_Str, (void *)percentage_battery_get,
                                             M_TYPE_NULL, NULL,
                                             M_TYPE_NULL, NULL, current_time, true);
         }
@@ -427,7 +434,7 @@ stat_m m_callable_early_warning_feedback_monitor(uint64_t current_time)
     m_sen_warning.last_trigger_time = current_time;
 
     /*RTC电量预警   目前是检测周期一天一次*/
-    // m_callable_rtc_power_alarm_detection(current_time);
+    m_callable_rtc_power_alarm_detection(current_time);
     if (m_sen_warning.sensor1_open_flag == true)
     {
         if (m_sen_warning.sensor1_type_get != M_SENSOR_MANAGE_TYPE_NORMAL_FLOW_RATE)
@@ -482,12 +489,18 @@ stat_m m_callable_early_warning_feedback_monitor(uint64_t current_time)
         {
             if (rain_sensor_triggle_type == 1)
             {
+                if ((count_rain_poweron >= 0) && (count_rain_poweroff > 0))
+                {
+                    count_rain_poweroff = 0;
+                }
+                count_rain_poweron++;
+
                 temp_use_int_vue_a = CURRENT_FOR_A_LONG_TIME;
                 /*向服务器发送雨量传感器预警消息*/
                 m_callable_local_resp_to_remote(M_CMD_NOTIFY_TO_SERVICE_FLOW_SENSOR_ABNORMAL,
                                                 M_TYPE_U8, (void *)&temp_use_int_vue_a,
                                                 M_TYPE_U8, (void *)&m_sen_warning.rain_poweron_time,
-                                                M_TYPE_NULL, NULL,
+                                                M_TYPE_U32, (void *)&count_rain_poweron,
                                                 M_TYPE_NULL, NULL, current_time, true);
                 m_sen_warning.sensor_first_trigger_time = current_time;
             }
@@ -498,16 +511,26 @@ stat_m m_callable_early_warning_feedback_monitor(uint64_t current_time)
 
             if (rain_sensor_triggle_type == 0)
             {
+                if ((count_rain_poweroff >= 0) && (count_rain_poweron > 0))
+                {
+                    count_rain_poweron = 0;
+                }
+                count_rain_poweroff++;
                 temp_use_int_vue_a = NO_CURRENT_FOR_A_LONG_TIME;
                 /*向服务器发送雨量传感器预警消息*/
                 m_callable_local_resp_to_remote(M_CMD_NOTIFY_TO_SERVICE_FLOW_SENSOR_ABNORMAL,
                                                 M_TYPE_U8, (void *)&temp_use_int_vue_a,
                                                 M_TYPE_U8, (void *)&m_sen_warning.rain_poweroff_time,
-                                                M_TYPE_NULL, NULL,
+                                                M_TYPE_U32, (void *)&count_rain_poweroff,
                                                 M_TYPE_NULL, NULL, current_time, true);
                 m_sen_warning.sensor_first_trigger_time = current_time;
             }
         }
+    }
+    else
+    {
+        count_rain_poweroff = 0;
+        count_rain_poweron = 0;
     }
     if (flow_sensor_flag_status == true)
     {

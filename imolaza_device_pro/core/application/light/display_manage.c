@@ -32,6 +32,11 @@ stat_m m_callable_light_display_initial(uint32_t _device_version_set1, uint8_t n
         display_attribute.display_numLeds = 19; // 灯的数量 用于计算更新百分比
         display_attribute.display_last_light_id = 4;
     }
+    else if (_device_version_set1 == DEVICE_HEARWARE_D11)
+    {
+        display_attribute.display_numLeds = 9; // 灯的数量 用于计算更新百分比
+        display_attribute.display_last_light_id = 3;
+    }
     else
     {
         display_attribute.display_lighting_strength = 90;
@@ -66,7 +71,7 @@ stat_m m_callable_display_status(enum light_anima_mode light_mode, uint8_t param
     if (light_mode != M_DISPLAY_FIRMWARE_UPDATE_MODE)
         DEBUG_TEST_W("Light Change %d", light_mode);
 
-    if (light_mode >= M_DISPLAY_START_UP_OR_FIND_NETWORK_MODE && light_mode <= M_DISPLAY_M_TERMINAL_SHORT_CIRCUIT_MODE)
+    if (light_mode >= M_DISPLAY_START_UP_OR_FIND_NETWORK_MODE && light_mode <= M_DISPLAY_SET_MANUAL_DURATION)
     {
         sta = succ_r;
         if (ota_updata_light_flag_m == 1)
@@ -102,6 +107,10 @@ stat_m m_callable_display_status(enum light_anima_mode light_mode, uint8_t param
         {
             display_attribute.display_device_version = param;
         }
+        if (light_mode == M_DISPLAY_SET_MANUAL_DURATION)
+        {
+            display_attribute.manual_setting_light_num = param;
+        }
     }
     return sta;
 }
@@ -115,6 +124,10 @@ void m_callable_light_clean(void)
     else if (display_attribute.display_device_version == DEVICE_HEARWARE_C11)
     {
         display_attribute.display_numLeds = 19;
+    }
+    else if (display_attribute.display_device_version == DEVICE_HEARWARE_D11)
+    {
+        display_attribute.display_numLeds = 9;
     }
     else
     {
@@ -181,6 +194,7 @@ void m_callable_display_idle_status(void)
         {
             m_static_breathe_around(MY_COLOR_CONCOC(blue), display_attribute.brightness_step);
         }
+        mDelay_ms(2);
         if (g_state != g_state_before)
             break;
     }
@@ -338,6 +352,16 @@ void m_callable_display_distribution_network_success(void)
                 }
             }
         }
+        else if (display_attribute.display_device_version == DEVICE_HEARWARE_D11)
+        {
+            for (uint8_t i = 1; i < display_attribute.display_numLeds; i++)
+            {
+                if ((i >= 1 && i <= 2) || (i >= 4 && i <= 5) || (i >= 7 && i <= 8))
+                {
+                    m_ext_drive_lighting_set_point_color(i, greed);
+                }
+            }
+        }
         else
         {
             for (uint8_t i = 1; i < display_attribute.display_numLeds; i++)
@@ -348,6 +372,7 @@ void m_callable_display_distribution_network_success(void)
                 }
             }
         }
+        mDelay_ms(5);
         if (g_state != M_DISPLAY_DISTRIBUTION_NETWORK_SUCCESS_MODE)
             break;
     }
@@ -461,6 +486,7 @@ void m_callable_display_network_problem(void)
         {
             m_static_breathe_around(MY_COLOR_CONCOC(yellow), display_attribute.brightness_step);
         }
+        mDelay_ms(5);
         if (g_state != M_DISPLAY_NETWORK_PROBLEM_MODE)
         {
             break;
@@ -482,6 +508,7 @@ void m_callable_display_wifi_disconnection(void)
         {
             m_static_breathe_around(MY_COLOR_CONCOC(purple), display_attribute.brightness_step);
         }
+        mDelay_ms(5);
         // 检查状态是否改变，如果改变则退出循环
         if (g_state != M_DISPLAY_WIFI_DISCONNECTION_MODE)
         {
@@ -619,7 +646,7 @@ void m_callable_display_vt_short_status(void)
     while (1)
     {
         m_static_breathe_around(MY_COLOR_CONCOC(red), display_attribute.brightness_step);
-
+        mDelay_ms(5);
         // 检查状态是否改变，如果改变则退出循环
         if (g_state != g_state_before)
         {
@@ -664,6 +691,21 @@ void m_callable_display_m_terminal_short_status(void)
         {
             break;
         }
+    }
+}
+
+void m_callable_display_set_manual_duration(void)
+{
+    m_callable_light_clean();
+    while (1)
+    {
+        for (int i = 0; i <= display_attribute.manual_setting_light_num; i++)
+        {
+            m_ext_drive_lighting_set_point_color(i, greed);
+        }
+        mDelay_ms(10);
+        if (g_state != M_DISPLAY_SET_MANUAL_DURATION)
+            break;
     }
 }
 
@@ -830,6 +872,10 @@ void m_static_display_run(void *pvParameters)
         case M_DISPLAY_M_TERMINAL_SHORT_CIRCUIT_MODE:
             g_state_before = M_DISPLAY_M_TERMINAL_SHORT_CIRCUIT_MODE;
             m_callable_display_m_terminal_short_status();
+            break;
+        case M_DISPLAY_SET_MANUAL_DURATION:
+            g_state_before = M_DISPLAY_SET_MANUAL_DURATION;
+            m_callable_display_set_manual_duration();
             break;
 
         default:

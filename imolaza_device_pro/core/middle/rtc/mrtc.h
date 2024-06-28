@@ -40,8 +40,8 @@ float m_callable_get_voltage_rtc(void);
 
 /**
  * @brief RTC电量预警功能
- * @return stat_m
+ * @return int
  */
-stat_m m_callable_rtc_power_warning(void);
+int m_callable_rtc_power_warning(char *percentage_battery_get);
 
 #endif // MRTC_H

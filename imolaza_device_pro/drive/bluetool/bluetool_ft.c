@@ -4,7 +4,8 @@
 // uint16_t connid_m = 0;
 
 static uint8_t char1_str[] = {0x11, 0x22, 0x33};
-
+bool ping_respound = false;
+uint64_t ping_last_time = 0;
 const char GATTS_IMOLAZA_TAG[] = "CC";
 const char GATTS_TAG[] = "CC0";
 
@@ -139,12 +140,15 @@ void m_ads_tool(uint8_t *dec_array, char *array, int src_fc, int fc)
     }
 }
 
+int dev_run_mode = 0;
+
 static void config_adv(uint8_t *p_manufacturer_data)
 {
     int i = 0;
     memset(mac_suffix, 0, sizeof(mac_suffix));
 
     m_callable_device_attribute_get_sn(mac_suffix);
+
     for (i = 0; i < 6; i++)
     {
         // if (i < 1)
@@ -153,8 +157,10 @@ static void config_adv(uint8_t *p_manufacturer_data)
         // if (i < 6)
         m_ads_tool(p_manufacturer_data, mac_suffix, i, i * 2);
     }
+
     memset(mac_suffix, 0, sizeof(mac_suffix));
     m_callable_device_attribute_get_mac_addr(mac_suffix);
+
     for (; i < 12; i++)
     {
 
@@ -168,6 +174,7 @@ static void config_adv(uint8_t *p_manufacturer_data)
         // DEBUG_TEST_HIDE("%02x", p_manufacturer_data[i + 1]);
     }
 }
+
 // uint8_t aaad[40] = {0x02,0x01,0x06,
 // 0x0d,0x09,0x6d,0x6d,0x6f,0x6c,0x61,0x7a,0x61,0x5f,0x62,0x66,0x63,
 // 0x0d,0xff,0xcc,0x28,0x22,0x09,0x23,0xa0,0x01,0x78,0x21,0x84,0x51,0xa8,0x02};
@@ -190,17 +197,23 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
     mparam = param;
     conn_id = param->read.conn_id;
     uint8_t datc[15] = {0};
-    int dev_run_mode = 0;
+
     m_callable_device_attribute_get_running_mode(&out_mode);
     switch (event)
     {
     case ESP_GATTS_REG_EVT:
     {
         memset(ble_name, 0, sizeof(ble_name));
-        m_callable_device_attribute_get_running_mode(&dev_run_mode);
-        if (dev_run_mode == M_DEVICE_RUNNING_MODE_OFFLINE_DIRECT || dev_run_mode == M_DEVICE_RUNNING_MODE_OFFLINE_CONFIG)
+        if (m_callable_drive_flash_read(M_TYPE_U32, "device_mode", (int *)&dev_run_mode) == succ_r)
         {
-            strcat(ble_name, "Offline_Imolaza_");
+            if (dev_run_mode == M_DEVICE_RUNNING_MODE_OFFLINE_DIRECT || dev_run_mode == M_DEVICE_RUNNING_MODE_OFFLINE_CONFIG)
+            {
+                strcat(ble_name, "Offline_Imolaza_");
+            }
+            else
+            {
+                strcat(ble_name, "Imolaza_");
+            }
         }
         else
         {
@@ -262,7 +275,7 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
         memset(&rsp, 0, sizeof(esp_gatt_rsp_t));
         rsp.attr_value.handle = param->read.handle;
         // rsp.attr_value.value = "caji";
-        sprintf(m_resp , "%d" , dev_run_mode);
+        sprintf(m_resp, "%d", dev_run_mode);
         strcpy((char *)rsp.attr_value.value, m_resp);
         rsp.attr_value.len = strlen(m_resp);
         esp_ble_gatts_send_response(gatts_if, param->read.conn_id, param->read.trans_id,
@@ -270,6 +283,14 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
 
         break;
     case ESP_GATTS_WRITE_EVT:
+
+        ping_last_time = mDeviceSystemTime();
+        if (strstr((char *)param->write.value, "[ping]"))
+        {
+            ping_respound = true;
+            DEBUG_TEST(DB_I, "收到ping");
+        }
+
         m_callable_device_attribute_get_running_mode(&nmod);
         DEBUG_TEST(DB_I, "blue_m_callable_device_attribute_get_running_mode:%d", nmod);
         if (nmod == M_DEVICE_RUNNING_MODE_OFFLINE_DIRECT)
@@ -365,6 +386,7 @@ static void gatts_profile_a_event_handler(esp_gatts_cb_event_t event, esp_gatt_i
 
     // printf("gatts_profile_a_event_handler%d\n", event);
 }
+uint8_t m_remote_bda[6];
 static void gatts_pro_event_handle(esp_gatts_cb_event_t event, esp_gatt_if_t gatts_if, esp_ble_gatts_cb_param_t *param)
 {
     // DEBUG_TEST(DB_I,"gatts : %d\n", event);
@@ -387,7 +409,6 @@ static void gatts_pro_event_handle(esp_gatts_cb_event_t event, esp_gatt_if_t gat
                 {
                     gl_profile_tab[idx].gatts_cb(event, gatts_if, param);
                 }
-                
             }
         }
     } while (0);
@@ -402,6 +423,9 @@ static void gatts_pro_event_handle(esp_gatts_cb_event_t event, esp_gatt_if_t gat
         break;
     case ESP_GATTS_CONNECT_EVT:
         DEBUG_TEST(DB_I, "connect . !");
+        ping_last_time = mDeviceSystemTime();
+        memset(m_remote_bda, 0, 6);
+        memcpy(m_remote_bda, param->connect.remote_bda, 6);
         is_connected = true;
         esp_ble_gatt_set_local_mtu(500);
 
@@ -590,6 +614,7 @@ stat_m m_ext_network_transmisson_bluetool_tx(char *data, int datalen)
 stat_m m_ext_net_link_bluetool_receive_data(char *out_data, int *len, uint64_t in_time_out_s)
 {
     stat_m stat = fail_r;
+    char data_ping[6];
     // uint64_t in_soc_time = m_callable_timer_manage_get_utc_time();
     while (1)
     {
@@ -614,6 +639,17 @@ stat_m m_ext_net_link_bluetool_receive_data(char *out_data, int *len, uint64_t i
             stat = fail_r;
             *len = -1;
             break;
+        }
+        if (ping_respound)
+        {
+            ping_respound = false;
+            m_ext_network_transmisson_bluetool_tx("[ping]", 7);
+        }
+        if ((ping_last_time != 0) && mDeviceSystemTime() >= ping_last_time + 30 * 1000 && (is_connected == true))
+        {
+            esp_ble_gap_disconnect(m_remote_bda);
+            ping_last_time = mDeviceSystemTime();
+            DEBUG_TEST(DB_I, "长时间没有ping,主动断开蓝牙");
         }
         mDelay_ms(50);
     }

@@ -7,7 +7,6 @@ static char token[32] = {0};
 
 #define INVGE "@_!B@"
 
-char c_chr_conf_notify[10] = {0};
 
 void m_static_config_net_str_transf_str(char *strc)
 {
@@ -136,7 +135,6 @@ stat_m m_callable_config_net_start(void)
     {
         stat = M_CONFIG_MODE_RESP_NOT_FOUND_TARGET_WIFI;
         m_callable_middle_connect_handle_set_code(M_CONNECT_ERROR_CODE_CONFIG_WIFI_NOT_FIND);
-        sprintf(c_chr_conf_notify, "%d", M_CONNECT_ERROR_CODE_CONFIG_WIFI_NOT_FIND);
     }
     else
     {
@@ -169,7 +167,6 @@ stat_m m_callable_config_net_start(void)
         if (stat == succ_r)
         {
             m_callable_middle_connect_handle_set_code(M_CONNECT__CODE__WIFI_IP_WAIT_ASSIGNMENT);
-            sprintf(c_chr_conf_notify, "%d", M_CONNECT_ERROR_CODE_CONFIG_FAIL_PASSWORD_ERR);
         }
         else
 
@@ -177,15 +174,12 @@ stat_m m_callable_config_net_start(void)
         {
             DEBUG_TEST(DB_E, "WIFI password err !");
             m_callable_middle_connect_handle_set_code(M_CONNECT_ERROR_CODE_CONFIG_FAIL_PASSWORD_ERR);
-            sprintf(c_chr_conf_notify, "%d", M_CONNECT_ERROR_CODE_CONFIG_FAIL_PASSWORD_ERR);
         }
         else
         {
-            sprintf(c_chr_conf_notify, "%d", M_CONNECT_ERROR_CODE_CONFIG_FAIL_TIMEOUT);
             m_callable_middle_connect_handle_set_code(M_CONNECT_ERROR_CODE_CONFIG_FAIL_TIMEOUT);
         }
     }
-    m_ext_network_transmisson_bluetool_tx(c_chr_conf_notify, strlen(c_chr_conf_notify));
 
     return stat;
 }

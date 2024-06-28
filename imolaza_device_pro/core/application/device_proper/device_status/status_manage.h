@@ -92,6 +92,7 @@ stat_m m_callable_device_proper_status_update_to_test(void);
  * @return stat_m
  */
 stat_m m_callable_device_proper_status_update_to_config_net(void);
+
 /**
  * @brief 查询当前设备的状态
  * 
@@ -99,6 +100,9 @@ stat_m m_callable_device_proper_status_update_to_config_net(void);
  * @return stat_m 
  */
 stat_m m_callable_device_proper_status_get(int *out_ste);
+
+
+
 
 
 

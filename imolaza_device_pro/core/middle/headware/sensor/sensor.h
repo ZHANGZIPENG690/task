@@ -332,8 +332,27 @@ stat_m m_callable_sensor_staging_add_trig(void *inobj, uint64_t in_time_s);
  */
 stat_m m_callable_sensor_staging_check_obj_id(uint64_t in_chk_id);
 
+/**
+ * @brief 获取自上次到现在的流量值，并且指定是否清除缓存并且重新开始计算，如果流量传感器未打开 返回0
+ *
+ * @param is_clear 是否清除缓存
+ * @return stat_m
+ */
 stat_m m_callable_flow_sensor_get_total_value(uint8_t channel_id, uint32_t running_time, float *out_final_vue, bool is_clear);
+
+/**
+ * @brief 流量计类型获取
+ * @param senseortype 类型
+ * @return stat_m
+ */
 stat_m m_callable_flow_sensor_type_gets(uint8_t *senseortype);
 
-stat_m m_callable_flow_sensor_type_gets(uint8_t *senseortype);
+/**
+ * @brief 流量计自定义值 设置
+ * @param k_value K值或者是 升/脉冲
+ * @param offset_value 偏移值
+ * @return stat_m
+ */
+stat_m m_calllable_sensor_k_or_f_set(float k_value, float offset_value);
+
 #endif

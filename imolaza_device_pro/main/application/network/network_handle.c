@@ -7,6 +7,7 @@
 // #include "../drive/drive.h"
 
 char app_version[40] = {0};
+char *output = NULL;
 static char out_temp_char_a[40] = {0};
 char out_temp_char_b[40] = {0};
 /** 是否恢复了计划 标记  false 恢复了*/
@@ -137,6 +138,7 @@ static int out_runmode = 0;
  */
 stat_m m_ext_network_config_user_login_cmd(char *out_cmd, int count)
 {
+
     stat_m stat = succ_r;
     /**   设备发送到服务器的 CMD */
     int glo_cmd = 0;
@@ -174,6 +176,7 @@ stat_m m_ext_network_config_user_login_cmd(char *out_cmd, int count)
         sprintf(out_cmd, "[%d,%s,%s,%d,%s,%d,%s,%d]", 15, key, app_version, schedu_count, out_temp_char_b, connect_option, out_temp_char_a, sign_strage);
         stat = fail_r;
     }
+
     if (stat == succ_r)
     {
         m_callable_device_attribute_get_current_connect_net_name(out_temp_char_a);
@@ -230,6 +233,7 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
     stat_m stat = succ_r;
     DEBUG_TEST(DB_I, "Msg Handle %d   %s", cmd, buf);
     int connect_count = 0;
+    int http_connect_count = 0;
     enum m_paramete_enum mpe = M_TYPE_NULL;
     m_callable_network_get_connect_count(&connect_count);
     m_callable_device_proper_status_get(&device_status);
@@ -260,14 +264,6 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
         DEBUG_TEST(DB_I, "Entry");
         switch (cmd)
         {
-            //     /* 传感器加入 */
-            // case M_CMD_TWOWAY_SENSOR_TRIGE: /* 6 */
-
-            //     break;
-            //     /* 传感器离开 */
-            // case M_CMD_TWOWAY_SENSOR_LEAVE: /* 7 */
-
-            //     break;
             /**
              * @brief 设置传感器 8
              *
@@ -276,14 +272,27 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
              */
         case M_CMD_TWOWAY_SET_SENSOR: /** 8 */
             temp_use_int_vue_a = 0;
+            memset(tmp_use_str_b, 0, sizeof(tmp_use_str_b));
 
             M_CALLABLE_DATA_PARSE_FORAMT_PARAM_SSCANF(buf, "%d", &temp_use_int_vue_a);
             M_CALLABLE_DATA_PARSE_FORAMT_PARAM_SSCANF(buf, "%*[^,],%d", &temp_use_int_vue_b);
-            // M_CALLABLE_DATA_PARSE_FORAMT_PARAM_SSCANF(buf, "%*[ ]%d", &temp_use_int_vue_a);
+            M_CALLABLE_DATA_PARSE_FORAMT_PARAM_SSCANF(buf, "%*[^,],%*[^,],%s", tmp_use_str_b);
 
-            // M_CALLABLE_DATA_PARSE_FORAMT_PARAM_SSCANF(buf, "%d", &temp_use_int_vue_a);
-            // mDelay_ms(200);
-            // m_callable_sensor_type_set(temp_use_int_vue_b);
+            DEBUG_TEST(DB_W, "temp_use_float_vue_a %s", tmp_use_str_b);
+
+            if (temp_use_int_vue_b == 98 || temp_use_int_vue_b == 99)
+            {
+                float num1 = 0.0;
+                float num2 = 0.0;
+                m_callable_parsestring(tmp_use_str_b, &num1, &num2);
+                if (temp_use_int_vue_b == 98)
+                {
+                    num1 = num1 / 3.785;
+                }
+                DEBUG_TEST(DB_W, "num1 %.05f ---- num2  %.05f", num1, num2);
+                m_calllable_sensor_k_or_f_set(num1, num2);
+            }
+
             m_callable_sensor_set(temp_use_int_vue_a, temp_use_int_vue_b, true);
             m_callable_local_resp_to_remote(M_CMD_TWOWAY_SET_SENSOR,
                                             M_TYPE_Int, (void *)&temp_use_int_vue_a,
@@ -292,34 +301,12 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
                                             M_TYPE_NULL, NULL, in_time_s, true);
             break;
         case 5: /* 5 */
-            // m_callable_data_parse_foramt_str(tmp_sid, buf);
-            // // m_callable_drive_flash_write(M_TYPE_Str, "re_mac", tmp_sid);
-            // m_callable_device_attribute_set_mac(tmp_sid);
-            // m_callable_local_resp_to_remote(5,
-            //                                 M_TYPE_Str, (void *)tmp_sid,
-            //                                 M_TYPE_Str_OK, NULL,
-            //                                 M_TYPE_NULL, NULL,
-            //                                 M_TYPE_NULL, NULL, in_time_s, true);
-            // m_callable_data_parse_format_vue("%lld", (void *)&temp_use_u64_vue_a, buf);
-            // m_callable_sensor_type_set(temp_use_u64_vue_a);
+
             break;
         case M_CMD_TWOWAY_SENSOR_TRIGE: /* 6 */
 
-            // m_callable_data_parse_foramt_str(tmp_sid, buf);
-            // if(tmp_sid[0]> '0' && tmp_sid[0]> '<')
-            // m_callable_device_attribute_set_key(tmp_sid);
-            // m_callable_local_resp_to_remote(M_CMD_TWOWAY_SENSOR_TRIGE,
-            //                                 M_TYPE_Str, (void *)tmp_sid,
-            //                                 M_TYPE_Str_OK, NULL,
-            //                                 M_TYPE_NULL, NULL,
-            //                                 M_TYPE_NULL, NULL, in_time_s, true);
             break;
-            //     /** 设备配网上线*/
-            // case M_CMD_NOTIFY_TO_SERVER_DEVICE_CONFIG: /* 10 */
-            //     break;
-            //     /** 设备断电上线*/
-            // case M_CMD_NOTIFY_TO_SERVER_DEVICE_ONLINE: /* 11 */
-            //     break;
+
             /** 查询设备状态*/
         case M_CMD_TWOWAY_GET_DEVICE_STATUS: /* 9 */
             temp_use_int_vue_b = 0;
@@ -327,6 +314,9 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
             temp_use_int_vue_d = 0;
             temp_use_u64_vue_b = None; /** 运行id */
             temp_use_u64_vue_c = 0;    /** 剩余运行时间 */
+            enum seneor_chann sen_chan;
+            enum seneor_type sen_type;
+
             memset(temp_queue_cc, 0, sizeof(temp_queue_cc));
             m_callable_device_attribute_get_sn(out_temp_char_a);
             m_callable_device_attribute_get_schedule_num(&temp_use_int_vue_a); // 计划数量
@@ -340,6 +330,23 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
 
             if (m_callable_offline_bluetooth_login_flag() == succ_r)
             {
+
+                if ((stat = m_callable_sensor_current_is_effective(&sen_chan, &sen_type, in_time_s)) == M_ERR)
+                {
+                    m_run_time.sensor_mode = 0;
+                }
+                else
+                {
+                    if ((stat = m_callable_sensor_current_is_effective(&sen_chan, &sen_type, in_time_s)) == succ_r)
+                    {
+                        m_run_time.sensor_mode = 7;
+                    }
+                    else
+                    {
+                        m_run_time.sensor_mode = 6;
+                    }
+                }
+
                 m_callable_local_resp_to_remote_pro_max(M_CMD_TWOWAY_GET_DEVICE_STATUS,
                                                         M_TYPE_Str, (void *)app_version,           // 版本信息
                                                         M_TYPE_Str, (void *)out_temp_char_a,       // sn
@@ -403,7 +410,7 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
             m_callable_network_set_server_login_status(true);
             m_ext_software_drive_net_wifi_ip_update();
             m_callable_device_attribute_http_proxy_save_addr();
-            m_callable_middle_connect_handle_set_code(M_CONNECT__CODE_SERVER_LOGIN_AND_CONNECT_OK);
+            // m_callable_middle_connect_handle_set_code(M_CONNECT__CODE_SERVER_LOGIN_AND_CONNECT_OK);
             if (login_change_wifi)
             {
                 {
@@ -481,6 +488,12 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
                 login_recover_schedule = false;
             }
             login_recover_schedule = false;
+            mDelay_ms(200);
+            if (m_callable_ota_silent_updata_flag_get() == false)
+            {
+                m_callable_ota_silent_updata_start_init(in_time_s);
+            }
+
             break;
         // 远程重启设备
         case M_CMD_NOTIFY_TO_DEVICE_RESTART: /* 17 */
@@ -489,8 +502,29 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
             break;
             // 请求更新设备或者要求新设备
         case M_CMD_TWOWAY_GET_OR_DEMAND_DEVICE_UPDTAE: /* 18*/
+            if (strstr(buf, "null,null"))
+            {
+                temp_use_int_vue_c = 1;
+            }
+            else if (device_status != M_DEVICE_GLOBAL_STATUS_IDLE)
+            {
+                m_callable_data_parse_foramt_str(tmp_pudate_url, buf);
+                m_callable_data_parse_format_vue("%d", (void *)&temp_use_int_vue_a, buf);
+                if (temp_use_int_vue_a == 1)
+                {
+                    temp_use_int_vue_c = 1;
+                }
+                else
+                {
+                    temp_use_int_vue_c = 2;
+                }
+            }
+            else
+            {
+                temp_use_int_vue_c = 3;
+            }
 
-            if (strstr(buf, "null,null") || device_status != M_DEVICE_GLOBAL_STATUS_IDLE)
+            if (temp_use_int_vue_c == 1)
             {
                 m_callable_device_attribute_get_schedule_num(&temp_use_int_vue_a);
                 m_callable_local_resp_to_remote(M_CMD_NOTIFY_TO_SERVER_DEVICE_SYNC_SCHEDULE, M_TYPE_Int, &temp_use_int_vue_a,
@@ -498,22 +532,85 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
                                                 M_TYPE_NULL, NULL,
                                                 M_TYPE_NULL, NULL, in_time_s, false);
             }
-            else
+            else if (temp_use_int_vue_c == 2)
+            {
+                if (temp_use_int_vue_a == 2)
+                {
+                    if (m_callable_ota_silent_updata_flag_get() == false)
+                    {
+
+                        stat = m_callable_drive_flash_write(M_TYPE_Str, OTA_URL, tmp_pudate_url);
+                        if (stat == succ_r)
+                        {
+                            m_callable_ota_silent_updata_start_init(in_time_s);
+                        }
+                    }
+                    else
+                    {
+                        DEBUG_TEST(DB_E, "OTA静默更新已存在,无需重复发送113指令");
+                    }
+                }
+                else if (temp_use_int_vue_a == 0)
+                {
+                    m_callable_ota_silent_updata_stop();
+                }
+            }
+            if (temp_use_int_vue_c == 3)
             {
                 m_callable_data_parse_foramt_str(tmp_pudate_url, buf);
-                m_callable_ota_init();
-
-                if (m_callable_ota_enable_silent_updata(tmp_pudate_url) == succ_r)
+                m_callable_data_parse_format_vue("%d", (void *)&temp_use_int_vue_a, buf);
+                DEBUG_TEST(DB_W, "%s-----   ----%d", tmp_pudate_url, temp_use_int_vue_a);
+                if (temp_use_int_vue_a == 1)
                 {
-                    if (m_callable_ota_check_app_version() == succ_r)
+                    m_callable_ota_init();
+
+                    for (int i = 0; i < 6; i++)
                     {
-                        ota_upadata_start_flag_m = 1;
-                        m_callable_local_resp_to_remote(M_CMD_NOTIFY_TO_SERVER_DEVICE_CONFIRM_UPDATA,
-                                                        M_TYPE_NULL, NULL,
-                                                        M_TYPE_NULL, NULL,
-                                                        M_TYPE_NULL, NULL,
-                                                        M_TYPE_NULL, NULL, in_time_s, true);
+                        if (m_callable_ota_enable_silent_updata(tmp_pudate_url) == succ_r)
+                        {
+                            stat = succ_r;
+                            if (m_callable_ota_check_app_version() == succ_r)
+                            {
+                                ota_upadata_start_flag_m = 1;
+                                m_callable_local_resp_to_remote(M_CMD_NOTIFY_TO_SERVER_DEVICE_CONFIRM_UPDATA,
+                                                                M_TYPE_Int, (void *)&temp_use_int_vue_a,
+                                                                M_TYPE_NULL, NULL,
+                                                                M_TYPE_NULL, NULL,
+                                                                M_TYPE_NULL, NULL, in_time_s, true);
+                            }
+                            break;
+                        }
+                        else
+                        {
+                            DEBUG_TEST(DB_E, "ota http 请求失败");
+                            http_connect_count++;
+                        }
                     }
+                    if (http_connect_count >= 5)
+                    {
+                        DEBUG_TEST(DB_E, "ota http 请求失败 大于等于 5次,设备需要重启");
+                        mReboot(M_RESTART_CAUSE_PREMEDITATED);
+                    }
+                }
+                else if (temp_use_int_vue_a == 2)
+                {
+                    if (m_callable_ota_silent_updata_flag_get() == false)
+                    {
+
+                        stat = m_callable_drive_flash_write(M_TYPE_Str, OTA_URL, tmp_pudate_url);
+                        if (stat == succ_r)
+                        {
+                            m_callable_ota_silent_updata_start_init(in_time_s);
+                        }
+                    }
+                    else
+                    {
+                        DEBUG_TEST(DB_E, "OTA静默更新已存在,无需重复发送113指令");
+                    }
+                }
+                else if (temp_use_int_vue_a == 0)
+                {
+                    m_callable_ota_silent_updata_stop();
                 }
             }
 
@@ -696,7 +793,10 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
             /** 快速运行上一个 */
         case M_CMD_TWOWAY_FASTRUN_SWITCH_PRE: /* 39*/
             // m_callable_instance_running_event_input(CHANGING_OVER_LEFT_TRIGGER, in_time_s);
-            m_callable_instance_running_event_input(CHANGING_OVER_RIGHT_TRIGGER, in_time_s);
+            if (m_callable_current_batch_area_power_calibration_flag_get() == 0)
+            {
+                m_callable_instance_running_event_input(CHANGING_OVER_RIGHT_TRIGGER, in_time_s);
+            }
 
             // m_callable_instance_running_event_input(CHANGING_OVER_LEFT_TRIGGER, in_time_s);
             break;
@@ -704,7 +804,7 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
             /** 快速运行开始 */
         case M_CMD_TWOWAY_FASTRUN_START: /* 40 */
             /** 添加一个快速运行*/
-            // m_callable_instance_manage_quick_add(buf, 0);
+            m_callable_current_batch_area_power_calibration_flag_set(0);
             m_callable_instance_manage_quick_gener(buf, in_time_s);
             break;
             //     /** 快速运行完成 */
@@ -712,12 +812,19 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
             break;
             /** 快速运行下一个 */
         case M_CMD_TWOWAY_FASTRUN_SWITCH_NEXT: /* 43 */
-            m_callable_instance_running_event_input(CHANGING_OVER_LEFT_TRIGGER, in_time_s);
+            if (m_callable_current_batch_area_power_calibration_flag_get() == 0)
+            {
+                m_callable_instance_running_event_input(CHANGING_OVER_LEFT_TRIGGER, in_time_s);
+            }
 
             break;
             /** 快速运行暂停 */
         case M_CMD_TWOWAY_FASTRUN_PAUSE: /* 44 */
-            m_callable_instance_running_event_input(CHANGING_OVER_START_TRIGGER, in_time_s);
+            if (m_callable_current_batch_area_power_calibration_flag_get() == 0)
+            {
+                m_callable_instance_running_event_input(CHANGING_OVER_START_TRIGGER, in_time_s);
+            }
+
             break;
             /** 快速运行恢复 */
         case M_CMD_TWOWAY_FASTRUN_RECOVER: /* 45 */
@@ -1216,7 +1323,7 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
                 // temp_use_u64_vue_a = temp_use_u64_vue_a / 1000;
 
                 in_time_s = temp_use_u64_vue_a + temp_use_int_vue_a * 3600;
-                DEBUG_TEST(DB_W, "-- > %lld", in_time_s);
+                DEBUG_TEST(DB_W, "---> %lld", in_time_s);
                 m_callable_device_proper_status_get(&temp_use_int_vue_b);
                 if ((temp_use_int_vue_b == M_DEVICE_GLOBAL_STATUS_MANUAL_RUNNING || temp_use_int_vue_b == M_DEVICE_GLOBAL_STATUS_SCHEDULE_RUNNING || temp_use_int_vue_b == M_DEVICE_GLOBAL_STATUS_FAST_RUN_RUNNING) && temp_use_u64_vue_a + 5 < m_callable_timer_manage_get_utc_time())
                 {
@@ -1264,7 +1371,7 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
 
             m_callable_device_attribute_running_mode_set_wifi_info(tmp_use_str_c, tmp_use_str_b);
             m_callable_network_set_net_info(tmp_use_str_c, tmp_use_str_b);
-            
+
             // m_callable_offline_bluetooth_running_mode_setting(M_DEVICE_RUNNING_MODE_DERECT);
             m_callable_device_attribute_running_save_mode(M_DEVICE_RUNNING_MODE_DERECT);
 
@@ -1299,7 +1406,50 @@ stat_m m_ext_server_message_handle(int cmd, char *buf)
                                                 M_TYPE_NULL, NULL,
                                                 M_TYPE_NULL, NULL, in_time_s, false);
             break;
+            /* 107   批量区域电流校准 */
+        case M_CMD_BATCH_ZONE_CURRENT_CALIBRATION_FOUND:
+            /**/
+            memset(temp_queue_cc, 0, sizeof(temp_queue_cc));
+            m_callable_concatenatestring(buf, temp_queue_cc);
+            DEBUG_TEST(DB_I, "buf_in %s", buf);
+            DEBUG_TEST(DB_I, "buf_out %s", temp_queue_cc);
+            m_callable_current_batch_area_power_calibration_flag_set(1);
+            m_callable_instance_manage_quick_gener(temp_queue_cc, in_time_s);
+            /*还需要做特殊处理，用过电流校准状态去限制、过滤按键切换控制以及 指令切换控制、只做 开始和 停止动作、每自动切换一个区域进行电流值返回*/
 
+            break;
+
+            /* 110   批量区域电流测试 */
+        case M_CMD_BATCH_ZONE_CURRENT_TEST_FOUND:
+            /**/
+            memset(temp_queue_cc, 0, sizeof(temp_queue_cc));
+            m_callable_concatenatestring(buf, temp_queue_cc);
+            DEBUG_TEST(DB_I, "buf_in %s", buf);
+            DEBUG_TEST(DB_I, "buf_out %s", temp_queue_cc);
+            m_callable_current_batch_area_power_calibration_flag_set(2);
+            m_callable_instance_manage_quick_gener(temp_queue_cc, in_time_s);
+            /*还需要做特殊处理，用过电流校准状态去限制、过滤按键切换控制以及 指令切换控制、只做 开始和 停止动作、每自动切换一个区域进行电流值返回*/
+
+            break;
+
+        // case M_CMD_OTA_SILENT_UPDATE: /*113*/
+        //     m_callable_data_parse_foramt_str(tmp_pudate_url, buf);
+
+        //     if (m_callable_ota_silent_updata_flag_get() == false)
+        //     {
+
+        //         stat = m_callable_drive_flash_write(M_TYPE_Str, OTA_URL, tmp_pudate_url);
+        //         if (stat == succ_r)
+        //         {
+        //             m_callable_ota_silent_updata_start_init(in_time_s);
+        //         }
+        //     }
+        //     else
+        //     {
+        //         DEBUG_E("OTA静默更新已存在,无需重复发送113指令");
+        //     }
+
+        //     break;
         case 199: /* 199 */
             m_callable_network_server_disconnect();
 

@@ -35,7 +35,7 @@ bool m_ext_drive_rtc_set_time(int year, int month, int tm_day, int tm_hour, int 
     {
         time_data[6] = (((year - 2000) / 10) << 4) | ((year - 2000) % 10);
     }
-
+    DEBUG_TEST(DB_W, "m_ext_drive_rtc_set_time7777777");
     // 将转换后的数据写入PCF8563寄存器中
     i2c_cmd_handle_t cmd = i2c_cmd_link_create();
     i2c_master_start(cmd);
@@ -45,6 +45,7 @@ bool m_ext_drive_rtc_set_time(int year, int month, int tm_day, int tm_hour, int 
     i2c_master_stop(cmd);
     esp_err_t ret = i2c_master_cmd_begin(i2c_num, cmd, 1000 / portTICK_RATE_MS);
     i2c_cmd_link_delete(cmd);
+    DEBUG_TEST(DB_W, "m_ext_drive_rtc_set_time8888888");
     return (ret == ESP_OK) ? true : false;
 #endif
 }
@@ -71,7 +72,7 @@ bool m_ext_drvie_rtc_get_time(uint64_t *out_timestamp)
     i2c_cmd_link_delete(cmd);
     if (ret != ESP_OK)
     {
-        DEBUG_TEST( DB_I,"Failed to read time from PCF8563\r\n");
+        DEBUG_TEST(DB_E, "Failed to read time from PCF8563\r\n");
         return false;
     }
 
@@ -88,7 +89,7 @@ bool m_ext_drvie_rtc_get_time(uint64_t *out_timestamp)
 
     *out_timestamp = mktime(&timestamp);
 
-    DEBUG_TEST( DB_I,"Current time is: %04d-%02d-%02d %02d:%02d:%02d, weekday %d            %lld",
+    DEBUG_TEST(DB_I, "Current time is: %04d-%02d-%02d %02d:%02d:%02d, weekday %d            %lld",
                timestamp.tm_year + 1900, timestamp.tm_mon + 1, timestamp.tm_mday,
                timestamp.tm_hour, timestamp.tm_min, timestamp.tm_sec, timestamp.tm_wday, *out_timestamp);
 
@@ -111,20 +112,18 @@ stat_m m_ext_read_rtc_vl_flag(void)
     i2c_master_cmd_begin(I2C_NUM_0, cmd, 1000 / portTICK_PERIOD_MS);
     i2c_cmd_link_delete(cmd);
 
-    DEBUG_TEST( DB_I,"02h寄存器读取的值为: 0x%02x", vlFlag);
+    DEBUG_TEST(DB_I, "02h寄存器读取的值为: 0x%02x", vlFlag);
     if (vlFlag & 0x80)
     {
-        DEBUG_TEST( DB_I,"VL位的值为 1");
+        DEBUG_TEST(DB_I, "VL位的值为 1");
         return fail_r;
     }
     else
     {
-        DEBUG_TEST( DB_I,"VL位的值为 0");
+        DEBUG_TEST(DB_I, "VL位的值为 0");
         return succ_r;
     }
 }
-
-
 
 // // 实现设置时间函数
 // stat_m m_callable_midlle_rtc_set_time(pcf8563_time_t *time)

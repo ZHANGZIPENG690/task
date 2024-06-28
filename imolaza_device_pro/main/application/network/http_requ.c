@@ -292,6 +292,7 @@ struct hostent *h = NULL;
 extern void adsc(char *name);
 
 struct sockaddr_in http_dest_addr;
+
 /**
  * @brief 通过过SOCKET获取 地址信息
  *
@@ -309,6 +310,7 @@ stat_m m_ext_static_network_socket_requ_addr(char *out_addr, int *out_port)
     DEBUG_TEST(DB_I, "%s ... ", ipaddrTemp);
 
     m_callable_middle_connect_handle_set_code(M_CONNECT__CODE_DNS_RESOLVEING);
+
     {
         // hints.ai_flags = O_NONBLOCK;
         DEBUG_TEST(DB_I, "m_ext_static_network_socket_requ_addr [ %s ]... ", hostname_addr);
@@ -320,6 +322,7 @@ stat_m m_ext_static_network_socket_requ_addr(char *out_addr, int *out_port)
         {
             DEBUG_TEST_E("DNS lookup failed err=%d\n", stat);
             m_callable_middle_err_handle_set_code(M_ERROR_CODE_NETWORK__CAUSE_HOSTNAME_FAIL);
+            m_callable_middle_connect_handle_set_code(M_CONNECT_ERROR_CODE_DNS_RESOLVE_FAIL);
             // m_callable_middle_connect_handle_set_code(M_CONNECT_ERROR_CODE__WIFI_NOT_NAT);
             mDelay_ms(1000);
         }
@@ -403,7 +406,7 @@ stat_m m_ext_static_network_socket_requ_addr(char *out_addr, int *out_port)
             M_CALLABLE_DATA_PARSE_FORAMT_PARAM_SSCANF(adrc, "%[^:]:%d", out_addr, out_port);
             DEBUG_TEST(DB_W, "Success(%s:%d)\r\n", out_addr, *out_port);
             m_callable_middle_connect_handle_set_code(M_CONNECT__CODE_HTTP_CONNECT_SUCCESS);
-            m_callable_middle_connect_handle_set_code(M_CONNECT__CODE_SERVER_LOGIN_LOGGING);
+            // m_callable_middle_connect_handle_set_code(M_CONNECT__CODE_SERVER_LOGIN_LOGGING);
 
             stat = succ_r;
         }

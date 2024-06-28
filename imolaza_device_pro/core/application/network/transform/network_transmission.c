@@ -224,6 +224,7 @@ void m_static_network_rx_loop(void *args)
         {
             m_callable_device_attribute_get_net_connect_mode(&con_mode);
             m_static_network_manage_get_server_connect_status(&con_status);
+
             if (con_status == M_NETWORK_CONNECT_PROGRESS_LOGIN_SUCCESS)
             {
                 if (m_callable_network_ext_tcp_mqtt_offline_data_rx(con_mode, transform_data_root.rx.x_buf, &transform_data_root.rx.x_len, M_TIMEOUT_LONG_LIMIT_MIN) == succ_r)

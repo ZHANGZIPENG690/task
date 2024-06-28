@@ -108,12 +108,12 @@ stat_m m_callable_instance_running_gener_obj(uint64_t in_uid, uint64_t in_time_s
         if (wtd != NULL && stat == succ_r && wtd->is_genger_info == M_INSTANCE_IS_GENER_INFO_WAIT)
         {
             wtd->exfun.fn_water_skip = 0;
-            DEBUG_TEST(DB_W,"Not a recovery plan that needs to be executed ,%d", wtd->is_genger_info);
+            DEBUG_TEST(DB_W, "Not a recovery plan that needs to be executed ,%d", wtd->is_genger_info);
             in_obj = M_MALLOC(sizeof(instance_obj));
             memset(in_obj, 0, sizeof(instance_obj));
             // 查看/获取  30 反馈的天气跳过信息
             m_callable_weather_manage_get_is_effective(in_uid, &weather);
-            DEBUG_TEST(DB_W,"30 -> m_callable_weather_manage_get_is_effective: %d", weather);
+            DEBUG_TEST(DB_W, "30 -> m_callable_weather_manage_get_is_effective: %d", weather);
             // 生成数据
             {
                 if (weather && weather != WEATHER_SATURATION_SKIP)
@@ -124,7 +124,7 @@ stat_m m_callable_instance_running_gener_obj(uint64_t in_uid, uint64_t in_time_s
                     stat = m_callable_instance_manage_instance_gener(wtd, in_obj, NULL, &weather, in_time_s);
                     wtd->exfun.fn_water_skip = weather;
                 }
-                DEBUG_TEST( DB_I,"Skip Code  ------ > %d\n ", weather);
+                DEBUG_TEST(DB_I, "Skip Code  ------ > %d\n ", weather);
                 // if (stat == fail_r)
                 // {
                 // if (weather == 0)
@@ -137,7 +137,7 @@ stat_m m_callable_instance_running_gener_obj(uint64_t in_uid, uint64_t in_time_s
                 // 改掉对象
                 if (stat == succ_r)
                 {
-                    DEBUG_TEST( DB_I,"Stop Next entering .. ");
+                    DEBUG_TEST(DB_I, "Stop Next entering .. ");
                     wtd->is_genger_info = M_INSTANCE_IS_GENER_INFO_INIT;
                     if (in_obj != NULL)
                         in_obj->is_genger_info = M_INSTANCE_IS_GENER_INFO_DONG;
@@ -158,7 +158,7 @@ stat_m m_callable_instance_running_gener_obj(uint64_t in_uid, uint64_t in_time_s
 
 stat_m m_static_instance_running_idle_to_prepare(enum fsm_change_cause cause, enum base_state ste, void *pdata, uint64_t in_time_s)
 {
-    DEBUG_TEST( DB_I,"m_static_instance_running_idle_to_prepare");
+    DEBUG_TEST(DB_I, "m_static_instance_running_idle_to_prepare");
     stat_m stat = fail_r;
     // instance_obj *in_obj = NULL;
     instance_doc_t *wtd = (instance_doc_t *)pdata;
@@ -173,7 +173,7 @@ stat_m m_static_instance_running_idle_to_prepare(enum fsm_change_cause cause, en
     instance_obj *current_instance_ab = NULL;
     stat = m_static_instance_manage_get_current_instance(&current_instance_ab);
     if (current_instance_ab != NULL)
-        DEBUG_TEST(DB_W,"%lld    %lld   %d", current_instance_ab->sio_running_id, wtd->sch_info.cu_id, wtd->is_genger_info);
+        DEBUG_TEST(DB_W, "%lld    %lld   %d", current_instance_ab->sio_running_id, wtd->sch_info.cu_id, wtd->is_genger_info);
 
     if (wtd->is_genger_info == M_INSTANCE_IS_GENER_INFO_INIT && ((current_instance_ab != NULL && current_instance_ab->sio_running_id != wtd->sch_info.cu_id) ||
                                                                  current_instance_ab == NULL))
@@ -181,7 +181,7 @@ stat_m m_static_instance_running_idle_to_prepare(enum fsm_change_cause cause, en
         stat = m_callable_skip_manage_query_is_effective(wtd->sch_info.cu_id, &skip_type, &sen_chan, &sen_type, &weather_code, in_time_s);
         if (stat == fail_r)
         { // 说明跳过了 , 触发事件   在这 不触发
-            DEBUG_TEST(DB_W," Need Skip -> %d  But dnot send 30  Handle ...", skip_type);
+            DEBUG_TEST(DB_W, " Need Skip -> %d  But dnot send 30  Handle ...", skip_type);
 
             ste = M_BASE_STATUS_RUNNING;
             // m_static_instance_running_skip_notify_event_handle(wtd->sch_info.cu_id , skip_type , in_time_s);
@@ -235,14 +235,14 @@ stat_m m_static_instance_running_idleing_to_run(enum fsm_change_cause cause, enu
                                         M_TYPE_NULL, NULL,
                                         M_TYPE_NULL, NULL,
                                         in_time_s, true); //_time.new_get_hhmmss()
-        DEBUG_TEST(DB_W,"m_callable_device_proper_status_get() == M_DEVICE_GLOBAL_STATUS_UPDATEING");
+        DEBUG_TEST(DB_W, "m_callable_device_proper_status_get() == M_DEVICE_GLOBAL_STATUS_UPDATEING");
         return fail_r;
     }
     tp_skip = 0;
 
     if (cause == M_STATIC_FSM_CHANGE_STATE_CAUSE_INDOC_OR_NULL)
     {
-        DEBUG_TEST( DB_I,"instance_obj");
+        DEBUG_TEST(DB_I, "instance_obj");
         in_obj = (instance_obj *)pdata;
         tp_uid = in_obj->sio_running_id;
         stat = succ_r;
@@ -250,7 +250,7 @@ stat_m m_static_instance_running_idleing_to_run(enum fsm_change_cause cause, enu
     }
     else
     {
-        DEBUG_TEST( DB_I,"instance_doc_t");
+        DEBUG_TEST(DB_I, "instance_doc_t");
         wtd = (instance_doc_t *)pdata;
         in_obj = malloc(sizeof(instance_obj));
         memset(in_obj, 0, sizeof(instance_obj));
@@ -271,7 +271,7 @@ stat_m m_static_instance_running_idleing_to_run(enum fsm_change_cause cause, enu
         // stat = m_callable_skip_manage_query_is_effective(wtd->sch_info.available_time.tr_start_time, wtd->sch_info.available_time.tr_end_time, in_obj->sio_running_id, &skip_type, &sen_chan, &sen_type, &weather_code, in_time_s);
         // if (tp_skip != 0)
         //     skip_type = tp_skip;
-        DEBUG_TEST(DB_W,"Skip old %d -- Skip New %d  -- WeatherCode %d", tp_skip, skip_type, weather_code);
+        DEBUG_TEST(DB_W, "Skip old %d -- Skip New %d  -- WeatherCode %d", tp_skip, skip_type, weather_code);
 
         if (stat == succ_r && tp_skip == M_SKIP_MANAGE_TYPE_SATURATION_SKIP)
         {
@@ -288,7 +288,7 @@ stat_m m_static_instance_running_idleing_to_run(enum fsm_change_cause cause, enu
             stat = fail_r;
 
             // in_obj->sio_instance_id = in_time_s + in_obj->sio_max_coust_time;
-            DEBUG_TEST(DB_W,"Event Skip -> %s ", toname(skip_type));
+            DEBUG_TEST(DB_W, "Event Skip -> %s ", toname(skip_type));
             if (wtd != NULL)
                 m_static_instance_running_skip_notify_event_handle(wtd, in_obj, wtd->exfun.fn_max_coust_time + in_time_s,
                                                                    wtd->cmg_channel[0].cd_cahnnel_id, skip_type,
@@ -335,7 +335,7 @@ stat_m m_static_instance_running_idleing_to_run(enum fsm_change_cause cause, enu
             m_callable_device_proper_status_get(&device_state);
             if (device_state != M_DEVICE_GLOBAL_STATUS_IDLE)
             {
-                DEBUG_TEST(DB_W,"Schedule to Start , Stop other runs ...");
+                DEBUG_TEST(DB_W, "Schedule to Start , Stop other runs ...");
                 if (device_state == M_DEVICE_GLOBAL_STATUS_MANUAL_RUNNING)
                     // m_callable_drive_button_event_direct_input(M_KEY_EVENT_STOP);
                     m_callable_drive_button_direct_stop();
@@ -373,7 +373,7 @@ stat_m m_static_instance_running_idleing_to_run(enum fsm_change_cause cause, enu
         else
         {
 
-            DEBUG_TEST( DB_I,"Update this schedule time  ...");
+            DEBUG_TEST(DB_I, "Update this schedule time  ...");
             char sKeyss[30] = {0};
             tp_uid = in_time_s + wtd->exfun.fn_max_coust_time;
             // sprintf(sKeyss, "%s%lld", "Ss", wtd->sch_info.cu_id);
@@ -429,11 +429,11 @@ stat_m m_static_instance_running_running_to_run(enum fsm_change_cause cause, enu
     struct instance_running_unit *pre_wobj = wtd->instance_running_root_unit->current_running_unit;
     if (pre_wobj == NULL)
     {
-        DEBUG_TEST( DB_I,"GGGGGGGGG... \n");
+        DEBUG_TEST(DB_I, "GGGGGGGGG... \n");
     }
     //  更新区域状态
     pre_wobj->state = M_STATIC_UNIT_STATUS_DONE;
-    DEBUG_TEST( DB_I,"%lld m_static_instance_running_running_to_run(%d) ", wtd->sio_instance_id, ste);
+    DEBUG_TEST(DB_I, "%lld m_static_instance_running_running_to_run(%d) ", wtd->sio_instance_id, ste);
 
     // 切换下 找到本次运行的序列
     while (wtd->instance_running_root_unit->current_running_unit->next_running_unit != NULL)
@@ -450,7 +450,7 @@ stat_m m_static_instance_running_running_to_run(enum fsm_change_cause cause, enu
     // 把状态改下
     wtd->sio_status = M_BASE_STATUS_RUNNING;
     // 时间
-    DEBUG_TEST( DB_I,"%d    %d  ", wobj->unit_this_time_will_running_time, wobj->unit_this_time_cost_running_time);
+    DEBUG_TEST(DB_I, "%d    %d  ", wobj->unit_this_time_will_running_time, wobj->unit_this_time_cost_running_time);
 
     wtd->WSTime += (wobj->unit_this_time_will_running_time - wobj->unit_this_time_cost_running_time);
     // 判断下 当前序列是否是完整的 ，正常进来应该都是完整的，不正常进不来
@@ -485,7 +485,7 @@ stat_m m_static_instance_running_sacking_to_run(enum fsm_change_cause cause, enu
     enum base_state next_ste = M_BASE_STATUS_IDLE;
     wtd->sio_status = M_BASE_STATUS_RUNNING;
 
-    DEBUG_TEST( DB_I,"[%lld] m_static_instance_running_sacking_to_run  ", in_time_s);
+    DEBUG_TEST(DB_I, "[%lld] m_static_instance_running_sacking_to_run  ", in_time_s);
     // 切换下 找到本次运行的序列
 
     // if (wtd->instance_running_root_unit->current_running_unit->next_running_unit != NULL)
@@ -524,7 +524,7 @@ stat_m m_static_instance_running_hanguping_to_sack(enum fsm_change_cause cause, 
 stat_m m_static_instance_running_pauseing_to_run(enum fsm_change_cause cause, enum base_state ste, void *pdata, uint64_t in_time_s)
 {
     stat_m stat = fail_r;
-    DEBUG_TEST(DB_W,"m_static_instance_running_pauseing_to_run");
+    DEBUG_TEST(DB_W, "m_static_instance_running_pauseing_to_run");
     instance_obj *in_obj = (instance_obj *)pdata;
     enum base_state next_ste = M_BASE_STATUS_IDLE;
 
@@ -551,7 +551,7 @@ stat_m m_static_instance_running_pauseing_to_run(enum fsm_change_cause cause, en
             }
         }
 
-        DEBUG_TEST(DB_W,".. .. . . .. %d -  unit_this_time_cost_running_time %d", wobj->unit_this_time_will_running_time, wobj->unit_this_time_cost_running_time);
+        DEBUG_TEST(DB_W, ".. .. . . .. %d -  unit_this_time_cost_running_time %d", wobj->unit_this_time_will_running_time, wobj->unit_this_time_cost_running_time);
         // wobj->unit_this_time_will_running_time -= wobj->unit_real_water_statistics;
         // 算下时间
         in_obj->WSTime = in_time_s;
@@ -577,7 +577,7 @@ stat_m m_static_instance_running_pauseing_to_sack(enum fsm_change_cause cause, e
 stat_m m_static_instance_running_running_to_pause(enum fsm_change_cause cause, enum base_state ste, void *pdata, uint64_t in_time_s)
 {
     stat_m stat = fail_r;
-    DEBUG_TEST(DB_W,"m_static_instance_running_running_to_pause");
+    DEBUG_TEST(DB_W, "m_static_instance_running_running_to_pause");
     instance_obj *in_obj = (instance_obj *)pdata;
     if (in_obj != NULL)
     {
@@ -620,7 +620,7 @@ stat_m m_static_instance_running_running_to_sack(enum fsm_change_cause cause, en
     instance_obj *wtd = (instance_obj *)pdata;
     enum base_state next_ste = M_BASE_STATUS_IDLE;
 
-    DEBUG_TEST( DB_I,"[%lld] m_static_instance_running_running_to_sack  ", in_time_s);
+    DEBUG_TEST(DB_I, "[%lld] m_static_instance_running_running_to_sack  ", in_time_s);
 
     wtd->sio_status = M_BASE_STATUS_SACK;
     //  记录下 将要结束 马上结束的 区域
@@ -680,7 +680,7 @@ stat_m m_static_instance_running_all_to_stop(enum fsm_change_cause cause, enum b
     stat_m stat = succ_r;
     // instance_obj *wobj = (instance_obj *)pdata;
     // if (wobj != NULL)
-    DEBUG_TEST(DB_W,"m_static_instance_running_all_to_stop");
+    DEBUG_TEST(DB_W, "m_static_instance_running_all_to_stop");
     {
 
         instance_obj *wtd = (instance_obj *)pdata;
@@ -730,7 +730,7 @@ stat_m m_static_instance_running_hammer_handle(uint8_t event_fag, enum fsm_chang
     // instance_obj *wobj = (instance_obj *)pdata;
     if (event_fag == M_BASE_STATUS_RUNNING && ste == M_BASE_STATUS_RUNNING)
     {
-        DEBUG_TEST(DB_W,"m_static_instance_running_hammer_handle !");
+        DEBUG_TEST(DB_W, "m_static_instance_running_hammer_handle !");
         // instance_obj *in_obj = (instance_obj *)pdata;
         m_static_instance_running_event_handle(cause, M_BASE_STATUS_RUNNING,
                                                M_BASE_STATUS_RUNNING, NULL, pdata, in_time_s);
@@ -806,7 +806,7 @@ stat_m m_callable_instance_running_forced_stop(enum fsm_change_cause cause, bool
     if (in_obj_clone != NULL) // 当前有在运行的计划
     {
         in_obj_clone->sio_status = M_BASE_STATUS_IDLE;
-        DEBUG_TEST(DB_W,"m_callable_instance_running_forced_stop %lld", in_obj_clone->sio_running_id);
+        DEBUG_TEST(DB_W, "m_callable_instance_running_forced_stop %lld", in_obj_clone->sio_running_id);
         if (cause == M_STATIC_FSM_CHANGE_STATE_CAUSE_MANUAL || cause == M_STATIC_FSM_CHANGE_STATE_CAUSE_REMOTE)
         {
             m_static_instance_enreg_schedule_end_time(in_obj_clone->sio_running_id, in_obj_clone->sio_instance_id);
@@ -831,8 +831,7 @@ stat_m m_callable_instance_running_forced_stop(enum fsm_change_cause cause, bool
 void m_static_instance_enreg_schedule_end_time(uint64_t uid, uint64_t in_time)
 {
     char sKeyss[40] = {0};
-    DEBUG_TEST( DB_I,"end reg -> %lld - %lld", uid, in_time);
-    
+    DEBUG_TEST(DB_I, "end reg -> %lld - %lld", uid, in_time);
     sprintf(sKeyss, "%s%lld", "Ss", uid);
     if (in_time)
         m_callable_drive_flash_write(M_TYPE_U64, sKeyss, (void *)&in_time);

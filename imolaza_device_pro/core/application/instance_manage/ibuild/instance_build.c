@@ -560,7 +560,20 @@ stat_m m_callable_instance_manage_quick_gener(char *in_src, uint64_t in_time_s)
         else
             // 可能只有一个序列,快结束了
             next_ste = M_BASE_STATUS_STOP;
-        in_obj->sio_running_id = 666;
+            
+        if (m_callable_current_batch_area_power_calibration_flag_get() == 1)
+        {
+            in_obj->sio_running_id = 665;
+        }
+        else if (m_callable_current_batch_area_power_calibration_flag_get() == 2)
+        {
+            in_obj->sio_running_id = 664;
+        }
+        else
+        {
+            in_obj->sio_running_id = 666;
+        }
+
         m_callable_device_proper_status_update_to_fast_running();
         // 消化状态 修改下一个节点的状态
         m_static_time_link_notece_node_add(in_obj->sio_running_id, in_obj->WSTime, M_BASE_STATUS_RUNNING, (void *)in_obj);

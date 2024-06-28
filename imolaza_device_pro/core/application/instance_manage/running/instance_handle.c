@@ -276,12 +276,14 @@ stat_m m_static_instance_running_event_handle(enum fsm_change_cause cause, enum 
     /** 将要运行时间*/
     uint32_t will_running_time = 0;
 
+    bool flag_m = false;
+
     instance_obj *in_obj = (instance_obj *)in_data;
     struct instance_running_unit *wobj = NULL;
 
     if (curr_ste != M_BASE_STATUS_PREPARE)
     {
-            wobj = in_obj->instance_running_root_unit->current_running_unit;
+        wobj = in_obj->instance_running_root_unit->current_running_unit;
     }
 
     if (cause == M_STATIC_FSM_CHANGE_STATE_CAUSE_WATER_HAMMER)
@@ -327,7 +329,10 @@ stat_m m_static_instance_running_event_handle(enum fsm_change_cause cause, enum 
                 m_callable_solenoid_manage_open(wobj->unit_running_channel);
                 // 计划开始
                 if (in_obj->sio_run_type == M_INSTANCE_RUN_TYPE_SCHEDULE)
+                {
+                    m_callable_current_batch_area_power_calibration_flag_set(0);
                     in_cmd = M_CMD_NOTIFY_TO_SERVER_SCHEDULE_START;
+                }
                 else
                     in_cmd = M_CMD_TWOWAY_FASTRUN_START;
                 memset(temp_queue, 0, 512);
@@ -340,16 +345,30 @@ stat_m m_static_instance_running_event_handle(enum fsm_change_cause cause, enum 
                 m_run_time.total_duration_current_area[wobj->unit_running_channel] = wobj->unit_should_running_time;
                 DEBUG_TEST(DB_I, "0000m_run_time.total_duration_current_area %lld", m_run_time.total_duration_current_area[wobj->unit_running_channel]);
 
+                if (m_callable_current_batch_area_power_calibration_flag_get() == 1)
+                {
+                    in_cmd = M_CMD_BATCH_ZONE_CURRENT_CALIBRATION_FOUND;
+                    flag_m = true;
+                }
+                else if (m_callable_current_batch_area_power_calibration_flag_get() == 2)
+                {
+                    in_cmd = M_CMD_BATCH_ZONE_CURRENT_TEST_FOUND;
+                    flag_m = true;
+                }
+
                 m_callable_local_resp_to_remote_pro_max(in_cmd, M_TYPE_U64, (void *)&in_obj->sio_running_id,
                                                         M_TYPE_U8, (void *)&wobj->unit_running_channel,
-                                                        M_TYPE_U32, (void *)&wobj->unit_should_running_time,
-
-                                                        M_TYPE_U32, (void *)&wobj->unit_this_time_will_running_time, // 本次将要
-                                                        M_TYPE_U64, (void *)&in_obj->sio_instance_id,                // 结束时间
-
-                                                        M_TYPE_Str, (void *)temp_queue,           // 队列
-                                                        M_TYPE_Int, (void *)&temp_int_pre,        // 电流
-                                                        M_TYPE_Int, (void *)&wobj->unit_progress, // 进度
+                                                        (flag_m) ? M_TYPE_NULL : M_TYPE_U32,
+                                                        (flag_m) ? NULL : (void *)&wobj->unit_should_running_time, // 应该运行时间
+                                                        (flag_m) ? M_TYPE_NULL : M_TYPE_U32,
+                                                        (flag_m) ? NULL : (void *)&wobj->unit_this_time_will_running_time, // 本次将要运行时间
+                                                        (flag_m) ? M_TYPE_NULL : M_TYPE_U64,
+                                                        (flag_m) ? NULL : (void *)&in_obj->sio_instance_id,
+                                                        (flag_m) ? M_TYPE_NULL : M_TYPE_Str,
+                                                        (flag_m) ? NULL : (void *)temp_queue,
+                                                        M_TYPE_Int, (void *)&temp_int_pre,
+                                                        (flag_m) ? M_TYPE_NULL : M_TYPE_Int,
+                                                        (flag_m) ? NULL : (void *)&wobj->unit_progress,
                                                         M_TYPE_NULL, NULL,
                                                         M_TYPE_NULL, NULL,
                                                         M_TYPE_NULL, NULL,
@@ -404,21 +423,40 @@ stat_m m_static_instance_running_event_handle(enum fsm_change_cause cause, enum 
                 DEBUG_TEST(DB_I, "1111m_run_time.puase_duration_current_area %lld", m_run_time.puase_duration_current_area[pre_wobj->unit_running_channel]);
 
                 if (in_obj->sio_running_id > 0)
+                {
+                    if (m_callable_current_batch_area_power_calibration_flag_get() == 1)
+                    {
+                        in_cmd = M_CMD_BATCH_ZONE_CURRENT_CALIBRATION_TOGGLE;
+                        flag_m = true;
+                    }
+                    else if (m_callable_current_batch_area_power_calibration_flag_get() == 2)
+                    {
+                        in_cmd = M_CMD_BATCH_ZONE_CURRENT_TEST_TOGGLE;
+                        flag_m = true;
+                    }
                     m_callable_local_resp_to_remote_pro_max(
                         in_cmd, M_TYPE_U64, (void *)&in_obj->sio_running_id,
                         M_TYPE_U8, (void *)&wobj->unit_running_channel,
-                        M_TYPE_U32, (void *)&wobj->unit_should_running_time,
-
-                        M_TYPE_U32, (void *)&will_running_time,                              // 本次将要
-                        M_TYPE_U8, (void *)&pre_wobj->unit_running_channel,                  // 结束区域
-                        M_TYPE_U32, (void *)pre_wobj->unit_zone_real_total_time,             // 结束区域已经运    0
-                        M_TYPE_U32, (void *)&pre_wobj->unit_this_time_real_water_statistics, // 结束区域本次
-                        M_TYPE_Int, (void *)&pre_wobj->unit_done,                            // 完成与否
-                        M_TYPE_U64, (void *)&in_obj->sio_instance_id,                        // 结束时间
-                        M_TYPE_Int, (void *)&temp_int_pre,                                   // 电流
-                        M_TYPE_Int, (void *)&wobj->unit_progress,                            // 进度
-                        M_TYPE_Float, (void *)&temp_float,                                   // 流量
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_U32,
+                        (flag_m) ? NULL : (void *)&wobj->unit_should_running_time, // 应该运行时间
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_U32,
+                        (flag_m) ? NULL : (void *)&will_running_time,       // 本次将要
+                        M_TYPE_U8, (void *)&pre_wobj->unit_running_channel, // 结束区域
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_U32,
+                        (flag_m) ? NULL : (void *)pre_wobj->unit_zone_real_total_time, // 结束区域已经运    0
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_U32,
+                        (flag_m) ? NULL : (void *)&pre_wobj->unit_this_time_real_water_statistics, // 结束区域本次
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_Int,
+                        (flag_m) ? NULL : (void *)&pre_wobj->unit_done, // 完成与否
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_U64,
+                        (flag_m) ? NULL : (void *)&in_obj->sio_instance_id, // 结束时间
+                        M_TYPE_Int, (void *)&temp_int_pre,                  // 电流
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_Int,
+                        (flag_m) ? NULL : (void *)&wobj->unit_progress, // 进度
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_Float,
+                        (flag_m) ? NULL : (void *)&temp_float, // 流量
                         in_time_s);
+                }
             }
             else if (pre_ste == M_BASE_STATUS_SACK || pre_ste == M_BASE_STATUS_PAUSE) // 浸泡恢复  或者暂停恢复
             {
@@ -576,30 +614,42 @@ stat_m m_static_instance_running_event_handle(enum fsm_change_cause cause, enum 
                         in_cmd = M_CMD_NOTIFY_TO_SERVER_SCHEDULE_END;
                     else
                         in_cmd = M_CMD_TWOWAY_FASTRUN_COMPLETE;
+
+                    if (m_callable_current_batch_area_power_calibration_flag_get() == 1)
+                    {
+                        in_cmd = M_CMD_BATCH_ZONE_CURRENT_CALIBRATION_END;
+                        flag_m = true;
+                    }
+                    else if (m_callable_current_batch_area_power_calibration_flag_get() == 2)
+                    {
+                        in_cmd = M_CMD_BATCH_ZONE_CURRENT_TEST_END;
+                        flag_m = true;
+                    }
                     m_callable_local_resp_to_remote_pro_max(
                         // 计划ID
                         in_cmd, M_TYPE_U64, (void *)&in_obj->sio_running_id,
                         // 当前结束区域
                         M_TYPE_U8, (void *)&wobj->unit_running_channel,
-                        // 当前区域总累积运行时间
-                        M_TYPE_U32, (void *)wobj->unit_zone_real_total_time,
-                        // 当前区域本次单次运行时间
-                        M_TYPE_U32, (void *)&wobj->unit_this_time_real_water_statistics,
-                        // 计划总的累积运行时间
-                        M_TYPE_U32, (void *)&in_obj->cb_already_run_time_sum,
-                        // 实例ID  (设备时间)
-                        M_TYPE_U64, (void *)&in_obj->sio_instance_id,
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_U32,
+                        (flag_m) ? NULL : (void *)wobj->unit_zone_real_total_time, // 当前区域总累积运行时间
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_U32,
+                        (flag_m) ? NULL : (void *)&wobj->unit_this_time_real_water_statistics, // 当前区域本次单次运行时间
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_U32,
+                        (flag_m) ? NULL : (void *)&in_obj->cb_already_run_time_sum, // 计划总的累积运行时间
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_U64,
+                        (flag_m) ? NULL : (void *)&in_obj->sio_instance_id, // 实例ID  (设备时间)
                         // 当前区域最大运行电流
                         M_TYPE_Int, (void *)&temp_int_pre,
-                        // 结束区域对应单元进度
-                        M_TYPE_Int, (void *)&wobj->unit_progress,
-                        M_TYPE_Float, (void *)&temp_float, // 流量
-
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_Int,
+                        (flag_m) ? NULL : (void *)&wobj->unit_progress, // 结束区域对应单元进度
+                        (flag_m) ? M_TYPE_NULL : M_TYPE_Float,
+                        (flag_m) ? NULL : (void *)&temp_float, // 流量
                         M_TYPE_NULL, NULL,
                         M_TYPE_NULL, NULL,
                         M_TYPE_NULL, NULL,
                         // 指令时间 设备时间
                         in_time_s);
+                    m_callable_current_batch_area_power_calibration_flag_set(0);
                 }
                 m_callable_solenoid_manage_close(wobj->unit_running_channel);
             }

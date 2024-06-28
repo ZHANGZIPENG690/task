@@ -70,7 +70,7 @@ stat_m m_callable_skip_manage_query_is_effective(uint64_t in_id, enum skip_manag
     }
     else
         *skip_type = M_SKIP_MANAGE_TYPE_DORMANT_SKIP;
-    DEBUG_TEST( DB_I,"%s", toname(*skip_type));
+    DEBUG_TEST(DB_I, "%s", toname(*skip_type));
     return stat;
 }
 

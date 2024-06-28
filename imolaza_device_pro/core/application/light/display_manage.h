@@ -37,6 +37,8 @@ struct display_attribute_m
     /*设置部分灯光效果是关闭还是打开*/
     uint8_t display_set_light_close;
 
+    uint8_t manual_setting_light_num;
+
     /*灯光的闪烁延时*/
     int dispaly_flicker_speed;
     /*灯光对应的不同的硬件版本*/

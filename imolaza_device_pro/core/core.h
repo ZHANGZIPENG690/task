@@ -72,10 +72,12 @@ extern const int M_CONST_NONE_NUM;
 #define DEVICE_HEARWARE_A002 2
 #define DEVICE_HEARWARE_A003 3
 #define DEVICE_HEARWARE_A004 4
+#define DEVICE_HEARWARE_A113 0xa13
 #define DEVICE_HEARWARE_B11 0xb11
 #define DEVICE_HEARWARE_B12 0xb12
 #define DEVICE_HEARWARE_C10 0xc10
 #define DEVICE_HEARWARE_C11 0xc11
+#define DEVICE_HEARWARE_D11 0xd11
 
 /** Timeout 2 day */
 #define M_TIMEOUT_LONG_LIMIT_MIN 2 * 24 * 60
@@ -127,7 +129,7 @@ enum key_event
 enum key_id
 {
     /** 开始/暂停按键 */
-    M_KEY_EVENT_START = 0x15,
+    M_KEY_EVENT_START = 15,
     /** 停止按键 */
     M_KEY_EVENT_STOP,
     /** 左/上一个按键 */
@@ -1394,7 +1396,6 @@ enum light_anima_mode
     M_DISPLAY_NETWORK_PROBLEM_MODE,
     // 设备wifi断开连接状态
     M_DISPLAY_WIFI_DISCONNECTION_MODE,
-
     // 设备区域短路状态
     M_DISPLAY_REGIONAL_SHORT_CIRCUIT_MODE,
     // 设备异常反馈，暂时不用
@@ -1414,7 +1415,9 @@ enum light_anima_mode
     // VT电源短路
     M_DISPLAY_VT_SHORT_CIRCUIT_MODE,
     // M端子短路
-    M_DISPLAY_M_TERMINAL_SHORT_CIRCUIT_MODE
+    M_DISPLAY_M_TERMINAL_SHORT_CIRCUIT_MODE,
+    // 手动设置运行时长模式
+    M_DISPLAY_SET_MANUAL_DURATION
 };
 
 /**
@@ -1618,6 +1621,11 @@ enum restart_cause_t
     M_RESTART_CAUSE_HEAP_SPACE_LACK,
     /** 远程重启 */
     M_RESTART_CAUSE_REMOTE_ACTIVE,
+    /** OTA更新成功重启 */
+    M_RESTART_CAUSE_OTA_UPDATA_SUCC,
+    /** OTA更新失败 */
+    M_RESTART_CAUSE_OTA_UPDATA_FAIL,
+
 };
 
 // /**
@@ -1797,8 +1805,6 @@ enum m_stroage_rescue_message
 /** 设置各个区域流速 */
 #define M_CMD_NOTIFY_TO_SET_FLOW_RATE 72
 
-/*rtc电量过低预警*/
-#define M_CMD_NOTIFY_TO_DEVICE_RTC_POWER_CHECK 73
 /** 计划跳过通知 */
 #define M_CMD_NOTIFY_TO_SERVER_A_SCHEDULE_BE_SKIP 74
 
@@ -1871,6 +1877,30 @@ enum m_stroage_rescue_message
 
 // SN 设置
 #define M_CMD_SN_SET 104
+
+/*rtc电量过低预警*/
+#define M_CMD_NOTIFY_TO_DEVICE_RTC_POWER_CHECK 105
+
+/*批量区域电流校准创建*/
+#define M_CMD_BATCH_ZONE_CURRENT_CALIBRATION_FOUND 107
+
+/*批量区域电流校准开始*/
+#define M_CMD_BATCH_ZONE_CURRENT_CALIBRATION_TOGGLE 108
+
+/*批量区域电流校准结束*/
+#define M_CMD_BATCH_ZONE_CURRENT_CALIBRATION_END 109
+
+/*批量区域电流校测试创建*/
+#define M_CMD_BATCH_ZONE_CURRENT_TEST_FOUND 110
+
+/*批量区域电流测试开始*/
+#define M_CMD_BATCH_ZONE_CURRENT_TEST_TOGGLE 111
+
+/*批量区域电流测试结束*/
+#define M_CMD_BATCH_ZONE_CURRENT_TEST_END 112
+
+/*OTA静默更新*/
+#define M_CMD_OTA_SILENT_UPDATE 113
 
 /** 查询 计划存储内容 */
 #define M_CMD_NOTIFY_TO_SERVER_QUERY_SCHEDULE_STROAGE_INFO 202
@@ -2042,7 +2072,10 @@ enum sensor_type_m
     HC_200_FLOW_B,
 
     FG100,
-    FS350B
+    FS350B,
+    P_OTHER_SENSOR = 98,
+    K_OTHER_SENSOR = 99
+
 };
 void mDelay_ms_precision(uint32_t in_ms);
 

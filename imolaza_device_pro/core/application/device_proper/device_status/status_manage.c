@@ -2,7 +2,7 @@
 
 #include "status_manage.h"
 
-static enum device_status curr_device_status ;
+static enum device_status curr_device_status;
 
 /** 设备状态概览 */
 // enum device_status
@@ -22,9 +22,6 @@ static enum device_status curr_device_status ;
 //     /** 更新状态 */
 //     M_DEVICE_GLOBAL_STATUS_UPDATEING,
 // };
-
-
-
 
 /**
  * @brief 设备状态提更新到 初始化状态
@@ -50,8 +47,8 @@ stat_m m_callable_device_proper_status_update_to_idle(void)
 }
 /**
  * @brief 更新到 M短路状态
- * 
- * @return stat_m 
+ *
+ * @return stat_m
  */
 stat_m m_callable_device_proper_status_update_to_short_M_pump(void)
 {
@@ -94,7 +91,6 @@ stat_m m_callable_device_proper_status_update_to_manual_running(void)
 
     curr_device_status = M_DEVICE_GLOBAL_STATUS_MANUAL_RUNNING;
     return stat;
-
 }
 /**
  * @brief 设备状态提更新到 更新状态
@@ -108,7 +104,7 @@ stat_m m_callable_device_proper_status_update_to_update(void)
     return stat;
 }
 /**
- * @brief 设备状态提更新到 更新状态
+ * @brief 设备状态提更新到 测试状态
  *
  * @return stat_m
  */
@@ -129,11 +125,12 @@ stat_m m_callable_device_proper_status_update_to_config_net(void)
     curr_device_status = M_DEVICE_GLOBAL_STATUS_CONFIG_NER;
     return stat;
 }
+
 /**
  * @brief 查询当前设备的状态
- * 
+ *
  * @param out_ste 输出
- * @return stat_m 
+ * @return stat_m
  */
 stat_m m_callable_device_proper_status_get(int *out_ste)
 {

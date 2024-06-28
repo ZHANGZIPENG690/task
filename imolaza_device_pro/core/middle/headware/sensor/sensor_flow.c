@@ -35,18 +35,18 @@ uint16_t m_static_pulse_period_detection_monitor(uint64_t current_time, uint8_t 
         {
             flow_man.s_pulse_1_num = 2;
             s_pulse_1_timestamp = current_time;
-            DEBUG_TEST(DB_E,"s_pulse_1_timestamp : %lld", s_pulse_1_timestamp);
+            DEBUG_TEST(DB_E, "s_pulse_1_timestamp : %lld", s_pulse_1_timestamp);
         }
         if (flow_man.s_pulse_2_num == 2 && s_pulse_1_timestamp != 0)
         {
             flow_man.s_pulse_2_num = 3;
             s_pulse_2_timestamp = current_time;
-            DEBUG_TEST(DB_E,"s_pulse_2_timestamp : %lld", s_pulse_2_timestamp);
+            DEBUG_TEST(DB_E, "s_pulse_2_timestamp : %lld", s_pulse_2_timestamp);
         }
         if (s_pulse_2_timestamp != 0 && s_pulse_1_timestamp != 0)
         {
             flow_man.s_pulese_detection = 0;
-            DEBUG_TEST(DB_E,"s_pulse_2_timestamp-s_pulse_1_timestamp : %d", (uint16_t)(s_pulse_2_timestamp - s_pulse_1_timestamp));
+            DEBUG_TEST(DB_E, "s_pulse_2_timestamp-s_pulse_1_timestamp : %d", (uint16_t)(s_pulse_2_timestamp - s_pulse_1_timestamp));
             result_value = (uint16_t)(s_pulse_2_timestamp - s_pulse_1_timestamp); // 单位 s  秒
             if (result_value != sen_man.s_pulse_time[channel_id])
             {
@@ -93,18 +93,18 @@ uint16_t m_static_pulse_period_detection_monitor_minu(uint64_t current_time, uin
         {
             flow_man.s_pulse_1_num_minu = 2;
             s_pulse_1_timestamp_minu = current_time;
-            DEBUG_TEST(DB_E,"s_pulse_1_timestamp_minu : %lld", s_pulse_1_timestamp_minu);
+            DEBUG_TEST(DB_E, "s_pulse_1_timestamp_minu : %lld", s_pulse_1_timestamp_minu);
         }
         if (flow_man.s_pulse_2_num_minu == 2 && s_pulse_1_timestamp_minu != 0)
         {
             flow_man.s_pulse_2_num_minu = 3;
             s_pulse_2_timestamp_minu = current_time;
-            DEBUG_TEST(DB_E,"s_pulse_2_timestamp_minu : %lld", s_pulse_2_timestamp_minu);
+            DEBUG_TEST(DB_E, "s_pulse_2_timestamp_minu : %lld", s_pulse_2_timestamp_minu);
         }
         if (s_pulse_1_timestamp_minu != 0 && s_pulse_2_timestamp_minu != 0)
         {
             flow_man.s_pulese_detection_minu = 0;
-            DEBUG_TEST(DB_E,"s_pulse_2_timestamp_minu-s_pulse_1_timestamp_minu : %d", (uint16_t)(s_pulse_2_timestamp_minu - s_pulse_1_timestamp_minu));
+            DEBUG_TEST(DB_E, "s_pulse_2_timestamp_minu-s_pulse_1_timestamp_minu : %d", (uint16_t)(s_pulse_2_timestamp_minu - s_pulse_1_timestamp_minu));
             result_value = (uint16_t)(s_pulse_2_timestamp_minu - s_pulse_1_timestamp_minu); // 单位 s  秒
             if (result_value != sen_man.s_pulse_time[channel_id])
             {
@@ -144,7 +144,7 @@ float m_static_get_flow_rate(uint8_t channel)
     /*每120s 更新一次  流速 ------>  脉冲周期*/
     if (channel >= 0)
     {
-        DEBUG_TEST(DB_E,"sen_man.k_value(加仑/脉冲): %.03f   sen_man.s_pulse_time(脉冲周期): %d", sen_man.k_value, sen_man.s_pulse_time[channel]);
+        DEBUG_TEST(DB_E, "sen_man.k_value(加仑/脉冲): %.03f   sen_man.s_pulse_time(脉冲周期): %d", sen_man.k_value, sen_man.s_pulse_time[channel]);
 
         /*如果sen_man.s_pulse_time[channel] != 0  表示此时的流速 是基于设备检测到的两个脉冲来计算出的脉冲周期，则更新流速并以此值作为流速 */
         if (sen_man.s_pulse_time[channel] != 0)
@@ -194,7 +194,7 @@ float m_static_get_flow_rate(uint8_t channel)
     }
     else
     {
-        DEBUG_TEST(DB_E,"The regional run started for the first time");
+        DEBUG_TEST(DB_E, "The regional run started for the first time");
         return 0.0;
     }
 }
@@ -216,7 +216,7 @@ float m_static_get_flow_value(uint64_t zone_should_runtime, bool flag)
         result = m_static_get_flow_rate(current_channel);
     }
 
-    DEBUG_TEST(DB_E,"本次运行的流量值： %.03f 加仑", result * zone_should_runtime);
+    DEBUG_TEST(DB_E, "本次运行的流量值： %.03f 加仑", result * zone_should_runtime);
     return result * zone_should_runtime;
 }
 
@@ -226,7 +226,7 @@ float m_static_get_flow_value(uint64_t zone_should_runtime, bool flag)
  */
 stat_m m_callable_pulse_recording(void)
 {
-    if (sen_man.sensor_type >= HC_075_FLOW_B && sen_man.sensor_type <= HC_200_FLOW_B)
+    if ((sen_man.sensor_type >= HC_075_FLOW_B && sen_man.sensor_type <= HC_200_FLOW_B) || (sen_man.sensor_type == P_OTHER_SENSOR))
     {
         if (flow_man.s_pulese_detection == 1)
         {
@@ -277,7 +277,7 @@ stat_m m_callable_whether_current_time_range(uint64_t currenttime)
 stat_m m_callable_zone_transfore_get(uint8_t channel_id, uint32_t running_time, float *out_final_vue)
 {
 
-    DEBUG_TEST(DB_E,"?????????????????????????????????当前区域 : %hhd", channel_id);
+    DEBUG_TEST(DB_E, "?????????????????????????????????当前区域 : %hhd", channel_id);
 
     stat_m stat = succ_r;
     /*通过 channel_id 与 全局缓存的 当前运行区域id比较  是否一致*/
@@ -290,14 +290,14 @@ stat_m m_callable_zone_transfore_get(uint8_t channel_id, uint32_t running_time, 
     /*如果不同，则检测数据重置、开始新的检测*/
     if (current_channel != channel_id)
     {
-        DEBUG_TEST(DB_E,"下一个准备运行区域ID为:%d  当前区域区域运行时长为%d ", channel_id, running_time);
+        DEBUG_TEST(DB_E, "下一个准备运行区域ID为:%d  当前区域区域运行时长为%d ", channel_id, running_time);
         previous_channel = current_channel;
         current_channel = channel_id;
         *out_final_vue = m_static_get_flow_value(running_time, true);
     }
     else if (current_channel == channel_id)
     {
-        DEBUG_TEST(DB_E,"当前区域ID为:%d  当前区域运行时长为%d ", channel_id, running_time);
+        DEBUG_TEST(DB_E, "当前区域ID为:%d  当前区域运行时长为%d ", channel_id, running_time);
         *out_final_vue = m_static_get_flow_value(running_time, false);
     }
     m_static_pulse_period_detection_monitor(0, channel_id, false);
@@ -318,8 +318,8 @@ stat_m m_static_flow_rate_stored_value_set(uint8_t channel_id)
 {
     stat_m stat = fail_r;
 
-    DEBUG_TEST(DB_E,"存储--------》");
-    DEBUG_TEST(DB_E,"区域id :%d    该区域流速为：%.03f", channel_id, sen_man.flow_speed[channel_id]);
+    DEBUG_TEST(DB_E, "存储--------》");
+    DEBUG_TEST(DB_E, "区域id :%d    该区域流速为：%.03f", channel_id, sen_man.flow_speed[channel_id]);
 
     if (sen_man.flow_speed[channel_id] != 0)
     {
@@ -338,8 +338,8 @@ stat_m m_static_flow_rate_stored_value_get(uint8_t channel_id)
 {
 
     m_callable_channel_flow_speed_get(channel_id, &sen_man.flow_speed[channel_id]);
-    DEBUG_TEST(DB_E,"获取--------》");
-    DEBUG_TEST(DB_E,"区域id :%d    该区域流速为：%.03f", channel_id, sen_man.flow_speed[channel_id]);
+    DEBUG_TEST(DB_E, "获取--------》");
+    DEBUG_TEST(DB_E, "区域id :%d    该区域流速为：%.03f", channel_id, sen_man.flow_speed[channel_id]);
     return succ_r;
 }
 

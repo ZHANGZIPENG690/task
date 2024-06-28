@@ -87,6 +87,17 @@ void *mTaskCreate(void *handl, void (*fun)(void *), const char *pcName, const ui
     return NULL;
 #endif
 }
+
+/**
+ * @brief 删除任务
+ *
+ * @return void
+ */
+void mTaskDelete(void)
+{
+    vTaskDelete(NULL); // 删除任务自身
+}
+
 /**
  * @brief 获取时间戳
  *

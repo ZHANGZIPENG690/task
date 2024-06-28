@@ -10,6 +10,9 @@ int device_running_mode = 0;
 int off_recover_schedule = 0;
 /** 时间框架 */
 static int st_tim_s[6] = {0};
+
+/** 超过一定时间没有连接上wifi'会更新动画 配网模式除外  30s * 3*/
+int auto_connect_wifi_timeout = 0;
 /**
  * @brief RTC 模式不请求 30
  *
@@ -51,11 +54,19 @@ stat_m m_static_event_handle(enum event_distribution_id event_id)
         //     DEBUG_TEST( DB_I,6S");  m_callable_wifi_auto_connect();}
 
         m_callable_network_keep_active();
+
         break;
 
     case M_EVENT_TIME_30_SEC:
         m_callable_wifi_auto_connect();
-
+        if (m_callable_network_get_net_connect_status() == fail_r &&
+            device_running_mode != M_DEVICE_RUNNING_MODE_CONFIG && auto_connect_wifi_timeout++ > 3)
+        {
+            DEBUG_TEST(DB_I, "Timeout 30*4 Update Anim -> %d", auto_connect_wifi_timeout);
+            if (device_state == M_DEVICE_GLOBAL_STATUS_IDLE && device_state != M_DEVICE_GLOBAL_STATUS_CONFIG_NER &&
+                device_state != M_DEVICE_GLOBAL_STATUS_INIT && m_callable_display_status_get() != M_DISPLAY_ZONE_SELECT_MODE)
+                m_callable_display_status(M_DISPLAY_START_UP_OR_FIND_NETWORK_MODE, 2);
+        }
         // m_callable_wifi_auto_connect();
         break;
     case M_EVENT_TIME_1_MIN:

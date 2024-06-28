@@ -41,9 +41,9 @@ enum net_connect_code
     /** WiFi连接失败 - 超时 */
     M_CONNECT_ERROR_CODE_CONFIG_FAIL_TIMEOUT,
     /** WiFi等待分配 IP */
-    M_CONNECT__CODE__WIFI_IP_WAIT_ASSIGNMENT,
+    M_CONNECT__CODE__WIFI_IP_WAIT_ASSIGNMENT,  //*
     /** WiFi IP 分配失败 */
-    M_CONNECT_ERROR_CODE__WIFI_IP_ASSIGNMENT_FAIL,
+    M_CONNECT_ERROR_CODE__WIFI_IP_ASSIGNMENT_FAIL,  //*
     /** WiFi被断开 */
     M_CONNECT__CODE__WIFI_DISCONNECT,
     /** WiFi连接成功 */
@@ -71,9 +71,9 @@ enum net_connect_code
     /** 服务器登陆 进行中 */
     M_CONNECT__CODE_SERVER_LOGIN_LOGGING,
     /** 服务器登陆 失败/超时 */
-    M_CONNECT_ERROR_CODE_SERVER_LOGIN_TIMEOUT_FAIL,
+    M_CONNECT_ERROR_CODE_SERVER_LOGIN_TIMEOUT_FAIL,  //*
     /** 服务器登陆 超时 170S */
-    M_CONNECT_ERROR_CODE_SERVER_LOGIN_TIMEOUT_170S_AND_MORE_FAIL,
+    M_CONNECT_ERROR_CODE_SERVER_LOGIN_TIMEOUT_170S_AND_MORE_FAIL,  //*
     /** 服务器登陆成功 */
     M_CONNECT__CODE_SERVER_LOGIN_SUCCESS,
     /** 服务器登陆成功，无其他数据返回 */

@@ -167,4 +167,16 @@ stat_m m_callable_json_config_net_set_par(char *str, int len);
  */
 void m_callable_generatestring(int area[], uint64_t time[], int num_areas, char output[]);
 
+
+/**
+ * @brief 把带有&的字符串进行分割并且把浮点数进行返回
+ * @param  str
+ * @param num1
+ * @param num2
+ * @return stat_m
+ */
+stat_m m_callable_parsestring(const char *str, float *num1, float *num2);
+
+// 字符拼接函数
+void m_callable_concatenatestring(const char *input, char *output);
 #endif

@@ -68,7 +68,7 @@ stat_m m_callable_sensor_init(int sen1_pin, int sen2_pin)
     { /** 传感器开启关闭  */
         if (m_callable_drive_flash_read(M_TYPE_U32, SENSOR_BASE SENSOR_1, (void *)&type_s) == succ_r)
         {
-            if (type_s - 10 >= BADGER_228PV15 && type_s - 10 <= HC_200_FLOW_B)
+            if (type_s - 10 >= BADGER_228PV15 && type_s - 10 <= K_OTHER_SENSOR)
             {
                 m_callable_sensor_set(1, type_s - 10, false);
                 DEBUG_TEST(DB_I, "传感器1======》 类型 :%d ", type_s - 10);
@@ -81,7 +81,7 @@ stat_m m_callable_sensor_init(int sen1_pin, int sen2_pin)
         }
         if (m_callable_drive_flash_read(M_TYPE_U32, SENSOR_BASE SENSOR_2, (void *)&type_s) == succ_r)
         {
-            if (type_s - 20 >= BADGER_228PV15 && type_s - 20 <= HC_200_FLOW_B)
+            if (type_s - 20 >= BADGER_228PV15 && type_s - 20 <= K_OTHER_SENSOR)
             {
                 m_callable_sensor_set(2, type_s - 20, false);
                 DEBUG_TEST(DB_I, "传感器2======》 类型 :%d ", type_s - 20);
@@ -172,6 +172,7 @@ stat_m m_callable_sensor_set(int tp_vue, enum sensor_type_m sensor_type, bool bo
             // printf("*******************%d**************\r\n", sensor_type);
             // 设置传感器类型为 BADGER_228PV15
             sen_man.sensor_type = sensor_type;
+
             // sen_man.sen_1_is_opened = true;
             // 调用函数来设置 k_value 和 offset_value
             m_static_sensor_type_select_m(&sen_man);
@@ -759,7 +760,7 @@ stat_m m_callable_flow_sensor_get_total_value(uint8_t channel_id, uint32_t runni
     {
         stat = succ_r;
 
-        if (sen_man.sensor_type >= HC_075_FLOW_B && sen_man.sensor_type <= HC_200_FLOW_B)
+        if ((sen_man.sensor_type >= HC_075_FLOW_B && sen_man.sensor_type <= HC_200_FLOW_B) || (sen_man.sensor_type == P_OTHER_SENSOR))
         {
             m_callable_zone_transfore_get(channel_id, running_time, &flow_value);
             *out_final_vue = flow_value;
@@ -783,18 +784,15 @@ stat_m m_callable_flow_sensor_get_total_value(uint8_t channel_id, uint32_t runni
                 {
                     *out_final_vue = 0;
                 }
-
-                // //   float frequency = count; // 频率 = 脉冲数 / 时间（秒）
-                // *out_final_vue = (((sensor_pulsecount + sen_man.offset_value) * sen_man.k_value)) / 60;
             }
             else
                 *out_final_vue = 0.0f;
             DEBUG_TEST(DB_I, "1 or 2 flow -->(cnt %d) %.03f", sensor_pulsecount, *out_final_vue);
-            m_callable_local_resp_to_remote(M_CMD__NUMBER_OF_TRAFFIC_DETECTION_PULSES,
-                                            M_TYPE_Int, (void *)&sensor_pulsecount,
-                                            M_TYPE_Int, (void *)&running_time,
-                                            M_TYPE_NULL, NULL,
-                                            M_TYPE_NULL, NULL, in_time_s, true);
+            // m_callable_local_resp_to_remote(M_CMD__NUMBER_OF_TRAFFIC_DETECTION_PULSES,
+            //                                 M_TYPE_Int, (void *)&sensor_pulsecount,
+            //                                 M_TYPE_Int, (void *)&running_time,
+            //                                 M_TYPE_NULL, NULL,
+            //                                 M_TYPE_NULL, NULL, in_time_s, true);
             if (is_clear)
             {
                 sensor_pulsecount = 0;
@@ -868,6 +866,12 @@ stat_m m_static_sensor_event_handle(enum seneor_chann sensor_channel, bool is_op
 }
 
 //****************************************************************************************************//
+
+/**
+ * @brief 流量计类型获取
+ * @param senseortype 类型
+ * @return stat_m
+ */
 stat_m m_callable_flow_sensor_type_gets(uint8_t *senseortype)
 {
     stat_m stat = fail_r;
@@ -880,6 +884,11 @@ stat_m m_callable_flow_sensor_type_gets(uint8_t *senseortype)
     return stat;
 }
 
+/**
+ * @brief 流量计参数设置
+ * @param sensor_stats_z 传感器参数
+ * @return void
+ */
 void m_static_sensor_type_select_m(struct m_sensor_man *sensor_stats_z)
 {
     switch (sensor_stats_z->sensor_type)
@@ -1029,7 +1038,7 @@ void m_static_sensor_type_select_m(struct m_sensor_man *sensor_stats_z)
     case HC_100_FLOW_B:
     case HC_150_FLOW_B:
     case HC_200_FLOW_B:
-        sensor_stats_z->k_value = 2.641;
+        sensor_stats_z->k_value = 2.642;
 
         /*flash 存储读取还未添加，用这个先做模拟值*/
         for (int i = 0; i < 34; i++)
@@ -1049,10 +1058,31 @@ void m_static_sensor_type_select_m(struct m_sensor_man *sensor_stats_z)
         sensor_stats_z->offset_value = FS350B_OFFSET_VALUE;
         break;
 
+    case P_OTHER_SENSOR:
+    case K_OTHER_SENSOR:
+        sensor_stats_z->k_value = sen_man.k_value;
+        sensor_stats_z->offset_value = sen_man.offset_value;
+        break;
+
     default:
+
         break;
     }
 }
+
+/**
+ * @brief 流量计自定义值 设置
+ * @param k_value K值或者是 升/脉冲
+ * @param offset_value 偏移值
+ * @return stat_m
+ */
+stat_m m_calllable_sensor_k_or_f_set(float k_value, float offset_value)
+{
+    sen_man.k_value = k_value;
+    sen_man.offset_value = offset_value;
+    return succ_r;
+}
+
 /**
  * @brief 加载老设备的配置，
  *

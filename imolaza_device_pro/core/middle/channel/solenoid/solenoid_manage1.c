@@ -32,11 +32,13 @@ stat_m configuration_modification(int number_of_channels_set, uint32_t _device_v
                 hc_flag = 0x8000;
             stat = succ_r;
         }
-        else if (_device_version_set == DEVICE_HEARWARE_A002 || _device_version_set == DEVICE_HEARWARE_C11)
+        else if (_device_version_set == DEVICE_HEARWARE_A002||_device_version_set == DEVICE_HEARWARE_A113 || _device_version_set == DEVICE_HEARWARE_C11)
         {
             chips595_lead = 16;
             if (number_of_channels_set == DEVICE_4_ZONE)
                 hc_flag = 0x800;
+            if (number_of_channels_set == DEVICE_6_ZONE)
+                hc_flag = 0x2000;
             if (number_of_channels_set == DEVICE_8_ZONE)
                 hc_flag = 0x8000;
             if (number_of_channels_set == DEVICE_12_ZONE)

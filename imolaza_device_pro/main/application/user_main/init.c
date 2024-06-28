@@ -31,11 +31,6 @@ void m_callable_hardware_drive_init(void)
     /** 传入当前在设备属性的类型*/
     // m_callable_drive_out_chip_init( 0 );
 
-
-
-
-
-
     /** 传感器初始化 */
     m_callable_sensor_init(13, 14);
 
@@ -163,6 +158,8 @@ void app_init(void)
     m_callable_hardware_drive_init();
     // m_callable_system_printf_heap_free_info(15);
 
+    m_callable_ota_silent_updata_clear_mark();
+
     /** 软件驱动 wifi蓝牙  */
     m_callable_software_drive_init(); // 70K
 
@@ -263,6 +260,13 @@ void app_init(void)
     // }
 
     // print_partition_table();
+
+    // for (int i = 0; i <= 12; i++)
+    // {
+    //     m_callable_display_status(M_DISPLAY_SET_MANUAL_DURATION, i);
+    //     mDelay_ms(1000);
+    // }
+
     while (!UNIT_TEST && (nmode == M_DEVICE_RUNNING_MODE_NONE))
     {
         m_callable_device_device_factoryconfig();

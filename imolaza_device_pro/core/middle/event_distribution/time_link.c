@@ -233,7 +233,7 @@ stat_m m_static_time_link_notece_node_remove_by_id(uint64_t id)
     struct schedule_run_notice_time_tab *tp = NULL;
 
     DEBUG_E("delete it  : id : %lld status : ", id);
-    if (id == 666)
+    if (id == 666 || id == 665 || id == 664)
     {
         /*把m_run_time.zonenum 置为0,下一次快速运行实例重新赋值*/
         m_run_time.zonenum = 0;
@@ -535,6 +535,14 @@ stat_m m_static_time_link_notece_node_advancing(uint64_t in_present_time)
                                 query_tp->schedule_run_notice_time_id,
                                 in_present_time);
             }
+            if (query_tp->schedule_run_notice_time_id != 666 && query_tp->schedule_run_notice_time_id != 665 && query_tp->schedule_run_notice_time_id != 664)
+            {
+                m_callable_ota_can_start_updating_time_set(query_tp->m_schedule_notice_info.schedule_run_notice_time);
+            }
+        }
+        if ((query_tp->time_tab_next == NULL))
+        {
+            m_callable_ota_can_start_updating_time_set(9702323389);
         }
     }
     int reX = 0;

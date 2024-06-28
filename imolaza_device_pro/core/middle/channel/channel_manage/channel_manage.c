@@ -43,6 +43,7 @@ stat_m m_callable_channel_manage_init(int device_type)
         for (size_t i = 1; i < 13; i++)
             off_running_change[i] = 100;
 
+
     return stat;
 }
 /**
@@ -104,6 +105,7 @@ stat_m m_callable_channel_manage_state_set(bool enable, uint8_t channel, uint64_
 stat_m m_callable_channel_manage_enable(uint8_t channel)
 {
     stat_m stat = fail_r;
+    DEBUG_TEST(DB_I ,"m_callable_channel_manage_enable -> %hhd" , channel);
     if (channel > 0 && channel <= device_max_channel)
     {
         stat = succ_r;
@@ -241,6 +243,18 @@ stat_m m_callable_channel_manage_congfig_sack_param(int in_channel, char *src_st
 stat_m m_callable_channel_manage_current_is_effective(uint8_t channel, uint64_t current_time)
 {
     stat_m stat = fail_r;
+//     for (size_t i = 0; i < 30; i++)
+// {
+//     DEBUG_TEST(DB_I,"%hhd %hhd       %lld  %lld   %lld" , channel , cmc[i].channel_id,  current_time ,cmc[i].disable_start_time , cmc[i].disable_end_time);
+
+// }
+// for (size_t i = 0; i < 30; i++)
+// {
+//                 DEBUG_TEST( DB_I,"(m_static_channel_manage_config %hhd: ) status: %d A0: %d A1: %d B0: %.02f B1: %.02f B2: %.02f Start: %lld End: %lld Config Choose%d",
+//                        cmc[i].channel_id,cmc[i].channel_state, cmc[i].channel_config_a[0], cmc[i].channel_config_a[1],
+//                        cmc[i].channel_config_b[M_SMART_SACK_AR], cmc[i].channel_config_b[M_SMART_SACK_IR], cmc[i].channel_config_b[M_SMART_SACK_ASA],
+//                        cmc[i].disable_start_time, cmc[i].disable_end_time, cmc[i].channel_config_choose);
+// }
     if (current_time >= cmc[channel].disable_start_time && current_time <= cmc[channel].disable_end_time)
     {
         stat = succ_r;
@@ -365,6 +379,7 @@ stat_m m_callable_channel_manage_get_offline_running_percent(int *percent)
 stat_m m_callable_channel_manage_clean_offline_running_percent(uint8_t channel_id)
 {
     stat_m stat = fail_r;
+
     for (size_t i = 0; i < 16; i++)
     {
         // cmc[i].channel_percent = 0;

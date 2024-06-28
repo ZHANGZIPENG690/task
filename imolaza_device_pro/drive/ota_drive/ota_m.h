@@ -2,6 +2,7 @@
 #define OTA_M_H
 
 #include "core/fset_lib.h"
+#include "core/text.h"
 #if !UNIT_TEST
 
 #include "esp_ota_ops.h"
@@ -74,6 +75,13 @@ stat_m m_ext_drive_ota_enable_silent_update(char *in_url);
  * @return esp_err_t
  */
 stat_m m_ext_drive_ota_disable_silent_update(void);
+
+
+/**
+ * @brief ota_client_cleanup
+ * @return stat_m
+ */
+stat_m m_ext_drive_ota_client_cleanup(void);
 
 /**
  * @brief ota_stop

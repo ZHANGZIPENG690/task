@@ -29,11 +29,13 @@ stat_m m_ext_online_config_mode_event_handle(enum event_ft event_id, char *in_da
 
         DEBUG_TEST(DB_I, "Online Confnig Net Event: Handle Rece Data ->  %s", in_data);
 
-        if (strstr(in_data, SSID) != NULL && strstr(in_data, PSW) != NULL)
+        if (strstr(in_data, SSID) != NULL && strstr(in_data, PSW) != NULL &&
+                strstr(in_data, "{") != NULL && strstr(in_data, "}") != NULL)
         {
             m_callable_middle_connect_handle_set_code(M_CONNECT__CODE_CONFIG_CONFIG_TRYING_TO_NET);
             m_callable_middle_network_adapter_clear();
             m_callable_device_proper_status_update_to_config_net();
+
             stat = m_callable_json_data_parse_foramt_one_key(SSID, tmp_sid, in_data);
             m_callable_config_net_set_username(tmp_sid);
             m_callable_device_attribute_set_current_connect_net_name(tmp_sid);
@@ -308,7 +310,7 @@ stat_m m_ext_derect_config_mode_event_handle(enum event_ft event_id, char *in_da
         //     m_callable_network_connect();
         if (net_connect_count == 10)
         {
-            DEBUG_TEST(DB_W, "Direct Mode Event Handle : Net Change  ... ，%d", net_connect_count);
+            DEBUG_TEST(DB_W, "Direct Mode Event Handle : Net Change  ... ,%d", net_connect_count);
             // m_callable_middle_network_adapter_clear();
         }
         m_callable_system_printf_heap_free_info(__FUNCTION__, __LINE__);

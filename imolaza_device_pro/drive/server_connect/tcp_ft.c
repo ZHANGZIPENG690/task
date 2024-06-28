@@ -134,7 +134,7 @@ stat_m m_ext_software_drive_server_tcp_connect(char *in_addr, int in_port)
 stat_m m_ext_net_link_receive_data(char *out_data, int *len, uint64_t in_time_out_s)
 {
     stat_m stat = fail_r;
-    memset(out_data, 0, 1024);
+    memset(out_data, 0, 512);
 
     uint64_t in_soc_time = m_callable_timer_manage_get_utc_time();
     while (1)
@@ -150,7 +150,7 @@ stat_m m_ext_net_link_receive_data(char *out_data, int *len, uint64_t in_time_ou
             break;
         }
 #endif
-        if ((*len = recv(sock__, out_data, 1024, 0)) > 0)
+        if ((*len = recv(sock__, out_data, 512, 0)) > 0)
         {
             DEBUG_TEST(DB_W, "m_ext_net_link_tcp_receive_data -> %s", out_data);
             stat = succ_r;

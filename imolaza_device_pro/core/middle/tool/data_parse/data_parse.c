@@ -311,8 +311,11 @@ stat_m m_callable_json_data_parse_foramt_one_key(char *in_key, char *out_resp, c
         return 0;
     info = strchr(item, ':');
     // M_CALLABLE_DATA_PARSE_FORAMT_PARAM_SSCANF(item, "%*[^:]%s", info);
-    M_CALLABLE_DATA_PARSE_FORAMT_PARAM_SSCANF(info, ":\"%[^\"]", out_resp);
-
+    if (info != NULL)
+    {
+        M_CALLABLE_DATA_PARSE_FORAMT_PARAM_SSCANF(info, ":\"%[^\"]", out_resp);
+        stat = succ_r;
+    }
     DEBUG_TEST(DB_W, "%s:%s", in_key, out_resp);
     return stat;
 }
@@ -465,5 +468,111 @@ void m_callable_generatestring(int area[], uint64_t time[], int num_areas, char 
         {
             strcat(output, "+"); // 非最后一个区域，用+号分隔
         }
+    }
+}
+
+// 字符串 带&分割 函数
+stat_m m_callable_parsestring(const char *str, float *num1, float *num2)
+{
+    const char *delimiter = "&";
+    const char *token;
+
+    token = strstr(str, delimiter); // 查找 '&' 的位置
+
+    if (token != NULL)
+    {
+        // 找到 '&'，分割为两部分并转换为浮点数
+        *num1 = atof(str);       // 第一个浮点数
+        *num2 = atof(token + 1); // 第二个浮点数
+        return succ_r;
+    }
+    else
+    {
+        // 没有找到 '&'，将整个字符串解析为一个浮点数
+        *num1 = atof(str); // 只有一个浮点数
+        *num2 = 0.0;       // 第二个浮点数设为0（或者其他默认值）
+        return fail_r;
+    }
+}
+
+// // 字符拼接函数
+// char *m_callable_concatenatestring(const char *input)
+// {
+//     const char *in = input;
+//     char *output = (char *)malloc(strlen(input) * 6); // Allocate enough memory (estimate) for output string
+//     char *out = output;
+
+//     // Traverse input string
+//     while (*in != '\0')
+//     {
+//         if (*in >= '0' && *in <= '9')
+//         {
+//             // Read the number
+//             char number[20]; // Temporary storage for the number
+//             int i = 0;
+//             while (*in >= '0' && *in <= '9')
+//             {
+//                 number[i++] = *in++;
+//             }
+//             number[i] = '\0';
+
+//             // Convert number to integer for formatting
+//             int num = atoi(number);
+
+//             // Format and copy to output string
+//             sprintf(out, "%d#%d#5;", num, num);
+//             out += strlen(out);
+//         }
+//         else
+//         {
+//             in++; // Skip over non-number characters
+//         }
+//     }
+
+//     // Remove the last semicolon if it exists
+//     if (*(out - 1) == ';')
+//     {
+//         *(out - 1) = '\0';
+//     }
+
+//     return output;
+// }
+
+// Function definition for formatting string
+void m_callable_concatenatestring(const char *input, char *output)
+{
+    const char *in = input;
+    char *out = output;
+
+    // Traverse input string
+    while (*in != '\0')
+    {
+        if (*in >= '0' && *in <= '9')
+        {
+            // Read the number
+            char number[20]; // Temporary storage for the number
+            int i = 0;
+            while (*in >= '0' && *in <= '9')
+            {
+                number[i++] = *in++;
+            }
+            number[i] = '\0';
+
+            // Convert number to integer for formatting
+            int num = atoi(number);
+
+            // Format and copy to output string
+            out += sprintf(out, "%d#%d#5;", num, num);
+        }
+        else
+        {
+            in++; // Skip over non-number characters
+        }
+    }
+
+    // Remove the last semicolon if it exists
+    if (*(out - 1) == ';')
+    {
+        *(out - 1) = '\0';
     }
 }

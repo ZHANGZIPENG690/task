@@ -48,10 +48,10 @@ stat_m m_static_channel_manage_config_init(struct channel_manage_conf *config, i
 
             config[i].channel_state = ste;
 
-            // DEBUG_TEST( DB_I,"(m_static_channel_manage_config %hhd: ) status: %d A0: %d A1: %d B0: %.02f B1: %.02f B2: %.02f Start: %lld End: %lld Config Choose%d",
-            //            ste, config[i].channel_config_a[0], config[i].channel_config_a[1],
-            //            con   fig[i].channel_config_b[M_SMART_SACK_AR], config[i].channel_config_b[M_SMART_SACK_IR], config[i].channel_config_b[M_SMART_SACK_ASA],
-            //            config[i].disable_start_time, config[i].disable_end_time, config[i].channel_config_choose);
+            DEBUG_TEST( DB_I,"(m_static_channel_manage_config %hhd: ) status: %d A0: %d A1: %d B0: %.02f B1: %.02f B2: %.02f Start: %lld End: %lld Config Choose%d",
+                       config[i].channel_id,ste, config[i].channel_config_a[0], config[i].channel_config_a[1],
+                       config[i].channel_config_b[M_SMART_SACK_AR], config[i].channel_config_b[M_SMART_SACK_IR], config[i].channel_config_b[M_SMART_SACK_ASA],
+                       config[i].disable_start_time, config[i].disable_end_time, config[i].channel_config_choose);
         }
         else
         {

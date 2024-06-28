@@ -1680,7 +1680,12 @@ void *mTaskCreate(void *handle, void (*fun)(void *), const char *pcName, const u
  * @param cause 重启原因
  */
 void mReboot(enum restart_cause_t cause);
-
+/**
+ * @brief 删除任务
+ *
+ * @return void
+ */
+void mTaskDelete(void);
 /**
  * @brief bit  set
  *
@@ -2804,6 +2809,7 @@ extern stat_m m_callable_device_proper_status_update_to_test(void);
  * @return stat_m
  */
 extern stat_m m_callable_device_proper_status_update_to_config_net(void);
+
 /**
  * @brief 查询当前设备的状态
  *
@@ -3368,6 +3374,32 @@ stat_m m_callable_ota_enable_silent_updata(char *in_url);
 stat_m m_callable_ota_check_app_version(void);
 
 /**
+ * @brief ota_can_start_updating_time
+ * @param new_timestamp
+ * @return stat_m
+ */
+stat_m m_callable_ota_can_start_updating_time_set(uint64_t new_timestamp);
+
+/**
+ * @brief ota_can_start_updating_time_get  如果返回succ_r,就可以进行静默更新否则不可以
+ * @return stat_m
+ */
+stat_m m_callable_ota_can_start_updating_time_get(void);
+
+/**
+ * @brief m_callable_ota_silent_updata_start_init  
+ * @return stat_m
+ */
+stat_m m_callable_ota_silent_updata_start_init(uint64_t in_time_s);
+
+
+/**
+ * @brief m_callable_ota_silent_updata_flag_get
+ * @return stat_m
+ */
+extern bool m_callable_ota_silent_updata_flag_get(void);
+
+/**
  * @brief ota_update_progress_get
  * @return float
  */
@@ -3383,25 +3415,58 @@ stat_m m_ext_drive_ota_init(void);
 
 /**
  * @brief ota_start
- * @return esp_err_t
+ * @return stat_m
  */
 stat_m m_ext_drive_ota_start(void);
 
 /**
  * @brief ota_enable_silent_update
- * @return esp_err_t
+ * @return stat_m
  */
 stat_m m_ext_drive_ota_enable_silent_update(char *in_url);
 
 /**
  * @brief ota_disable_silent_update
- * @return esp_err_t
+ * @return stat_m
  */
 stat_m m_ext_drive_ota_disable_silent_update(void);
 
 /**
+ * @brief ota_client_cleanup
+ * @return stat_m
+ */
+stat_m m_ext_drive_ota_client_cleanup(void);
+
+
+/**
+ * @brief m_callable_ota_client_cleanup
+ * @return stat_m
+ */
+stat_m m_callable_ota_client_cleanup();
+
+/**
+ * @brief ota静默更新完成标记 移除    如果设备意外重启,则移除标记
+ * @return stat_m
+ */
+stat_m m_callable_ota_silent_updata_clear_mark(void);
+
+
+/**
+ * @brief ota静默更新  停止
+ * @return stat_m
+ */
+stat_m m_callable_ota_silent_updata_stop(void);
+
+
+/**
+ * @brief ota静默更新  停止标记位获取
+ * @return stat_m
+ */
+bool m_callable_ota_silent_updata_stop_flag_get(void);
+
+/**
  * @brief ota_stop
- * @return esp_err_t
+ * @return stat_m
  */
 stat_m m_ext_drive_ota_stop(void);
 
@@ -3729,7 +3794,7 @@ extern int m_ext_drive_read_adc_value_rtc();
 // ADC值转化成电压值
 extern float m_ext_drive_adc_to_voltage_rtc(int adc_reading, float *voltage_float);
 
-extern stat_m m_callable_rtc_power_warning(void);
+extern int m_callable_rtc_power_warning(char *percentage_battery_get);
 
 extern stat_m m_calllable_current_monitor(int device_status);
 
@@ -3755,6 +3820,12 @@ extern stat_m m_callable_current_set_short_mode(enum current_short_mode in_csm);
  * @return stat_m
  */
 extern stat_m m_callable_current_set_checkout_zone(int in_zone);
+
+/*批量区域电流校准标志位设置 0表示关闭、1表示电流校准 、2表示电流测试*/
+extern stat_m m_callable_current_batch_area_power_calibration_flag_set(int flag);
+
+/*批量区域电流校准标志位获取 0表示关闭、1表示电流校准 、2表示电流测试*/
+extern int m_callable_current_batch_area_power_calibration_flag_get(void);
 
 /**
  * @brief 获取自上次到现在的流量值，并且指定是否清除缓存并且重新开始计算，如果流量传感器未打开 返回0
@@ -3824,5 +3895,31 @@ extern stat_m m_callable_offline_bluetooth_running_mode_getting(enum running_mod
  * @return stat_m
  */
 extern stat_m m_callable_network_reset_server_start_connect_server(void);
+
+/**
+ * @brief 流量计自定义值 设置
+ * @param k_value K值或者是 升/脉冲
+ * @param offset_value 偏移值
+ * @return stat_m
+ */
+extern stat_m m_calllable_sensor_k_or_f_set(float k_value, float offset_value);
+
+/**
+ * @brief 把带有&的字符串进行分割并且把浮点数进行返回
+ * @param  str
+ * @param num1
+ * @param num2
+ * @return stat_m
+ */
+extern stat_m m_callable_parsestring(const char *str, float *num1, float *num2);
+
+/**
+ * @brief 字符拼接函数
+ * @param  str
+ * @param num1
+ * @param num2
+ * @return stat_m
+ */
+extern void m_callable_concatenatestring(const char *input, char *output);
 
 #endif /* __FSET_LIB__H */

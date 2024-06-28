@@ -1,8 +1,5 @@
 
 
-
-
-
 #ifndef __DRIVE_H__
 #define __DRIVE_H__
 
@@ -51,7 +48,6 @@ gpio_config_t io_conf;
 
 #endif
 
-
 struct receive_data
 {
     char inout_data[512];
@@ -60,19 +56,17 @@ struct receive_data
 };
 /**
  * @brief wifi 软件驱动初始化
- * 
- * @return stat_m 
+ *
+ * @return stat_m
  */
 stat_m m_ext_soft_drive_net_wifi_init(void);
 
 /**
  * @brief 蓝牙 软件驱动初始化
- * 
- * @return stat_m 
+ *
+ * @return stat_m
  */
 stat_m m_ext_soft_drive_net_bluetool_init(void);
 
-
-
-
-#endif  /* __DRIVE_H__ */
+// void m_callable_watchdog_task();
+#endif /* __DRIVE_H__ */

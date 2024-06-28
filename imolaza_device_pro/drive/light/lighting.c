@@ -40,6 +40,10 @@ const uint8_t addr_arr_c10[18] = {ADDR2, ADDR2, ADDR2, ADDR2, ADDR2, ADDR2, ADDR
                                   ADDR2, ADDR2, ADDR1, ADDR1, ADDR1, ADDR1, ADDR1, ADDR1};
 const uint8_t pin_arr_c10[18] = {12, 11, 10, 9, 8, 7, 6, 5, 4, 3, 2, 1, 12, 11, 10, 9, 8, 7};
 
+//******************************************D11 迷你机************************************************************//
+const uint8_t addr_arr_d11[18] = {ADDR2, ADDR2, ADDR2, ADDR2, ADDR2, ADDR2, ADDR2, ADDR2};
+const uint8_t pin_arr_d11[18] = {12, 11, 10, 9, 8, 7, 6, 5};
+
 uint8_t arr4[] = {10, 14, 21, 3};
 uint8_t arr6[] = {10, 12, 14, 21, 1, 3};
 uint8_t arr8[] = {10, 12, 14, 16, 19, 21, 1, 3};
@@ -58,6 +62,8 @@ uint8_t arr6_c10[] = {6, 9, 12, 16, 1, 4};
 uint8_t arr8_c10[] = {6, 8, 10, 12, 16, 18, 2, 4};
 uint8_t arr12_c10[] = {7, 8, 9, 10, 11, 12, 16, 17, 18, 1, 2, 3};
 uint8_t arr16_c10[] = {6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 18, 1, 2, 3, 4};
+
+uint8_t arr8_d11[] = {12, 11, 10, 9, 8, 7, 6, 5};
 
 struct display_attribute_m display_attribute;
 
@@ -157,6 +163,15 @@ void m_ext_rgb_pin_2(uint8_t pin, uint32_t color)
     addr = addr_arr_c10[pin - 1];
     pin = pin_arr_c10[pin - 1];
   }
+  else if (display_attribute.display_device_version == DEVICE_HEARWARE_D11)
+  {
+    if (pin > 8)
+      pin %= 8;
+    if (pin == 0)
+      pin = 1;
+    addr = addr_arr_d11[pin - 1];
+    pin = pin_arr_d11[pin - 1];
+  }
   else
   {
     if (pin > 22)
@@ -168,7 +183,7 @@ void m_ext_rgb_pin_2(uint8_t pin, uint32_t color)
       addr = addr_arr1[pin - 1];
       pin = pin_arr1[pin - 1];
     }
-    else if (display_attribute.display_device_version == DEVICE_HEARWARE_A002)
+    else if (display_attribute.display_device_version == DEVICE_HEARWARE_A002||display_attribute.display_device_version == DEVICE_HEARWARE_A113)
     {
       addr = addr_arr16[pin - 1];
       pin = pin_arr16[pin - 1];
@@ -249,6 +264,11 @@ void m_ext_rgb_pin_1(uint8_t pin, uint8_t red, uint8_t green, uint8_t blue)
     if (pin > 18)
       pin %= 18;
   }
+  else if (display_attribute.display_device_version == DEVICE_HEARWARE_D11)
+  {
+    if (pin > 8)
+      pin %= 8;
+  }
   else
   {
     if (pin > 22)
@@ -262,7 +282,7 @@ void m_ext_rgb_pin_1(uint8_t pin, uint8_t red, uint8_t green, uint8_t blue)
     addr = addr_arr1[pin - 1];
     pin = pin_arr1[pin - 1];
   }
-  else if (display_attribute.display_device_version == DEVICE_HEARWARE_A002)
+  else if (display_attribute.display_device_version == DEVICE_HEARWARE_A002||display_attribute.display_device_version == DEVICE_HEARWARE_A113)
   {
     addr = addr_arr16[pin - 1];
     pin = pin_arr16[pin - 1];
@@ -271,6 +291,11 @@ void m_ext_rgb_pin_1(uint8_t pin, uint8_t red, uint8_t green, uint8_t blue)
   {
     addr = addr_arr_c10[pin - 1];
     pin = pin_arr_c10[pin - 1];
+  }
+  else if (display_attribute.display_device_version == DEVICE_HEARWARE_D11)
+  {
+    addr = addr_arr_d11[pin - 1];
+    pin = pin_arr_d11[pin - 1];
   }
   else if (display_attribute.display_device_version == DEVICE_HEARWARE_A003 || display_attribute.display_device_version == DEVICE_HEARWARE_B11 || display_attribute.display_device_version == DEVICE_HEARWARE_B12)
   {
@@ -303,7 +328,7 @@ void m_ext_drive_lighting_set_point_color(uint8_t point, uint32_t color)
   uint8_t redChannel = (adjustedColor * display_attribute.display_lighting_strength >> 16) & 0xFF;
   uint8_t greenChannel = (adjustedColor * display_attribute.display_lighting_strength >> 8) & 0xFF;
   uint8_t blueChannel = adjustedColor * display_attribute.display_lighting_strength & 0xFF;
-  if (display_attribute.display_device_version == DEVICE_HEARWARE_A003 || display_attribute.display_device_version == DEVICE_HEARWARE_B11 || display_attribute.display_device_version == DEVICE_HEARWARE_B12 || display_attribute.display_device_version == DEVICE_HEARWARE_C11)
+  if (display_attribute.display_device_version == DEVICE_HEARWARE_A003 || display_attribute.display_device_version == DEVICE_HEARWARE_B11 || display_attribute.display_device_version == DEVICE_HEARWARE_B12 || display_attribute.display_device_version == DEVICE_HEARWARE_C11||display_attribute.display_device_version == DEVICE_HEARWARE_D11)
   {
     // 设置灯的颜色
     m_ext_rgb_pin_1(point, blueChannel, greenChannel, redChannel);

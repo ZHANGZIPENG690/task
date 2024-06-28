@@ -100,7 +100,7 @@ stat_m m_callable_device_attribute_init(void)
     else
     {
         DEBUG_TEST(DB_W, "M_DEVICE_RUNNING_MODE  %d .... %lld", _device.device_running_mode, _device.timestamp);
-        if (_device.timestamp != 0)
+        if (_device.timestamp != 0 && m_callable_drive_flash_read(M_TYPE_U64, M_FLASH_KEY_DEVICE_TIME, (char *)&_device.timestamp) == succ_r)
         {
             _device.device_running_mode = M_DEVICE_RUNNING_MODE_DERECT;
             _device.profile.net_info.option = M_NETWORK_MANAGE_CONNECT_MODE_TCP;

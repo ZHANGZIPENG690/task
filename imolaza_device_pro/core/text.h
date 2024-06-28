@@ -53,4 +53,13 @@ extern const char *CONFIG_NET_OR_BIND_TEXT_TOKEN;
 /** JSON binding 字段*/
 extern const char *CONFIG_NET_OR_BIND_TEXT_BINDING;
 
+/** OTA_URL */
+extern const char *OTA_URL;
+
+/** OTA_COMPLETE */
+extern const char *OTA_COMPLETE;
+
+/** OTA_UPDATA_FAIL_COUNT */
+const char *OTA_UPDATA_FAIL_COUNT;
+
 #endif /* __TEXT__H__ */

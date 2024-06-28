@@ -49,20 +49,24 @@ const char *STATIC_IP_IN_IPMASK = "IPmk";
 /** 网关 */
 const char *STATIC_IP_IN_IPGW = "IPgw";
 
-
+/** OTA_URL */
+const char *OTA_URL = "*OTAUR";
+/** OTA_URL */
+const char *OTA_COMPLETE = "*OTACO";
+/** OTA_URL */
+const char *OTA_UPDATA_FAIL_COUNT = "*OTCON";
 
 /** 配网相关字段 */
 /** JSON ssid 字段*/
- const char *CONFIG_NET_OR_BIND_TEXT_SSID  = "ssid";
+const char *CONFIG_NET_OR_BIND_TEXT_SSID = "ssid";
 /** JSON psw 字段*/
- const char *CONFIG_NET_OR_BIND_TEXT_PSW  = "password";
+const char *CONFIG_NET_OR_BIND_TEXT_PSW = "password";
 /** JSON type 字段*/
- const char *CONFIG_NET_OR_BIND_TEXT_TYPE  = "type";
+const char *CONFIG_NET_OR_BIND_TEXT_TYPE = "type";
 /** JSON token 字段*/
- const char *CONFIG_NET_OR_BIND_TEXT_TOKEN  = "token";
+const char *CONFIG_NET_OR_BIND_TEXT_TOKEN = "token";
 /** JSON binding 字段*/
- const char *CONFIG_NET_OR_BIND_TEXT_BINDING  = "binding";
+const char *CONFIG_NET_OR_BIND_TEXT_BINDING = "binding";
 
 const int M_CONST_SACK_NUM = 254;
 const int M_CONST_NONE_NUM = 0;
-

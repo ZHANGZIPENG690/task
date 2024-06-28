@@ -22,6 +22,8 @@ extern uint8_t arr18_pro[];
 extern uint8_t arr12_pro[];
 extern uint8_t arr6_pro[];
 
+extern uint8_t arr8_d11[];
+
 uint8_t redchannel;
 uint8_t greenchannel;
 uint8_t bluechannel;
@@ -29,7 +31,7 @@ uint8_t bluechannel;
 /*提取调整后的颜色通道值*/
 void m_static_breathe_set_led_color(uint32_t adjustedColor, uint8_t brightness)
 {
-    if (display_attribute.display_device_version == DEVICE_HEARWARE_A003 || display_attribute.display_device_version == DEVICE_HEARWARE_B12 || display_attribute.display_device_version == DEVICE_HEARWARE_B11 || display_attribute.display_device_version == DEVICE_HEARWARE_C11)
+    if (display_attribute.display_device_version == DEVICE_HEARWARE_A003 || display_attribute.display_device_version == DEVICE_HEARWARE_B12 || display_attribute.display_device_version == DEVICE_HEARWARE_B11 || display_attribute.display_device_version == DEVICE_HEARWARE_C11 || display_attribute.display_device_version == DEVICE_HEARWARE_D11)
     {
         //  提取调整后的颜色通道值
         redchannel = (adjustedColor * brightness >> 16) & 0xFF;
@@ -172,6 +174,11 @@ void m_static_diplay_zone_immobilization(void)
         m_ext_rgb_pin_1(5, redchannel, greenchannel, bluechannel);
         m_ext_rgb_pin_1(14, redchannel, greenchannel, bluechannel);
     }
+    else if (display_attribute.display_device_version == DEVICE_HEARWARE_D11)
+    {
+        m_ext_rgb_pin_1(1, redchannel, greenchannel, bluechannel);
+        m_ext_rgb_pin_1(8, redchannel, greenchannel, bluechannel);
+    }
     else
     {
         m_ext_rgb_pin_1(6, redchannel, greenchannel, bluechannel);
@@ -186,11 +193,11 @@ void m_static_localized_light_flashing(uint32_t display_device_version, uint8_t 
     {
         if (step == 1)
         {
-            if (((display_device_version == DEVICE_HEARWARE_C11) && i >= 1 && i <= 5) || ((display_device_version == DEVICE_HEARWARE_A003 || display_device_version == DEVICE_HEARWARE_B12 || display_device_version == DEVICE_HEARWARE_B11) && i >= 1 && i <= 9) || ((display_device_version == DEVICE_HEARWARE_A001 || display_device_version == DEVICE_HEARWARE_A002) && i >= 1 && i < 7))
+            if (((display_device_version == DEVICE_HEARWARE_D11) && i >= 1 && i <= 2) || ((display_device_version == DEVICE_HEARWARE_C11) && i >= 1 && i <= 5) || ((display_device_version == DEVICE_HEARWARE_A003 || display_device_version == DEVICE_HEARWARE_B12 || display_device_version == DEVICE_HEARWARE_B11) && i >= 1 && i <= 9) || ((display_device_version == DEVICE_HEARWARE_A001 || display_device_version == DEVICE_HEARWARE_A113|| display_device_version == DEVICE_HEARWARE_A002) && i >= 1 && i < 7))
             {
                 m_ext_drive_lighting_set_point_color(i, static_color);
             }
-            else if (((display_device_version == DEVICE_HEARWARE_C11) && i >= 6 && i <= 9) || ((display_device_version == DEVICE_HEARWARE_A003 || display_device_version == DEVICE_HEARWARE_B12 || display_device_version == DEVICE_HEARWARE_B11) && i >= 10 && i < 17) || ((display_device_version == DEVICE_HEARWARE_A001 || display_device_version == DEVICE_HEARWARE_A002) && i >= 7 && i < 13))
+            else if (((display_device_version == DEVICE_HEARWARE_D11) && i >= 3 && i <= 4) || ((display_device_version == DEVICE_HEARWARE_C11) && i >= 6 && i <= 9) || ((display_device_version == DEVICE_HEARWARE_A003 || display_device_version == DEVICE_HEARWARE_B12 || display_device_version == DEVICE_HEARWARE_B11) && i >= 10 && i < 17) || ((display_device_version == DEVICE_HEARWARE_A001 ||  display_device_version == DEVICE_HEARWARE_A113||display_device_version == DEVICE_HEARWARE_A002) && i >= 7 && i < 13))
             {
                 if (isOn)
                 {
@@ -204,11 +211,11 @@ void m_static_localized_light_flashing(uint32_t display_device_version, uint8_t 
         }
         else if (step == 2)
         {
-            if (((display_device_version == DEVICE_HEARWARE_C11) && i >= 1 && i <= 9) || ((display_device_version == DEVICE_HEARWARE_A003 || display_device_version == DEVICE_HEARWARE_B12 || display_device_version == DEVICE_HEARWARE_B11) && i >= 1 && i <= 17) || ((display_device_version == DEVICE_HEARWARE_A001 || display_device_version == DEVICE_HEARWARE_A002) && i >= 1 && i < 13))
+            if (((display_device_version == DEVICE_HEARWARE_D11) && i >= 1 && i <= 4) || ((display_device_version == DEVICE_HEARWARE_C11) && i >= 1 && i <= 9) || ((display_device_version == DEVICE_HEARWARE_A003 || display_device_version == DEVICE_HEARWARE_B12 || display_device_version == DEVICE_HEARWARE_B11) && i >= 1 && i <= 17) || ((display_device_version == DEVICE_HEARWARE_A001 || display_device_version == DEVICE_HEARWARE_A113|| display_device_version == DEVICE_HEARWARE_A002) && i >= 1 && i < 13))
             {
                 m_ext_drive_lighting_set_point_color(i, static_color); // 设置为蓝色静止状态的灯
             }
-            else if (((display_device_version == DEVICE_HEARWARE_C11) && i >= 10 && i <= 13) || ((display_device_version == DEVICE_HEARWARE_A003 || display_device_version == DEVICE_HEARWARE_B12 || display_device_version == DEVICE_HEARWARE_B11) && i >= 18 && i < 25) || ((display_device_version == DEVICE_HEARWARE_A001 || display_device_version == DEVICE_HEARWARE_A002) && i >= 13 && i < 18))
+            else if (((display_device_version == DEVICE_HEARWARE_D11) && i >= 5 && i <= 6) || ((display_device_version == DEVICE_HEARWARE_C11) && i >= 10 && i <= 13) || ((display_device_version == DEVICE_HEARWARE_A003 || display_device_version == DEVICE_HEARWARE_B12 || display_device_version == DEVICE_HEARWARE_B11) && i >= 18 && i < 25) || ((display_device_version == DEVICE_HEARWARE_A001 || display_device_version == DEVICE_HEARWARE_A113|| display_device_version == DEVICE_HEARWARE_A002) && i >= 13 && i < 18))
             {
                 if (isOn)
                 {
@@ -222,11 +229,11 @@ void m_static_localized_light_flashing(uint32_t display_device_version, uint8_t 
         }
         else if (step == 3)
         {
-            if (((display_device_version == DEVICE_HEARWARE_C11) && i >= 1 && i <= 13) || ((display_device_version == DEVICE_HEARWARE_A003 || display_device_version == DEVICE_HEARWARE_B12 || display_device_version == DEVICE_HEARWARE_B11) && i >= 1 && i <= 25) || ((display_device_version == DEVICE_HEARWARE_A001 || display_device_version == DEVICE_HEARWARE_A002) && i >= 1 && i < 18))
+            if (((display_device_version == DEVICE_HEARWARE_D11) && i >= 1 && i <= 6) || ((display_device_version == DEVICE_HEARWARE_C11) && i >= 1 && i <= 13) || ((display_device_version == DEVICE_HEARWARE_A003 || display_device_version == DEVICE_HEARWARE_B12 || display_device_version == DEVICE_HEARWARE_B11) && i >= 1 && i <= 25) || ((display_device_version == DEVICE_HEARWARE_A001 || display_device_version == DEVICE_HEARWARE_A113|| display_device_version == DEVICE_HEARWARE_A002) && i >= 1 && i < 18))
             {
                 m_ext_drive_lighting_set_point_color(i, static_color); // 设置为蓝色静止状态的灯
             }
-            else if (((display_device_version == DEVICE_HEARWARE_C11) && i >= 14 && i <= 18) || ((display_device_version == DEVICE_HEARWARE_A003 || display_device_version == DEVICE_HEARWARE_B12 || display_device_version == DEVICE_HEARWARE_B11) && i >= 26 && i <= 32) || ((display_device_version == DEVICE_HEARWARE_A001 || display_device_version == DEVICE_HEARWARE_A002) && i >= 18 && i <= 22))
+            else if (((display_device_version == DEVICE_HEARWARE_D11) && i >= 7 && i <= 8) || ((display_device_version == DEVICE_HEARWARE_C11) && i >= 14 && i <= 18) || ((display_device_version == DEVICE_HEARWARE_A003 || display_device_version == DEVICE_HEARWARE_B12 || display_device_version == DEVICE_HEARWARE_B11) && i >= 26 && i <= 32) || ((display_device_version == DEVICE_HEARWARE_A001 ||  display_device_version == DEVICE_HEARWARE_A113||display_device_version == DEVICE_HEARWARE_A002) && i >= 18 && i <= 22))
             {
                 if (isOn)
                 {
@@ -363,6 +370,25 @@ void m_static_display_version_light(void)
             break;
         }
     }
+    else if (display_attribute.display_device_version == DEVICE_HEARWARE_D11)
+    {
+        switch (display_attribute.display_number_of_channels)
+        {
+
+        case 8:
+            m_static_diplay_zone_select(arr8_d11);
+            break;
+        // case 6:
+        //     m_static_diplay_zone_select(arr6_d11);
+        //     break;
+        // case 4:
+        //     m_static_diplay_zone_select(arr4_d11);
+        //     break;
+        default:
+            break;
+        }
+    }
+
     else
     {
         switch (display_attribute.display_number_of_channels)

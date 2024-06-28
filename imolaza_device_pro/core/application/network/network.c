@@ -14,7 +14,6 @@
 
 static char rx_buffer[RECE_BUF_SIZE];
 
-char chr_conf_notify[10] = {0};
 struct connect_man
 {
     /** 举例的连接模式 */
@@ -52,7 +51,7 @@ stat_m m_callable_network_init(void)
     m_callable_middle_network_adapter_init();
     stat = m_static_network_manage_init();
     /** 连接管理 */
-    mTaskCreate(server_loop, m_static_link_server_manage_loop, "s_link_server", 1024 * 5, (void *)3, 5, NULL); //--sock tcp link
+    mTaskCreate(server_loop, m_static_link_server_manage_loop, "s_link_server", 1024 * 10, (void *)3, 5, NULL); //--sock tcp link 5
     /** TX发送和处理 */
     mTaskCreate(tx_loop, m_static_network_tx_handle_loop, "s_link_tx_handle", 1024 * 4, (void *)3, 5, NULL); //--sock tcp link
     /** RX处理 */
@@ -145,7 +144,6 @@ stat_m m_callable_network_keep_active(void)
         if (mDeviceSystemTime() > conn_manage.server_requ_ping_time + NET_CONNECT_REPING_COUNT_OUT_MAX / 3)
         {
             // 发送和维持心跳  如果需要的话
-
             m_callable_network_specify_mode_data_tx(conn_manage.pre_temp_mode, false, Pings[(ping++) % 9], 8);
             DEBUG_TEST_SHORT_PRINT("[%d]PING Send (%lld)  And Max (%ds) ..", ping, mDeviceSystemTime() - conn_manage.server_requ_ping_time, NET_CONNECT_REPING_COUNT_OUT_MAX / 3000);
         }
@@ -176,6 +174,7 @@ void m_static_link_server_manage_loop(void *args)
     enum connect_mode smode = conn_manage.pre_temp_mode;
     enum connect_progress connect_prog;
     stat_m stat = succ_r;
+
 
     // 等待服务器初始化完成
     m_callable_event_group_wait_bits(server_loop, M_EVNBIT_CONNRCT_SERVER, true);
@@ -242,7 +241,6 @@ void m_static_link_server_manage_loop(void *args)
                 DEBUG_TEST(DB_I, "Offline waiting connect ...   %d", m_static_network_manage_get_net_connect_status());
                 continue;
             }
-
             // 连接服务器 他会有获取http地址    会直接返回失败或者成功 阻塞
             conn_manage.net_connect_offling_count++;
             m_static_network_transform_status_rx_able_set(true);
@@ -271,6 +269,7 @@ void m_static_link_server_manage_loop(void *args)
             stat = fail_r;
             mDelay_ms(100);
             m_static_network_transform_status_rx_able_set(true);
+            m_callable_middle_connect_handle_set_code(M_CONNECT__CODE_SERVER_LOGIN_LOGGING);
             if (m_callable_network_manage_get_server_login_status() == succ_r)
             {
                 stat = succ_r;
@@ -279,9 +278,7 @@ void m_static_link_server_manage_loop(void *args)
             // 没有登陆就登陆
             else if (m_static_network_manage_login() == succ_r)
             {
-                m_callable_middle_connect_handle_set_code(M_CONNECT__CODE_SERVER_LOGIN_LOGGING);
-                sprintf(chr_conf_notify, "%d", M_CONNECT__CODE_SERVER_LOGIN_LOGGING);
-                m_ext_network_transmisson_bluetool_tx(chr_conf_notify, strlen(chr_conf_notify));
+               
                 ping = 0;
                 mDelay_ms(100);
                 // 可能是连接断开
@@ -316,8 +313,6 @@ void m_static_link_server_manage_loop(void *args)
                     {
                         DEBUG_TEST(DB_W, "Login Fail...");
                         m_callable_middle_connect_handle_set_code(M_CONNECT_ERROR_CODE_SERVER_LOGIN_TIMEOUT_FAIL);
-                        sprintf(chr_conf_notify, "%d", M_CONNECT_ERROR_CODE_SERVER_LOGIN_TIMEOUT_FAIL);
-                        m_ext_network_transmisson_bluetool_tx(chr_conf_notify, strlen(chr_conf_notify));
                         m_callable_network_server_disconnect();
                     }
                     m_callable_system_printf_heap_free_info(__FUNCTION__, __LINE__);
@@ -422,6 +417,7 @@ stat_m m_callable_network_ext_tcp_mqtt_offline_data_rx(enum connect_mode smode, 
             }
             stat = succ_r;
         }
+
         /* code */
 #endif
         break;
@@ -542,7 +538,7 @@ stat_m m_callable_network_data_rx(char *data, int datalen)
 stat_m m_static_online_config_mode_event_handle(enum running_mode in_mode, enum event_ft evn_id, char *in_data, int in_len)
 {
     stat_m stat = fail_r;
-
+    DEBUG_TEST(DB_E, "%d", in_mode);
     switch (in_mode)
     {
     case M_DEVICE_RUNNING_MODE_CONFIG:

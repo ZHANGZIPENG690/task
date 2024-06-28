@@ -671,7 +671,7 @@ stat_m m_static_tools_instance_obj_refresh_start_time(instance_doc_t *in_info, u
         }
         if (in_info->sch_info.cu_more_time)
             m_static_instance_tools_time_calculate_near_time(in_info->sch_info.cu_more_time_list, out_pre_time,
-             &in_info->WSTime, in_time_s % NUM_OF_DAY_SEC_SUM);
+                                                             &in_info->WSTime, in_time_s % NUM_OF_DAY_SEC_SUM);
 
         break;
     }
@@ -693,6 +693,9 @@ stat_m m_static_tools_instance_obj_refresh_start_time(instance_doc_t *in_info, u
     {
     case SCHEDULE_RUN_RHYTHM_SPEC_DAYS:
         temp_buf_int_a = week;
+        if (temp_buf_int_a == 0)
+            temp_buf_int_a = 7;
+        DEBUG_TEST(DB_I,"week -> %d" , temp_buf_int_a);
         strcpy(temp_char_a, in_info->sch_info.cu_week_list);
         memset(in_info->sch_info.cu_week_list, 0, sizeof(in_info->sch_info.cu_week_list));
         m_callable_data_parse_foramt_week_c("%d", ';', in_info->sch_info.cu_week_list, temp_char_a);
@@ -701,8 +704,10 @@ stat_m m_static_tools_instance_obj_refresh_start_time(instance_doc_t *in_info, u
         {
             // if (strstr((char)temp_buf_int_a + 48, in_info->sch_info.cu_week_list) != NULL)
             for (size_t i = 0; i < sizeof(in_info->sch_info.cu_week_list); i++)
-                if (((((temp_buf_int_a + find_week_this) % 7) + 48 == in_info->sch_info.cu_week_list[i]) ||
-                     ((temp_buf_int_a + find_week_this == 7) && in_info->sch_info.cu_week_list[i] == '7')))
+                // （'week' + j ） == list[i]
+                if (((((temp_buf_int_a + find_week_this) % 7) + 48 == in_info->sch_info.cu_week_list[i]) 
+                ||((temp_buf_int_a + find_week_this == 7) && in_info->sch_info.cu_week_list[i] == '7')
+                ))
                 {
                     // 如果是当天的话 即得看时间是不是比现在的时间大
                     if (find_week_this == 0 && this_day_zero_time_timep + in_info->WSTime <= in_time_s)

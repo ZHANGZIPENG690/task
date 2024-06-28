@@ -197,7 +197,7 @@ stat_m m_ext_drive_ota_check_app_version(void)
                 {
                     DEBUG_TEST(DB_I, "----No updates are available----");
                     esp_http_client_cleanup(http_client);
-                    stat = fail_r;
+                    return fail_r;
                 }
                 else
                 {
@@ -227,6 +227,28 @@ stat_m m_ext_drive_ota_start(void)
     image_header_was_checked = true;
     while (ota_man.data_read > 0)
     {
+        if (m_callable_ota_silent_updata_stop_flag_get() && m_callable_ota_silent_updata_flag_get())
+        {
+            DEBUG_TEST(DB_W, "主动停止OTA静默更新");
+            m_ext_drive_ota_disable_silent_update();
+            if (runing_partition != NULL)
+            {
+                DEBUG_TEST(DB_W, "释放 runing_partition");
+                runing_partition = NULL;
+            }
+
+            if (update_partition != NULL)
+            {
+                DEBUG_TEST(DB_W, "释放 update_partition");
+                update_partition = NULL;
+            }
+            image_header_was_checked = false;
+            breakpoint_resume.ota_range = 0;
+            ota_man.update_buf_offset = 0;
+            memset(ota_write_data, 0, sizeof(ota_write_data));
+
+            return disable_r;
+        }
         err = esp_partition_write(update_partition, ota_man.update_buf_offset, ota_write_data, ota_man.data_read);
         if (err != ESP_OK)
         {
@@ -234,7 +256,6 @@ stat_m m_ext_drive_ota_start(void)
         }
 
         ota_man.update_buf_offset += ota_man.data_read;
-
         ota_man.ota_b = (float)ota_man.update_buf_offset / ota_man.content_length;
         ota_man.ota_percent = ota_man.ota_b * 100;
         if (ota_man.ota_percent > 100)
@@ -247,7 +268,12 @@ stat_m m_ext_drive_ota_start(void)
         {
             DEBUG_TEST(DB_I, "Percentage: %.2f%%", ota_man.ota_percent);
         }
-        m_callable_display_status(M_DISPLAY_FIRMWARE_UPDATE_MODE, (int)ota_man.ota_percent);
+        if (m_callable_ota_silent_updata_flag_get() != true)
+        {
+            // DEBUG_E("m_callable_ota_silent_updata_flag_get %d", m_callable_ota_silent_updata_flag_get());
+            m_callable_display_status(M_DISPLAY_FIRMWARE_UPDATE_MODE, (int)ota_man.ota_percent);
+        }
+
         breakpoint_resume.ota_range = ota_man.update_buf_offset;
         if (ota_man.update_buf_offset >= ota_man.content_length)
         {
@@ -266,6 +292,7 @@ stat_m m_ext_drive_ota_start(void)
                 return fail_r;
             }
         }
+        mDelay_ms(5);
     }
 
     if (ota_man.data_read <= 0)
@@ -302,12 +329,24 @@ stat_m m_ext_drive_ota_start(void)
 
 void m_ext_drive_ota_end(void)
 {
+    char tmp_pudate_url[120];
 #if !UNIT_TEST
     esp_err_t err = esp_ota_set_boot_partition(update_partition);
     vTaskDelay(10);
     DEBUG_TEST(DB_I, "OTA updata over,device restar\r\n");
+    if (m_callable_drive_flash_read(M_TYPE_Str, OTA_URL, tmp_pudate_url) == succ_r)
+    {
+        m_callable_drive_flash_remove(OTA_URL);
+    }
+    if (m_callable_flash_rescue_message_flag(OTA_COMPLETE, M_GLO_STROAGE_RESCUE_MESSAGE_GET) == succ_r)
+    {
+        m_callable_flash_rescue_message_flag(OTA_COMPLETE, M_GLO_STROAGE_RESCUE_MESSAGE_DEL);
+        DEBUG_TEST(DB_W, "静默更新模式  OTA完成后重启");
+        mReboot(M_RESTART_CAUSE_OTA_UPDATA_SUCC);
+    }
     m_ext_drive_ota_disable_silent_update();
-    esp_restart();
+    DEBUG_TEST(DB_W, "普通更新模式  OTA完成后重启");
+    mReboot(M_RESTART_CAUSE_OTA_UPDATA_SUCC);
 #endif
 }
 
@@ -387,6 +426,25 @@ stat_m m_ext_drive_ota_disable_silent_update(void)
 #endif
     return stat;
 }
+
+stat_m m_ext_drive_ota_client_cleanup(void)
+{
+    stat_m stat = fail_r;
+#if !UNIT_TEST
+    esp_err_t err = -1;
+    err = esp_http_client_cleanup(http_client);
+    if (err == ESP_OK)
+    {
+        stat = succ_r;
+    }
+    else
+    {
+        stat = fail_r;
+    }
+#endif
+    return stat;
+}
+
 stat_m m_ext_drive_ota_stop(void)
 {
 #if !UNIT_TEST
@@ -468,14 +526,19 @@ stat_m m_static_drive_ota_write_err_handle(void)
     return fail_r;
 }
 
+int otaupdata_fail_count = 0;
 void m_ext_drive_ota_overtime(void)
 {
 #if !UNIT_TEST
+    m_callable_drive_flash_read(M_TYPE_Int, OTA_UPDATA_FAIL_COUNT, &otaupdata_fail_count);
+    otaupdata_fail_count++;
+    m_callable_drive_flash_write(M_TYPE_Int, OTA_UPDATA_FAIL_COUNT, &otaupdata_fail_count);
 
-    DEBUG_E("OTA updata overtime !!!!!!!!\r\n");
+    DEBUG_E("OTA updata fail!!!!!!!!\r\n");
     DEBUG_E("准备重启\r\n");
 
-    esp_restart();
+    mReboot(M_RESTART_CAUSE_OTA_UPDATA_FAIL);
+
 #endif
 }
 

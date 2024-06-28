@@ -34,6 +34,27 @@ stat_m m_callable_middle_err_handle_set_code(enum error_net_code ecd)
 
     return stat;
 }
+/** 设备运行状态 */
+int running_mode_glo = 0;
+/** 零食的错误🏇存储空间 */
+char d_chr_conf_notify[10] = {0};
+/**
+ * @brief 吧运行中需要反馈的错误🏇，通过一种方式反馈到其他端
+ * 
+ * @param hcd 错误🏇
+ * @return stat_m 
+ */
+stat_m m_static_middle_connect_err_code_feedback(enum net_connect_code hcd)
+{
+    m_callable_device_attribute_get_running_mode(&running_mode_glo);
+    if (running_mode_glo == M_DEVICE_RUNNING_MODE_CONFIG || running_mode_glo == M_DEVICE_RUNNING_MODE_OFFLINE_CONFIG)
+    {
+        sprintf(d_chr_conf_notify, "%d", hcd);
+        m_ext_network_transmisson_bluetool_tx(d_chr_conf_notify, strlen(d_chr_conf_notify));
+    }
+    return succ_r;
+}
+
 /**
  * @brief 流程代码设置 包含配置网络过程和整个连接服务器过程
  *
@@ -49,6 +70,7 @@ stat_m m_callable_middle_connect_handle_set_code(enum net_connect_code hcd)
     {
         DEBUG_TEST(DB_ONLY_PROGRESS, "ex : %d", hcd);
         main_net_progress = hcd;
+        m_static_middle_connect_err_code_feedback(hcd);
         stat = succ_r;
     }
     return stat;

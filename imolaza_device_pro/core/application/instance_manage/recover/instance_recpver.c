@@ -30,7 +30,7 @@ void m_static_instance_manage_instance_recover(char *src_str, bool en_dis_able, 
     bool enable = true;
     // 恢复的第一部应该是初始化
     if (strlen(src_str) < 30)
-        return ;
+        return;
     // 解析
     strcpy(res_temp_sch, src_str);
     memset(&inst_resp_obj, 0, sizeof(inst_resp_obj));
@@ -257,7 +257,10 @@ stat_m m_callable_instance_manage_recover_queue_get_and_exec(uint64_t in_id, uin
     int weather_code = 0;
     DEBUG_TEST(DB_W, "m_callable_instance_manage_recover_queue_get_and_exec .. ");
     if ((stat = m_callable_sensor_current_is_effective(&sen_chan, &sen_type, in_time_s)) == fail_r)
+    {
         is_sensor_skip = true;
+    }
+
     if (iwtd != NULL) // 需要恢复
     {
         if (in_id != iwtd->sch_info.cu_id)
@@ -552,20 +555,23 @@ stat_m m_callable_instance_manage_recover_done(uint64_t in_time_s)
     }
     if (iwtd == NULL && !resp_ads)
     {
-        m_callable_local_resp_to_remote_pro_max(M_CMD_TWOWAY_POWEROFF_ONLINE_SYNC_WATERTIME,
-                                                M_TYPE_Int, (void *)&M_CONST_SACK_NUM,
-                                                M_TYPE_Int, (void *)&M_CONST_SACK_NUM,
-                                                M_TYPE_Int, (void *)&M_CONST_SACK_NUM,
-                                                M_TYPE_Int, (void *)&M_CONST_NONE_NUM,
-                                                M_TYPE_Int, (void *)&M_CONST_NONE_NUM,
-                                                M_TYPE_Int, (void *)&M_CONST_NONE_NUM,
-                                                M_TYPE_Int, (void *)&M_CONST_NONE_NUM,
-                                                M_TYPE_Int, (void *)&M_CONST_NONE_NUM,
-                                                M_TYPE_Int, (void *)&M_CONST_NONE_NUM,
-                                                M_TYPE_NULL, NULL,
-                                                M_TYPE_NULL, NULL,
-                                                M_TYPE_NULL, NULL,
-                                                in_time_s);
+        if (m_callable_offline_bluetooth_login_flag() != succ_r)
+        {
+            m_callable_local_resp_to_remote_pro_max(M_CMD_TWOWAY_POWEROFF_ONLINE_SYNC_WATERTIME,
+                                                    M_TYPE_Int, (void *)&M_CONST_SACK_NUM,
+                                                    M_TYPE_Int, (void *)&M_CONST_SACK_NUM,
+                                                    M_TYPE_Int, (void *)&M_CONST_SACK_NUM,
+                                                    M_TYPE_Int, (void *)&M_CONST_NONE_NUM,
+                                                    M_TYPE_Int, (void *)&M_CONST_NONE_NUM,
+                                                    M_TYPE_Int, (void *)&M_CONST_NONE_NUM,
+                                                    M_TYPE_Int, (void *)&M_CONST_NONE_NUM,
+                                                    M_TYPE_Int, (void *)&M_CONST_NONE_NUM,
+                                                    M_TYPE_Int, (void *)&M_CONST_NONE_NUM,
+                                                    M_TYPE_NULL, NULL,
+                                                    M_TYPE_NULL, NULL,
+                                                    M_TYPE_NULL, NULL,
+                                                    in_time_s);
+        }
     }
     return succ_r;
 }

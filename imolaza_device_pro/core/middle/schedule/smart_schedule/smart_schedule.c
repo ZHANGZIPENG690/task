@@ -43,9 +43,9 @@ stat_m m_callable_smart_running_storage_append(uint64_t in_uid, char *in_src, ui
                 memset(smart_array[i].new_water_msg, 0, sizeof(smart_array[i].new_water_msg));
                 smart_array[i].uid = in_uid;
                 m_static_smart_running_analyse_char(smart_array[i].new_ignore_msg, smart_array[i].new_water_msg, in_src);
-                DEBUG_TEST(DB_W,"------ back weather code: %s  %d", in_src, weta);
+                DEBUG_TEST(DB_W, "------ back weather code: %s  %d", in_src, weta);
                 M_CALLABLE_DATA_PARSE_FORAMT_PARAM_SSCANF(in_src, "%*[ ],%d", &weta);
-                DEBUG_TEST(DB_W,"------ back weather code:   %d", weta);
+                DEBUG_TEST(DB_W, "------ back weather code:   %d", weta);
                 m_callable_weather_manage_set(in_uid, weta, in_time_s);
                 // DEBUG_TEST(DB_W,"%s" , in_src);
                 m_callable_device_attribute_config_change_notify_event_callable(M_DEVICE_FUNCTION_CHANGE_NOTIFY_EVENT_SMART_CONFIG,
@@ -79,7 +79,7 @@ stat_m m_callable_smart_running_storage_is_ignore(uint64_t in_uid, uint8_t in_ci
             {
                 if (smart_array[i].new_ignore_msg[index_chann] != 0 && smart_array[i].new_ignore_msg[index_chann] == in_cid)
                 {
-                    DEBUG_TEST( DB_I,"(%lld)Find Not Run%hhd", in_uid, smart_array[i].new_ignore_msg[index_chann]);
+                    DEBUG_TEST(DB_I, "(%lld)Find Not Run%hhd", in_uid, smart_array[i].new_ignore_msg[index_chann]);
                     stat = fail_r;
                     // smart_array[i].uid = 0;
                     // memset(smart_array[i].new_water_msg, 0, sizeof(&smart_array[i].new_water_msg));
@@ -115,7 +115,7 @@ stat_m m_callable_smart_running_storage_is_change(uint64_t in_uid, uint8_t in_ci
             {
                 if (smart_array[i].new_water_msg[index_chann].id != 0 && smart_array[i].new_water_msg[index_chann].id == in_cid)
                 {
-                    DEBUG_TEST( DB_I,"%lld 找到 修改时间 %hhd %d", in_uid, smart_array[i].new_water_msg[index_chann].id, smart_array[i].new_water_msg[index_chann].time);
+                    DEBUG_TEST(DB_I, "%lld 找到 修改时间 %hhd %d", in_uid, smart_array[i].new_water_msg[index_chann].id, smart_array[i].new_water_msg[index_chann].time);
                     *out_time = smart_array[i].new_water_msg[index_chann].time;
                     smart_array[i].new_water_msg[index_chann].id = 0;
                     smart_array[i].new_water_msg[index_chann].time = 0;
@@ -174,7 +174,7 @@ stat_m m_static_smart_running_analyse_char(uint32_t *p1, struct m_smart_channel 
             M_CALLABLE_DATA_PARSE_FORAMT_PARAM_SSCANF(src, "%d", &p1[c]);
             if (p1[c] != 0)
             {
-                DEBUG_TEST( DB_I,"Ignore Channel is %d", p1[c]);
+                DEBUG_TEST(DB_I, "Ignore Channel is %d", p1[c]);
                 c++;
             }
             ccflag = false;
@@ -201,7 +201,7 @@ stat_m m_static_smart_running_analyse_char(uint32_t *p1, struct m_smart_channel 
             M_CALLABLE_DATA_PARSE_FORAMT_PARAM_SSCANF(src, "%d#%d", &p2[c].id, &p2[c].time);
             if (p2[c].id != 0)
             {
-                DEBUG_TEST( DB_I,"Change Channel is %d # %d", p2[c].id, p2[c].time);
+                DEBUG_TEST(DB_I, "Change Channel is %d # %d", p2[c].id, p2[c].time);
                 c++;
             }
             ccflag = false;
@@ -214,6 +214,6 @@ stat_m m_static_smart_running_analyse_char(uint32_t *p1, struct m_smart_channel 
             *src = ' ';
         src++;
     }
-    DEBUG_TEST( DB_I,"m_static_smart_running_analyse_char end : %s", src);
+    DEBUG_TEST(DB_I, "m_static_smart_running_analyse_char end : %s", src);
     return stat;
 }

@@ -235,14 +235,25 @@ stat_m m_callable_instance_manage_get_current_instance_sid_abd_cid_adb_remainder
         // 当前实例运行类型
         if (current_instance[0]->sio_run_type == M_INSTANCE_RUN_TYPE_FAST_RUN) // 快速运行
         {
-            if (current_instance[0]->sio_status == M_BASE_STATUS_PAUSE) // 暂停
-                *out_ch_state = 6;
-            else if (*out_ch_state == M_BASE_STATUS_SACK) // 浸泡
-                *out_ch_state = 7;
-            else if (*out_ch_state == M_BASE_STATUS_RUNNING) // 运行
-                *out_ch_state = 5;
+            if (m_callable_current_batch_area_power_calibration_flag_get() == 1)
+            {
+                *out_ch_state = 8;
+            }
+            else if (m_callable_current_batch_area_power_calibration_flag_get() == 2)
+            {
+                *out_ch_state = 9;
+            }
             else
-                *out_ch_state = 5;
+            {
+                if (current_instance[0]->sio_status == M_BASE_STATUS_PAUSE) // 暂停
+                    *out_ch_state = 6;
+                else if (*out_ch_state == M_BASE_STATUS_SACK) // 浸泡
+                    *out_ch_state = 7;
+                else if (*out_ch_state == M_BASE_STATUS_RUNNING) // 运行
+                    *out_ch_state = 5;
+                else
+                    *out_ch_state = 5;
+            }
         }
         else if (current_instance[0]->sio_run_type == M_INSTANCE_RUN_TYPE_SCHEDULE) // 计划
         {

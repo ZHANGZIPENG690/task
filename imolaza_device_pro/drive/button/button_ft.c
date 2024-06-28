@@ -178,6 +178,10 @@ stat_m m_ext_drive_button_event_handle(enum key_id key_id, enum key_event key_ev
     {
         stat = fail_r;
     }
+    if (m_callable_current_batch_area_power_calibration_flag_get() == 1 || m_callable_current_batch_area_power_calibration_flag_get() == 2)
+    {
+        stat = fail_r;
+    }
     // if(m_ext_drive_gpio_get_level(key_event) == 0  )
     // {
     // stat = fail_r;
@@ -192,6 +196,7 @@ stat_m m_ext_drive_button_event_handle(enum key_id key_id, enum key_event key_ev
             m_callable_instance_running_event_input(key_id, current_time_ms);
             break;
         case M_DEVICE_GLOBAL_STATUS_MANUAL_RUNNING:
+            m_callable_current_batch_area_power_calibration_flag_set(0);
             if (m_callable_display_status_get() == M_DISPLAY_M_TERMINAL_SHORT_CIRCUIT_MODE && (key_id == M_KEY_EVENT_LEFT || key_id == M_KEY_EVENT_RIGHT))
                 break;
             m_callable_manual_event_input(key_id, pre_key_index, current_key_index, current_time_ms);
